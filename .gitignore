@@ -1,2 +1,6 @@
 .claude/
+.vercel/
 assets/model/belmont-poster.png
+
+.vercel
+.env*
