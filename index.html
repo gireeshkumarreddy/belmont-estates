@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FAFAF4">
+  <!-- A client preview: keep it out of search results until it goes live on its own domain -->
+  <meta name="robots" content="noindex">
+  <meta name="description" content="Belmont Estates is an acreage community in Fulshear, Texas: just 75 two-acre homesites across 227 acres, custom homes by four builders, and schools in Lamar CISD.">
+  <title>Belmont Estates — Unbridled Living in Fulshear, Texas</title>
+  <script>
+    // Runs before the first paint: if the intro will play, show it straight away and hold the page still.
+    (function () {
+      var hash = location.hash;
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && (hash === '' || hash === '#top')) {
+        document.documentElement.classList.add('intro-boot');
+      }
+    })();
+  </script>
+  <link rel="icon" href="assets/logo/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Public+Sans:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preload" href="assets/img/tour-entry.webp" as="image">
+  <!-- three.js loads only when someone opens the 3D master plan -->
+  <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
+  <script type="module" src="js/main.js"></script>
+</head>
+<body class="story-page">
+  <!-- Shared SVG defs: the Belmont crest and the flowing-mane brush strokes -->
+  <svg width="0" height="0" class="visually-hidden" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- A tapered brush swash that starts and ends inside its own frame, so it never shows a cut edge -->
+      <symbol id="mane" viewBox="0 0 1440 220" preserveAspectRatio="xMidYMid meet">
+        <path fill="#98B5AD" opacity=".9" d="M60 176C330 126 660 46 980 60C1160 68 1290 82 1390 62C1300 96 1160 94 978 88C662 76 340 150 60 176Z"/>
+        <path fill="#98B5AD" opacity=".45" d="M150 158C400 110 700 50 990 56C1140 60 1250 68 1330 54C1250 76 1130 78 988 72C704 68 410 128 150 158Z"/>
+        <path fill="#98B5AD" opacity=".4" d="M240 188C500 152 780 98 1040 102C1180 104 1280 104 1360 90C1280 112 1180 114 1040 112C784 110 508 164 240 188Z"/>
+        <g fill="none" stroke="#FAFAF4" stroke-linecap="round" opacity=".55">
+          <path d="M210 160C470 118 750 68 1010 72" stroke-width="1.6"/>
+          <path d="M430 126C650 92 870 72 1130 78" stroke-width="1"/>
+          <path d="M620 98C800 76 1000 72 1250 76" stroke-width=".8"/>
+        </g>
+        <path fill="none" stroke="#C7B36D" stroke-width="1.6" stroke-linecap="round" d="M120 202C420 168 760 118 1060 124S1300 120 1380 102"/>
+        <path fill="#BA8F59" opacity=".85" d="M930 208C1060 198 1200 174 1384 146C1214 184 1074 208 930 208Z"/>
+      </symbol>
+      <symbol id="arrow-ne" viewBox="0 0 16 16"><path d="M4.5 11.5 11.5 4.5M5.5 4.5h6v6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="arrow-e" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip-link" href="#about">Skip to content</a>
+
+  <!-- Intro: a greeting, then the Belmont crest opens like a window onto the hero -->
+  <div class="intro" id="intro" hidden>
+    <svg class="intro-door" viewBox="-50 -50 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <path class="intro-wall" fill-rule="evenodd" d="M-3000-3000H3000V3000H-3000Z M0-5C2.4-5 4.56-4.25 5.64-3.35Q6-3.05 6-2.45V7.45Q6 8.05 5.64 8.35C4.56 9.25 2.4 10 0 10C-2.4 10-4.56 9.25-5.64 8.35Q-6 8.05-6 7.45V-2.45Q-6-3.05-5.64-3.35C-4.56-4.25-2.4-5 0-5Z"/>
+      <path class="intro-plug" d="M0-5C2.4-5 4.56-4.25 5.64-3.35Q6-3.05 6-2.45V7.45Q6 8.05 5.64 8.35C4.56 9.25 2.4 10 0 10C-2.4 10-4.56 9.25-5.64 8.35Q-6 8.05-6 7.45V-2.45Q-6-3.05-5.64-3.35C-4.56-4.25-2.4-5 0-5Z"/>
+      <path class="intro-outline" pathLength="1" d="M0-5C2.4-5 4.56-4.25 5.64-3.35Q6-3.05 6-2.45V7.45Q6 8.05 5.64 8.35C4.56 9.25 2.4 10 0 10C-2.4 10-4.56 9.25-5.64 8.35Q-6 8.05-6 7.45V-2.45Q-6-3.05-5.64-3.35C-4.56-4.25-2.4-5 0-5Z"/>
+    </svg>
+    <div class="intro-copy">
+      <p class="intro-greeting"><span>Howdy</span><i aria-hidden="true"></i><span lang="es">Bienvenidos</span><i aria-hidden="true"></i><span>Welcome home</span></p>
+      <p class="intro-title"><span class="intro-caps">Unbridled</span> <em>Living</em></p>
+    </div>
+    <button class="intro-skip" type="button">Skip intro</button>
+  </div>
+  <script>
+    (function () {
+      var door = document.querySelector('#intro .intro-door'), unit = innerHeight / 90, span = innerWidth / unit;
+      door.setAttribute('viewBox', (-span / 2).toFixed(3) + ' -45 ' + span.toFixed(3) + ' 90');
+      door.setAttribute('preserveAspectRatio', 'none');
+      document.getElementById('intro').style.setProperty('--arch-unit', unit + 'px');
+    })();
+  </script>
+
+  <!-- The story header takes over once the hero card scrolls away -->
+  <header class="hs-header is-away" id="site-header" data-theme="dark">
+    <a class="hs-emblem" href="#top" aria-label="Belmont Estates home">
+      <svg class="hs-emblem-ring" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="emblem-ring" d="M60 60m-47 0a47 47 0 1 1 94 0a47 47 0 1 1-94 0"/></defs><text><textPath href="#emblem-ring" textLength="292">BELMONT ESTATES · UNBRIDLED LIVING · FULSHEAR ·</textPath></text></svg>
+      <span class="hs-emblem-mark"><img src="assets/logo/icon.svg" alt="" width="226" height="246"></span>
+    </a>
+    <div class="hs-header-right">
+      <a class="hs-cta" href="#connect">Join the <br>interest list</a>
+      <button class="hs-menu-toggle" type="button" aria-expanded="false" aria-controls="hs-nav">Menu</button>
+      <nav class="hs-nav" id="hs-nav" aria-label="Main">
+        <a href="#reasons">Homesites</a>
+        <a href="#location">Location</a>
+        <a href="#master-plan">Master plan</a>
+        <a href="#builders">Builders</a>
+        <a href="#schools">Schools</a>
+      </nav>
+      <span class="local-clock" aria-label="Local time in Fulshear"></span>
+    </div>
+  </header>
+  <div class="hs-rail" aria-hidden="true"><span>Scroll</span><i><b></b></i></div>
+
+  <main>
+    <!-- Opening card: the entry rendering, with the BELMONT wordmark behind the headline -->
+    <section class="rv-hero" id="top" data-header="light" aria-labelledby="rv-title">
+      <div class="rv-card">
+        <img class="rv-photo" src="assets/img/tour-entry.webp" alt="Rendering of the Belmont Estates main entry: a stone tower and long stone wall above beds of purple and pink flowers" width="1895" height="861" fetchpriority="high">
+        <span class="rv-wordmark" aria-hidden="true">Belmont</span>
+        <div class="rv-top">
+          <a class="rv-logo" href="#top"><img src="assets/logo/horizontal-white.svg" alt="Belmont Estates" width="188" height="45"></a>
+          <nav class="rv-nav" aria-label="Sections">
+            <a class="is-current" href="#top" aria-current="page"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 7.2 8 2.8l5.5 4.4V13a.5.5 0 0 1-.5.5H9.6V10H6.4v3.5H3a.5.5 0 0 1-.5-.5Z"/></svg>Home</a>
+            <a href="#reasons">Homesites</a>
+            <a href="#location">Location</a>
+            <a href="#master-plan">Master plan</a>
+            <a href="#builders">Builders</a>
+          </nav>
+          <a class="rv-talk" href="#connect"><span>Join the interest list</span><span class="rv-arrow"><svg aria-hidden="true"><use href="#arrow-ne"/></svg></span></a>
+        </div>
+        <div class="rv-headline">
+          <h1 class="visually-hidden" id="rv-title">Let life run wild in Fulshear</h1>
+          <div class="rv-row rv-row--one">
+            <p class="rv-lede">Just 75 two-acre homesites across 227 acres in Fulshear, Texas.</p>
+            <span class="rv-line" aria-hidden="true"><span>Let life run</span></span>
+          </div>
+          <div class="rv-row rv-row--two">
+            <span class="rv-line" aria-hidden="true"><span>wild in Fulshear</span></span>
+            <a class="rv-start" href="#connect">Get started<span class="rv-arrow rv-arrow--gold"><svg aria-hidden="true"><use href="#arrow-e"/></svg></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rv-about" id="about" data-header="dark" aria-labelledby="about-title">
+      <p class="rv-kicker">About Belmont</p>
+      <h2 class="rv-statement" id="about-title">Belmont Estates is an acreage community in Fulshear with just 75 two-acre homesites. <span class="rv-soft" data-fill>Custom homes by four builders, ponds and walking trails, and Lamar CISD schools, with FM 1093 and everything Fulshear offers down the road.</span></h2>
+      <div class="rv-about-grid">
+        <div class="rv-about-copy">
+          <p>Build the spacious single-story home you have been sketching, with room left over for a pool, a play yard, a garden and a long stretch of open grass.</p>
+          <a class="rv-learn" href="#reasons">See the homesites<span class="rv-arrow"><svg aria-hidden="true"><use href="#arrow-ne"/></svg></span></a>
+          <dl class="rv-stats">
+            <div><dt>Acres in the community</dt><dd data-count="227">227</dd></div>
+            <div><dt>Homesites, and no more</dt><dd data-count="75">75</dd></div>
+            <div><dt>Acres on every homesite</dt><dd data-count="2">2</dd></div>
+            <div><dt>Custom home builders</dt><dd data-count="4">4</dd></div>
+          </dl>
+        </div>
+        <figure class="rv-photo-tall"><img src="assets/img/family.webp" alt="A father carries his laughing daughter on his back at golden hour" width="601" height="679" loading="lazy"></figure>
+        <figure class="rv-photo-small"><img src="assets/img/tour-mailbox.webp" alt="Rendering of a stone mailbox column with a house number" width="1642" height="887" loading="lazy"></figure>
+      </div>
+    </section>
+
+    <!-- The tour: entry renderings play like a film, then the dome of three reasons rises over them -->
+    <section class="hs-hero" id="tour" data-header="light" aria-label="A look at the Belmont entry and streetscape">
+      <div class="hs-sticky">
+        <div class="hs-hero-media">
+          <div class="tour-slides">
+            <img class="tour-slide is-on" src="assets/img/tour-entry.webp" alt="Rendering of the main entry: stone tower, Belmont Estates wall and flower beds" width="1895" height="861">
+            <img class="tour-slide" src="assets/img/tour-corner.webp" alt="Rendering of a street corner planted with flowering crape myrtles" width="1861" height="990" loading="lazy">
+            <img class="tour-slide" src="assets/img/tour-fence.webp" alt="Rendering of a stone column with the Belmont horse emblem and timber rail fencing" width="1779" height="964" loading="lazy">
+            <img class="tour-slide" src="assets/img/tour-mailbox.webp" alt="Rendering of a stone mailbox column beside a sidewalk" width="1642" height="887" loading="lazy">
+            <img class="tour-slide" src="assets/img/tour-entry-wide.webp" alt="Rendering of the entry wall seen across the lawn" width="1895" height="861" loading="lazy">
+          </div>
+          <div class="film-grain" aria-hidden="true"></div>
+        </div>
+        <div class="tour-mini">
+          <div class="tour-label"><span id="room-caption-text">01 · THE ENTRY</span><em id="tour-local">Welcome home <small>— the main entry</small></em></div>
+          <div class="tour-progress" id="tour-progress" aria-hidden="true"></div>
+          <div class="tour-controls"><button id="room-prev" type="button" aria-label="Previous view">←</button><button id="tour-toggle" type="button" aria-label="Pause the tour" aria-pressed="false"><span class="tour-pause" aria-hidden="true"></span></button><button id="room-next" type="button" aria-label="Next view">→</button></div>
+        </div>
+        <a class="hs-hero-link" href="#master-plan">See the master plan</a>
+        <div class="dome" id="hero-dome" aria-hidden="true">
+          <svg class="dome-art" viewBox="0 0 1000 1000">
+            <defs><path id="dome-arc" d="M139.6 247.6A440 440 0 0 1 860.4 247.6"/></defs>
+            <text class="dome-arc-text"><textPath href="#dome-arc" startOffset="50%" text-anchor="middle">Three reasons to choose Belmont</textPath></text>
+            <text class="dome-side" x="404" y="364" text-anchor="end">FULSHEAR</text>
+            <path class="dome-arch" d="M500 348C504 348 507.6 349.1 509.4 350.42Q510 350.86 510 351.74V366.26Q510 367.14 509.4 367.58C507.6 368.9 504 370 500 370C496 370 492.4 368.9 490.6 367.58Q490 367.14 490 366.26V351.74Q490 350.86 490.6 350.42C492.4 349.1 496 348 500 348Z"/>
+            <text class="dome-side" x="596" y="364">TEXAS</text>
+            <path class="dome-line" d="M500 392V560"/>
+            <text class="dome-caption" x="500" y="600" text-anchor="middle">A DIFFERENT BREED OF LIVING,</text>
+            <text class="dome-caption" x="500" y="622" text-anchor="middle">ON TWO ACRES OF YOUR OWN</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reason one: a headline, then a small photograph that grows to fill the screen -->
+    <section class="hs-grow" id="reasons" data-header="dark" aria-labelledby="reason-one">
+      <div class="grow-head">
+        <p class="hs-kicker">Reason 01 of 03</p>
+        <h2 class="display display-xl" id="reason-one" data-lines>Two acres of your own</h2>
+      </div>
+      <div class="grow-pin" data-scene="grow">
+        <div class="hs-sticky">
+          <div class="grow-before">
+            <p class="hs-body">Every homesite at Belmont Estates is two acres: 87,120 square feet of Fulshear countryside, with room for a single-story home, a pool, a play yard and a garden.</p>
+            <a class="hs-link" href="#master-plan">See the master plan</a>
+          </div>
+          <figure class="grow-frame">
+            <img src="assets/img/picnic-wide.webp" alt="Two young girls lie on floor cushions in a backyard at dusk, string lights glowing in the grass" width="1535" height="1027" loading="lazy">
+          </figure>
+          <div class="grow-over">
+            <p class="display display-s" data-lines>Instead of a narrow suburban lot, two acres with room to roam, where the kids can run and summer evenings stretch across the lawn.</p>
+            <p class="hs-small">Two-acre homesites</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reason two: a sideways journey from the concept to the places nearby -->
+    <section class="hs-across" id="location" data-header="dark" data-scene="across" aria-label="The concept and the neighborhood">
+      <div class="hs-sticky">
+        <div class="across-track">
+          <article class="panel panel-concept">
+            <svg class="bloom bloom-mane bloom-concept" data-drift="-60" aria-hidden="true"><use href="#mane"/></svg>
+            <p class="hs-kicker">Reason 02 of 03</p>
+            <p class="display display-m" data-lines>Belmont Estates is an acreage community of just 75 homesites on 227 acres, planned around ponds, trails and native grasses, with custom homes by four respected builders.</p>
+            <p class="hs-body hs-centre">Let life run wild. Whether it's a first home with room to grow or the forever home you have been planning, there's space here for all of it.</p>
+            <img class="hs-crest-mark" src="assets/logo/icon.svg" alt="" width="226" height="246">
+          </article>
+          <article class="panel panel-pearl">
+            <svg class="bloom bloom-mane bloom-pearl" data-drift="40" aria-hidden="true"><use href="#mane"/></svg>
+            <h2 class="pearl-words display" aria-label="The good life"><span class="w1">The</span><span class="w2">Good</span><span class="w3">Life</span></h2>
+            <span class="pearl-country">Fulshear, Texas</span>
+            <figure class="pearl-photo"><img src="assets/img/garden.webp" alt="A young girl helps her grandmother repot a plant in the garden" width="599" height="738" loading="lazy"></figure>
+            <div class="pearl-copy">
+              <h3 class="display display-s">Between Bessie Creek and FM 1093</h3>
+              <p class="hs-body">Off Bois D'Arc Lane, Belmont keeps the quiet of the country, with everything fast-growing Fulshear offers just down the road.</p>
+              <a class="hs-link" href="#master-plan">See the master plan</a>
+            </div>
+          </article>
+          <article class="panel panel-map" aria-labelledby="area-title">
+            <div class="am" id="area-map">
+              <div class="am-stage">
+                <svg class="am-svg" viewBox="20 180 740 540" aria-hidden="true">
+                  <g class="am-roads">
+                    <path class="am-hwy" d="M30 270H322C340 270 345 250 362 249H760"/>
+                    <path class="am-hwy" d="M400 180V448C400 486 428 516 468 536L530 562C556 574 572 600 586 632L616 700"/>
+                    <path class="am-hwy" d="M668 185V560C668 604 656 640 655 700"/>
+                    <path class="am-hwy" d="M30 484L268 461L760 410"/>
+                    <path d="M28 338L96 424C108 440 124 462 140 470"/>
+                    <path d="M232 470C232 520 238 570 262 606C282 636 304 652 336 655H486"/>
+                    <path d="M486 452V700"/>
+                    <path d="M292 186C282 230 256 272 236 300C228 312 228 330 228 350V470"/>
+                    <path d="M155 255V462C156 500 160 560 163 630"/>
+                    <path d="M150 480C160 486 172 490 182 496"/>
+                  </g>
+                  <path class="am-route" id="am-route" pathLength="1" d="M0 0"/>
+                  <g class="am-labels" id="am-labels"></g>
+                  <g class="am-pins" id="am-pins"></g>
+                </svg>
+                <div class="am-card" id="am-card" hidden></div>
+                <p class="am-note">Map not to scale</p>
+              </div>
+              <div class="am-side">
+                <h2 class="map-title display" id="area-title"><span>Everything</span><em class="script">close</em><span>to home</span></h2>
+                <p class="am-lede">Schools, groceries, hospitals and weekend plans, all a short drive from Bois D'Arc Lane. Pick a type of place, then a place to see where it sits.</p>
+                <div class="am-filters" id="am-filters" role="toolbar" aria-label="Show places by type"></div>
+                <ul class="am-list" id="am-list" aria-label="Places on the map"></ul>
+                <a class="hs-link" href="#connect">Join the interest list</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Clouds part to reveal the master plan from above -->
+    <section class="hs-clouds" id="master-plan" data-header="dark" data-scene="clouds" aria-labelledby="plan-title">
+      <div class="hs-sticky">
+        <div class="clouds-aerial" id="plan-viewport">
+          <div class="plan-board" id="plan-board">
+            <img src="assets/img/site-plan-wide.webp" alt="Conceptual site plan: homesites arranged around several long ponds, connected by tree-lined streets and trails" width="2600" height="1879" loading="lazy" draggable="false">
+            <div class="plan-pins" id="plan-pins"></div>
+          </div>
+          <div class="plan-3d" id="plan-3d" hidden>
+            <img class="plan-3d-poster" src="assets/model/belmont-poster.webp" alt="3D model of the Belmont Estates master plan" width="1327" height="712" loading="lazy">
+            <div class="plan-3d-pins" id="plan-3d-pins"></div>
+            <p class="plan-3d-tip" id="plan-3d-tip" hidden></p>
+          </div>
+        </div>
+        <div class="plan-ui" id="plan-ui" inert>
+          <div class="plan-head">
+            <h2 class="plan-title display" id="plan-title">The master plan</h2>
+            <p class="plan-hint" id="plan-hint">Drag to look around. Pinch or hold Ctrl and scroll to zoom.</p>
+          </div>
+          <div class="plan-controls">
+            <div class="plan-view" role="group" aria-label="Map view">
+              <button type="button" data-view="2d" aria-pressed="true">2D plan</button>
+              <button type="button" data-view="3d" aria-pressed="false">3D model</button>
+            </div>
+            <div class="plan-zoom" role="group" aria-label="Zoom">
+              <button type="button" data-zoom="in" aria-label="Zoom in"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></button>
+              <button type="button" data-zoom="out" aria-label="Zoom out"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10"/></svg></button>
+              <button type="button" data-zoom="reset">Reset view</button>
+            </div>
+            <button class="plan-explore" type="button" data-explore>Explore the plan</button>
+            <button class="plan-done" type="button" data-done>Done</button>
+          </div>
+          <div class="plan-info" id="plan-info" aria-live="polite" hidden></div>
+        </div>
+        <p class="clouds-caption">Conceptual site plan by Clark Condon, May 2026. Subject to change.</p>
+        <div class="clouds-strip">
+          <div class="clouds-cream"></div>
+          <img class="clouds-edge clouds-edge-back" src="assets/img/clouds-back.webp" alt="" width="2400" height="900">
+          <img class="clouds-edge" src="assets/img/clouds-front.webp" alt="" width="2400" height="900">
+          <div class="clouds-body"></div>
+          <img class="clouds-edge clouds-edge-under" src="assets/img/clouds-front.webp" alt="" width="2400" height="900">
+        </div>
+      </div>
+    </section>
+
+    <!-- The details: each rendering opens from a sliver while its word spells itself out -->
+    <section class="hs-kinds" id="details" data-header="dark" aria-labelledby="kinds-title">
+      <h2 class="visually-hidden" id="kinds-title">The details</h2>
+      <div class="kinds-list">
+        <article class="kind">
+          <div class="kind-meta"><span class="kind-index">1</span><p>The main entry<br>Bois D'Arc Rd at Preakness Stakes Dr</p><p class="kind-price">Planters, signage and lighting</p></div>
+          <h3 class="kind-word display" aria-label="Stone"><span aria-hidden="true">S</span><span aria-hidden="true">t</span><span aria-hidden="true">o</span><span aria-hidden="true">n</span><span aria-hidden="true">e</span></h3>
+          <figure class="kind-photo"><img src="assets/img/tour-entry-wide.webp" alt="Rendering of the stone entry wall reading Belmont Estates" width="1895" height="861" loading="lazy"></figure>
+          <div class="kind-copy"><p class="hs-body">A stone tower and long stone wall mark the main entry, with raised planters, decorative columns, signage and lighting.</p><a class="hs-link" href="#master-plan">See the master plan</a></div>
+        </article>
+        <article class="kind">
+          <div class="kind-meta"><span class="kind-index">2</span><p>Column and timber fence<br>Along the community edge</p><p class="kind-price">The Belmont horse, set in stone</p></div>
+          <h3 class="kind-word display" aria-label="Timber"><span aria-hidden="true">T</span><span aria-hidden="true">i</span><span aria-hidden="true">m</span><span aria-hidden="true">b</span><span aria-hidden="true">e</span><span aria-hidden="true">r</span></h3>
+          <figure class="kind-photo"><img src="assets/img/tour-fence.webp" alt="Rendering of a stone column with the Belmont horse emblem joined by dark timber rails" width="1779" height="964" loading="lazy"></figure>
+          <div class="kind-copy"><p class="hs-body">Dark timber rail fencing runs between stone columns, each set with the Belmont horse, for a ranch feel from the very first mile.</p><a class="hs-link" href="#connect">Join the interest list</a></div>
+        </article>
+        <article class="kind">
+          <div class="kind-meta"><span class="kind-index">3</span><p>Corner plantings<br>At every intersection</p><p class="kind-price">Shade and ornamental trees</p></div>
+          <h3 class="kind-word display" aria-label="Bloom"><span aria-hidden="true">B</span><span aria-hidden="true">l</span><span aria-hidden="true">o</span><span aria-hidden="true">o</span><span aria-hidden="true">m</span></h3>
+          <figure class="kind-photo"><img src="assets/img/corner-close.webp" alt="Rendering of a corner planted with crape myrtles and low shrubs" width="1669" height="889" loading="lazy"></figure>
+          <div class="kind-copy"><p class="hs-body">Crape myrtles, ornamental trees and native grasses soften every corner, with planting areas threaded through the community.</p><a class="hs-link" href="#builders">Meet the builders</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="hs-statement" data-header="dark">
+      <svg class="bloom bloom-mane bloom-statement" data-drift="-70" aria-hidden="true"><use href="#mane"/></svg>
+      <p class="hs-kicker">The homesites</p>
+      <p class="display display-m" data-lines>Seventy-five homesites of two acres each, threaded with ponds, walking trails and native grasses, and room on every one for a spacious single-story home.</p>
+      <img class="hs-crest-mark" src="assets/logo/icon.svg" alt="" width="226" height="246">
+    </section>
+
+    <!-- Reason three: what's here, then the second dome -->
+    <section class="hs-dusk" data-header="light" data-scene="dusk" aria-labelledby="space-title">
+      <div class="hs-sticky">
+        <div class="dusk-media"><img src="assets/img/window-family.webp" alt="A mother and her two young sons look out a window together, smiling" width="1811" height="1358" loading="lazy"></div>
+        <ul class="dusk-list" id="dusk-list"><li>Two-acre homesites</li><li>Four custom builders</li><li>Ponds and walking trails</li><li>Lamar CISD schools</li><li>Close to FM 1093</li></ul>
+        <p class="dusk-note display display-xs">Every homesite is planned for how life feels on an ordinary Tuesday: kids outside, neighbors waving, room to breathe.</p>
+        <div class="dome dome-two" id="dusk-dome" aria-hidden="true"></div>
+        <div class="dome-two-inner">
+          <p class="hs-kicker">Reason 03 of 03</p>
+          <h2 class="space-title display" id="space-title"><span>Room</span><span>to run</span><em class="script">wild</em></h2>
+        </div>
+      </div>
+    </section>
+
+    <section class="hs-plum" id="schools" data-header="dark" aria-labelledby="schools-title">
+      <div class="plum-panel" data-drift="-90">
+        <svg class="bloom bloom-mane bloom-spray" data-drift="-40" aria-hidden="true"><use href="#mane"/></svg>
+        <figure class="plum-inset"><img src="assets/img/grandpa.webp" alt="A grandfather laughs with his two grandsons" width="598" height="723" loading="lazy"></figure>
+        <span class="plum-rail" aria-hidden="true"></span>
+      </div>
+      <div class="plum-copy">
+        <h2 class="display display-s" id="schools-title" data-lines>Belmont Estates is served by Lamar CISD, a growing district that pairs rigorous coursework with activities at every level.</h2>
+
+        <!-- One school for each stage, from the first day to graduation -->
+        <div class="school-path" id="school-path" style="--step:0">
+          <p class="sp-label">From the first day to graduation</p>
+          <div class="sp-steps" role="tablist" aria-label="Lamar CISD schools by stage">
+            <button type="button" role="tab" id="sp-tab-1" aria-selected="true" aria-controls="sp-panel" data-place="1" data-name="Huggins Elementary"><span class="sp-node" aria-hidden="true"></span><span class="sp-stage">Elementary</span></button>
+            <button type="button" role="tab" id="sp-tab-2" aria-selected="false" aria-controls="sp-panel" data-place="2" data-name="Roberts Middle School" tabindex="-1"><span class="sp-node" aria-hidden="true"></span><span class="sp-stage">Middle school</span></button>
+            <button type="button" role="tab" id="sp-tab-3" aria-selected="false" aria-controls="sp-panel" data-place="3" data-name="Dean Leaman Junior High" tabindex="-1"><span class="sp-node" aria-hidden="true"></span><span class="sp-stage">Junior high</span></button>
+            <button type="button" role="tab" id="sp-tab-4" aria-selected="false" aria-controls="sp-panel" data-place="4" data-name="Fulshear High School" tabindex="-1"><span class="sp-node" aria-hidden="true"></span><span class="sp-stage">High school</span></button>
+          </div>
+          <div class="sp-panel" id="sp-panel" role="tabpanel" aria-labelledby="sp-tab-1">
+            <figure class="sp-photo"><img src="assets/img/classroom.webp" alt="A teacher leans in to help a table of students working on laptops" width="1400" height="788" loading="lazy"></figure>
+            <div class="sp-body">
+              <p class="sp-stage-now" id="sp-stage">Elementary</p>
+              <h3 class="sp-name display" id="sp-name">Huggins Elementary</h3>
+              <p class="sp-note" id="sp-note">Lamar CISD. Place 1 on the area map.</p>
+              <button class="sp-map" type="button" id="sp-map" data-place="1">Show on the map <svg aria-hidden="true"><use href="#arrow-e"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="early">
+          <h3 class="early-title">Early learning nearby</h3>
+          <ul class="early-list">
+            <li><button type="button" data-place="17"><span class="early-num">17</span><span>Kiddie Academy of Fulshear</span><svg aria-hidden="true"><use href="#arrow-ne"/></svg></button></li>
+            <li><button type="button" data-place="18"><span class="early-num">18</span><span>The Goddard School</span><svg aria-hidden="true"><use href="#arrow-ne"/></svg></button></li>
+            <li><button type="button" data-place="19"><span class="early-num">19</span><span>Fulshear Early Learning Center</span><svg aria-hidden="true"><use href="#arrow-ne"/></svg></button></li>
+          </ul>
+        </div>
+        <p class="hs-small">School assignments are set by Lamar CISD and can change. <a href="https://www.lcisd.org/" target="_blank" rel="noopener">Check with the district</a></p>
+      </div>
+    </section>
+
+    <section class="hs-gallery" data-header="dark" aria-label="Life at Belmont">
+      <figure class="swing-card" data-scene="swing"><img src="assets/img/kids-run.webp" alt="Two children run through tall grass holding hands with their parents" width="1080" height="640" loading="lazy"></figure>
+      <div class="pair">
+        <svg class="bloom bloom-mane pair-bloom-left" data-drift="-30" aria-hidden="true"><use href="#mane"/></svg>
+        <figure class="pair-a" data-drift="-120"><img src="assets/img/sofa.webp" alt="A sunlit living room with a gray sofa and a vase of blossoms" width="803" height="585" loading="lazy"></figure>
+        <figure class="pair-b" data-drift="60"><img src="assets/img/corner-close.webp" alt="Rendering of crape myrtles in bloom at a street corner" width="1669" height="889" loading="lazy"></figure>
+      </div>
+    </section>
+
+    <!-- Builders and the interest list -->
+    <section class="hp" id="builders" data-header="light" aria-labelledby="builders-title">
+      <div class="hp-head">
+        <p class="hs-kicker">Plan your homesite</p>
+        <h2 class="display display-l" id="builders-title">Our family of builders</h2>
+        <p class="hs-body">With two acres, you can design the home of your dreams, and each builder was selected for a distinctive design approach and quality construction.</p>
+      </div>
+      <div class="hp-grid">
+        <article class="hp-card hp-builders">
+          <h3>Building at Belmont</h3>
+          <ul class="builder-list">
+            <li><span class="key key--wd" aria-hidden="true"></span>William David Homes</li>
+            <li><span class="key key--toll" aria-hidden="true"></span>Toll Brothers</li>
+            <li><span class="key key--pib" aria-hidden="true"></span>Partners in Building</li>
+            <li><span class="key key--autograph" aria-hidden="true"></span>Autograph Homes</li>
+          </ul>
+          <p class="hp-note">Colors match the homesite map. White lots are marked for future development.</p>
+        </article>
+        <figure class="hp-card hp-map">
+          <img src="assets/img/builder-map.webp" alt="Homesite map with lots colored by builder; the builders' homesites are grouped at one end of the community and the remaining white lots are marked for future development" width="1600" height="1059" loading="lazy">
+          <figcaption>Homesites by builder, from the February 2025 master plan. Subject to change.</figcaption>
+        </figure>
+      </div>
+
+      <div class="hp-connect" id="connect">
+        <div class="hp-connect-copy">
+          <p class="hs-kicker">Stay connected</p>
+          <h2 class="display display-l">Join the interest list</h2>
+          <p class="hs-body">Get homesite releases, builder news and community updates first. Realtors are welcome; check the box so the sales team can follow up with you directly.</p>
+        </div>
+
+        <!-- Not wired to a backend yet: set data-endpoint to your CRM or form service URL to send submissions. -->
+        <form class="hp-card connect-form" id="connect-form" novalidate data-endpoint="">
+          <div class="field">
+            <label for="first-name">First name</label>
+            <input id="first-name" name="firstName" type="text" autocomplete="given-name" required aria-describedby="first-name-error">
+            <p class="field-error" id="first-name-error"></p>
+          </div>
+          <div class="field">
+            <label for="last-name">Last name</label>
+            <input id="last-name" name="lastName" type="text" autocomplete="family-name" required aria-describedby="last-name-error">
+            <p class="field-error" id="last-name-error"></p>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-error">
+            <p class="field-error" id="email-error"></p>
+          </div>
+          <div class="field">
+            <label for="zip">ZIP code <span class="optional">(optional)</span></label>
+            <input id="zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" pattern="\d{5}" maxlength="5" aria-describedby="zip-error">
+            <p class="field-error" id="zip-error"></p>
+          </div>
+          <div class="field field--wide">
+            <label for="comments">Comments <span class="optional">(optional)</span></label>
+            <textarea id="comments" name="comments" rows="3"></textarea>
+          </div>
+          <label class="check field--wide"><input type="checkbox" name="realtor"><span>I am a Realtor®</span></label>
+          <p class="field-error field--wide" id="form-error" role="alert"></p>
+          <button class="connect-submit field--wide" type="submit">Join the interest list<span class="rv-arrow rv-arrow--gold"><svg aria-hidden="true"><use href="#arrow-e"/></svg></span></button>
+        </form>
+
+        <div class="hp-card connect-success" id="connect-success" hidden>
+          <h3 tabindex="-1">You're on the list</h3>
+          <p>Thank you for your interest in Belmont Estates. We'll send homesite and builder updates to <strong data-email></strong>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-header="light">
+    <div class="footer-top">
+      <a href="#top" class="footer-brand" aria-label="Belmont Estates home"><img src="assets/logo/main-white.svg" alt="Belmont Estates" width="235" height="150" loading="lazy"></a>
+      <div class="footer-statement">
+        <svg class="entry-sketch" viewBox="0 0 240 150" aria-hidden="true"><path pathLength="1" d="M6 142H234M30 142V44H62V142M26 44H66M30 36H62L58 28H34ZM40 28V18M52 28V18M36 18H56M62 70H96M96 62V78M72 70v16a10 10 0 0 0 20 0V70M62 102H226V142M62 112H226M80 102V96H208V102M98 96V86M190 96V86M108 92H180M120 92V88M168 92V88M36 60H56M36 80H56M36 100H56M36 120H56"/></svg>
+        Unbridled. <br><em>Living.</em>
+        <p>Two-acre homesites, custom homes. <br>Fulshear, Texas.</p>
+        <p class="sign-off">Howdy, neighbor. <span>See you out here.</span></p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="#reasons">The homesites ↗</a>
+        <a href="#master-plan">The master plan ↗</a>
+        <a href="#builders">Our builders ↗</a>
+        <a href="https://www.facebook.com/people/Belmont-Estates-Fulshear/61563300521400/" target="_blank" rel="noopener noreferrer">Facebook ↗</a>
+        <a href="https://www.instagram.com/belmont.estates" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+      </nav>
+    </div>
+    <p class="footer-legal">Plans and renderings are conceptual and subject to change without notice. Pricing and availability subject to change without notice. Developed by Highten Capital.</p>
+    <div class="footer-bottom"><span>© 2026 BELMONT ESTATES</span><span>UNBRIDLED LIVING</span><a href="#top">Back to the beginning ↑</a></div>
+  </footer>
+
+  <div class="book-bar" id="book-bar" inert>
+    <p><span class="book-bar-title">Belmont Estates</span><span class="book-bar-price">75 two-acre homesites in <strong>Fulshear</strong></span></p>
+    <a class="book-bar-cta" href="#connect">Join<span class="book-bar-long"> the interest list</span></a>
+  </div>
+  <button class="stop-gauge" id="stop-gauge" type="button" inert>
+    <span class="stop-gauge-text"><span class="for-wheel">Keep scrolling to continue</span><span class="for-touch">Swipe to continue</span></span>
+    <span class="stop-gauge-track" aria-hidden="true"><i></i></span>
+    <svg aria-hidden="true"><use href="#arrow-e"/></svg>
+  </button>
+  <button class="to-top" id="to-top" type="button" aria-label="Back to top" inert><svg viewBox="0 0 48 48" aria-hidden="true"><circle class="to-top-track" cx="24" cy="24" r="22"/><circle class="to-top-ring" cx="24" cy="24" r="22" pathLength="1"/><path d="M24 31V17m-6 6 6-6 6 6"/></svg></button>
+  <div class="scroll-progress" aria-hidden="true"><i></i></div>
+  <div class="cursor-ring" aria-hidden="true"><span></span></div>
+</body>
+</html>
