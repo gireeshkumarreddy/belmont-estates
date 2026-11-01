@@ -17,7 +17,13 @@ let smooth;
 
 /* Smooth, inertial wheel scrolling (mouse and trackpad); touch keeps native momentum. */
 function setupSmoothScroll() {
-  const native = { to: y => scrollTo({ top: y, behavior: reducedMotion.matches ? 'instant' : 'smooth' }) };
+  const native = {
+    to(y) {
+      // A link's glide passes over the map stops; remember where it is headed so they let it through.
+      autoScroll = { y, until: performance.now() + 2500 };
+      scrollTo({ top: y, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
+    }
+  };
   if (!finePointer.matches || reducedMotion.matches) return native;
   let target = scrollY, current = scrollY, last = scrollY, running = false;
   const max = () => document.documentElement.scrollHeight - innerHeight;
@@ -103,10 +109,13 @@ function checkStops(y) {
   if (distance > (finePointer.matches ? vh * .4 : 60)) endHold();
 }
 /* Touch keeps native momentum, so a stop there is a brief halt right at the map. */
+let autoScroll = null;
 function setupTouchStops() {
   let last = scrollY, timer;
   addEventListener('scroll', () => {
     const y = scrollY;
+    if (autoScroll && performance.now() < autoScroll.until && Math.abs(y - autoScroll.y) > 4) { last = y; return; }
+    autoScroll = null;
     for (const stop of stops) {
       if (!stop.armed || !stop.active()) continue;
       const at = stop.y();
@@ -315,13 +324,14 @@ function kindsScene() {
   $$('.kind').forEach(item => {
     const photo = $('.kind-photo', item), letters = $$('.kind-word span', item), meta = $('.kind-meta', item);
     addScene(item, p => {
-      const open = ease(segment(p, .12, .5));
+      const [from, to] = phone.matches ? [.05, .3] : [.12, .5];
+      const open = ease(segment(p, from, to));
       // From a slanted sliver to the full frame.
       const a = lerp(47, 0, open), b = lerp(53, 100, open), c = lerp(51, 100, open), d = lerp(45, 0, open);
       photo.style.clipPath = `polygon(${a}% 0, ${b}% 0, ${c}% 100%, ${d}% 100%)`;
       photo.style.transform = `translate3d(0, ${((.5 - p) * 80).toFixed(1)}px, 0)`;
       letters.forEach((letter, i) => {
-        const shown = easeOut(segment(p, .2 + i * .035, .34 + i * .035));
+        const shown = easeOut(segment(p, from + .08 + i * .035, from + .22 + i * .035));
         letter.style.opacity = (.12 + shown * .88).toFixed(3);
         letter.style.transform = `translate3d(0, ${((1 - shown) * 40).toFixed(1)}px, 0)`;
       });

@@ -60,7 +60,6 @@ figure{margin:0}
 .rv-card{position:relative;height:calc(100vh - 28px);height:calc(100svh - 28px);min-height:560px;border-radius:28px;overflow:hidden;background:var(--juniper);isolation:isolate;color:#fff}
 .rv-photo{position:absolute;inset:0;height:100%;object-position:50% 62%;scale:1.12;transition:scale 2.6s var(--ease-out)}
 .rv-card::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(22,25,27,.45) 0%,rgba(22,25,27,0) 22%,rgba(22,25,27,0) 46%,rgba(22,25,27,.78) 100%)}
-.rv-wordmark{position:absolute;left:50%;top:13%;z-index:1;translate:-50% 0;font:300 clamp(96px,19.5vw,340px)/.8 var(--display);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;color:rgba(255,255,255,.14);-webkit-text-stroke:1px rgba(255,255,255,.4);pointer-events:none;opacity:0;scale:1.06;transition:opacity 1.6s .2s var(--ease-out),scale 2.2s .2s var(--ease-out)}
 .rv-top{position:absolute;inset:0 0 auto;z-index:3;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding:22px 26px;opacity:0;translate:0 -14px;transition:opacity 1s .5s var(--ease-out),translate 1s .5s var(--ease-out)}
 .rv-logo{justify-self:start}
 .rv-logo img{width:clamp(150px,13vw,188px)}
@@ -86,7 +85,6 @@ figure{margin:0}
 .rv-lede{max-width:15rem;text-align:right;font-size:14px;line-height:1.45;color:rgba(255,255,255,.88);opacity:0;transition:opacity 1s .7s}
 .rv-start{background:#fff;color:var(--juniper);opacity:0;translate:0 12px;transition:opacity 1s .8s,translate 1s .8s var(--ease-out),color .35s var(--ease)}
 .hero-ready .rv-photo{scale:1}
-.hero-ready .rv-wordmark{opacity:1;scale:1}
 .hero-ready .rv-top{opacity:1;translate:0 0}
 .hero-ready .rv-line>span{translate:0 0}
 .hero-ready .rv-lede{opacity:1}
@@ -167,8 +165,7 @@ figure{margin:0}
 .dome-art{width:100%;height:100%;overflow:visible;color:var(--ink)}
 .dome-arc-text{font-family:var(--display);font-weight:400;font-size:29px;letter-spacing:5px;text-transform:uppercase;fill:currentColor}
 .dome-side{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:4px;fill:currentColor}
-.dome-arch,.dome-line{fill:none;stroke:currentColor;stroke-width:1.2}
-.dome-arch{stroke:var(--saffron)}
+.dome-line{fill:none;stroke:currentColor;stroke-width:1.2}
 .dome-caption{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:3px;fill:currentColor;opacity:.75}
 
 /* ---------- Reason one: the photograph that grows ---------- */
@@ -418,7 +415,6 @@ figure{margin:0}
   .rv-top{padding:16px}
   .rv-talk{padding:4px 4px 4px 14px;font-size:13px;gap:10px}
   .rv-talk .rv-arrow{width:32px;height:32px}
-  .rv-wordmark{top:18%;font-size:26vw}
   .rv-headline{bottom:24px;padding:0 18px;gap:12px}
   .rv-row{flex-direction:column;align-items:flex-start;gap:12px}
   .rv-row--one{padding-left:0}
@@ -529,7 +525,7 @@ figure{margin:0}
 .static-story .dome-two-inner{position:relative;left:auto;top:auto;opacity:1;transform:none;padding:12vh 24px;margin:0 auto}
 .static-story .hs-dusk .hs-sticky{display:grid}
 @media(prefers-reduced-motion:reduce){
-  .rv-photo,.rv-wordmark,.rv-top,.rv-line>span,.rv-lede,.rv-start{transition:none!important;opacity:1!important;translate:none!important;scale:none!important}
+  .rv-photo,.rv-top,.rv-line>span,.rv-lede,.rv-start{transition:none!important;opacity:1!important;translate:none!important;scale:none!important}
   .reveals-on [data-reveal]{opacity:1!important;translate:none!important;scale:none!important;filter:none!important;clip-path:none!important}
   .entry-sketch path{stroke-dashoffset:0}
   .tour-slide.is-on{animation:none}
@@ -730,3 +726,67 @@ body.plan-on .to-top.show{opacity:0;scale:.6;pointer-events:none}
 }
 .static-story .am{height:auto;min-height:100vh}
 .static-story .plan-ui,.static-story .plan-pins{opacity:1}
+
+/* ---------- Phones: photos framed to read clearly, text off busy images, calmer motion ---------- */
+.dome-title-straight{display:none;font-family:var(--display);font-weight:400;font-size:22px;letter-spacing:3px;text-transform:uppercase;fill:currentColor}
+.am-hint{display:none}
+@media(max-width:800px){
+  /* Hero: the entry rendering at a shape that shows the whole BELMONT ESTATES sign, fading into a dark panel for the headline */
+  .rv-card{--photo-h:calc((100vw - 20px) / 1.05);display:flex;flex-direction:column;height:auto;min-height:0}
+  .rv-photo{position:relative;inset:auto;flex:none;height:auto;aspect-ratio:1.05;object-position:60% 50%}
+  .rv-card::after{background:linear-gradient(180deg,rgba(22,25,27,.5) 0,rgba(22,25,27,0) 96px,rgba(65,70,73,0) calc(var(--photo-h) - 90px),var(--juniper) var(--photo-h))}
+  .rv-headline{position:relative;inset:auto;margin-top:-34px;padding:0 20px 26px}
+
+  /* The tour: each rendering in a sharp square frame, aimed at its subject, instead of a blown-up full-screen crop */
+  .hs-hero .hs-sticky{background:var(--juniper-deep)}
+  .hs-hero-media{inset:auto;left:14px;right:14px;top:max(84px,10svh);aspect-ratio:1;border-radius:20px;overflow:hidden}
+  .hs-hero-media::after{background:linear-gradient(180deg,#1b1e2040 0%,transparent 30%,transparent 72%,#1b1e2050 100%)}
+  .tour-slide:nth-child(1){object-position:62% 50%}
+  .tour-slide:nth-child(2){object-position:50% 62%}
+  .tour-slide:nth-child(3){object-position:56% 50%}
+  .tour-slide:nth-child(4){object-position:58% 50%}
+  .tour-slide:nth-child(5){object-position:56% 50%}
+  .tour-slide.is-on{animation-name:kenburnsSoft}
+  .tour-mini{top:calc(max(84px,10svh) + 100vw - 8px);bottom:auto}
+  .film-grain{display:none}
+
+  /* The dome: a straight title, since the arc grows past the screen edges as the dome covers it */
+  .dome-arc-text{display:none}
+  .dome-title-straight{display:inline}
+
+  /* The concept panel: the brush stroke sits above the words, not through them */
+  .panel-concept{padding-top:24vh}
+  .bloom-concept{top:8vh;left:4vw;rotate:-5deg}
+
+  /* Details: square crops aimed at each subject */
+  .kind-photo{height:auto;aspect-ratio:1}
+  .kind:nth-child(1) .kind-photo img{object-position:64% 50%}
+  .kind:nth-child(2) .kind-photo img{object-position:55% 50%}
+
+  /* Dusk: a darker veil so the white list reads over the photo */
+  .dusk-media::after{background:linear-gradient(180deg,#15181ae6 0%,#15181a99 40%,#15181a55 62%,#15181ad9 100%)}
+
+  /* Area map: the full list of 28 is long on a phone; it appears once a type is chosen */
+  .am[data-filter=all] .am-list{display:none}
+  .am[data-filter=all] .am-hint{display:block;order:5;margin:0;font-size:14px;line-height:1.5;opacity:.75}
+
+  /* The master plan's own controls hold the bottom of the screen */
+  body.plan-on .stop-gauge{opacity:0;pointer-events:none}
+
+  /* The intro window opens over the hero photo, so the greeting sits beneath it */
+  .intro-copy{bottom:auto;top:calc(var(--hole-y,50%) + 7.5 * var(--arch-unit,1vh) + 4vh)}
+
+  /* Lighter work for the phone: no animated grain */
+  .intro::after{animation:none}
+}
+/* Narrow phones: the plan's controls stay on one row, with the source caption just above them */
+@media(max-width:800px){.hs-clouds .clouds-caption{bottom:84px}.hs-clouds.is-exploring .clouds-caption{display:none}}
+@media(max-width:400px){
+  .plan-controls{gap:4px;padding:5px}
+  .plan-view button{padding:8px 11px;font-size:13px}
+  .plan-explore,.plan-done{padding:10px 14px;font-size:13px}
+  .plan-zoom button{min-width:34px;padding:0 8px}
+}
+/* A portrait phone sees the whole plan first; Explore zooms in */
+@media(max-width:800px) and (orientation:portrait){.plan-board{width:100%}}
+@keyframes kenburnsSoft{from{transform:scale(1.05)}to{transform:scale(1)}}

@@ -150,6 +150,7 @@ export function setupAreaMap() {
   }
   function setFilter(id, { keepSelection = false } = {}) {
     filter = id;
+    root.dataset.filter = id;
     $$('.am-chip', filters).forEach(chip => chip.setAttribute('aria-pressed', String(chip.dataset.filter === id)));
     for (const place of PLACES) pins.get(place.id).classList.toggle('is-dim', id !== 'all' && place.type !== id);
     if (!keepSelection && selected && byId(selected).type !== id && id !== 'all') select(null);
@@ -226,6 +227,7 @@ export function setupAreaMap() {
   });
   new ResizeObserver(() => applyView()).observe(stage);
 
+  root.dataset.filter = filter;
   renderList();
   applyView();
   return {

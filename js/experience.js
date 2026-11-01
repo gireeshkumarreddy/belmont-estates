@@ -100,10 +100,16 @@ async function runIntro(tour) {
   // Size the crest from the screen height so the greeting always fits above it,
   // and grow it just far enough to clear every corner of the screen.
   const unit = innerHeight / 90, span = innerWidth / unit;
-  door.setAttribute('viewBox', `${(-span / 2).toFixed(3)} -45 ${span.toFixed(3)} 90`);
+  // On phones the hero photo fills the top of the card, so the crest opens over it rather than
+  // mid-screen (the matching script in index.html places it before the first paint).
+  const holeY = innerWidth <= 800 ? Math.min(innerHeight / 2, 10 + (innerWidth - 20) / 2.1) : innerHeight * 47.5 / 90;
+  door.setAttribute('viewBox', `${(-span / 2).toFixed(3)} ${(2.5 - holeY / unit).toFixed(3)} ${span.toFixed(3)} 90`);
   door.setAttribute('preserveAspectRatio', 'none');
+  door.style.transformOrigin = `50% ${holeY.toFixed(1)}px`;
   intro.style.setProperty('--arch-unit', `${unit}px`);
-  const cover = 1.12 * Math.max(innerWidth / (8.4 * unit), 15);
+  intro.style.setProperty('--hole-y', `${holeY.toFixed(1)}px`);
+  const reach = Math.max(holeY, innerHeight - holeY) / (innerHeight / 2);
+  const cover = 1.12 * Math.max(innerWidth / (8.4 * unit), 15 * reach);
   intro.hidden = false;
   document.body.classList.add('intro-lock');
 

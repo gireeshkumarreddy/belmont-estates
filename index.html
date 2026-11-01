@@ -67,9 +67,14 @@
   <script>
     (function () {
       var door = document.querySelector('#intro .intro-door'), unit = innerHeight / 90, span = innerWidth / unit;
-      door.setAttribute('viewBox', (-span / 2).toFixed(3) + ' -45 ' + span.toFixed(3) + ' 90');
+      // Phones: open over the hero photo at the top of the card (runIntro in experience.js does the same).
+      var holeY = innerWidth <= 800 ? Math.min(innerHeight / 2, 10 + (innerWidth - 20) / 2.1) : innerHeight * 47.5 / 90;
+      door.setAttribute('viewBox', (-span / 2).toFixed(3) + ' ' + (2.5 - holeY / unit).toFixed(3) + ' ' + span.toFixed(3) + ' 90');
       door.setAttribute('preserveAspectRatio', 'none');
-      document.getElementById('intro').style.setProperty('--arch-unit', unit + 'px');
+      door.style.transformOrigin = '50% ' + holeY.toFixed(1) + 'px';
+      var intro = document.getElementById('intro');
+      intro.style.setProperty('--arch-unit', unit + 'px');
+      intro.style.setProperty('--hole-y', holeY.toFixed(1) + 'px');
     })();
   </script>
 
@@ -95,11 +100,10 @@
   <div class="hs-rail" aria-hidden="true"><span>Scroll</span><i><b></b></i></div>
 
   <main>
-    <!-- Opening card: the entry rendering, with the BELMONT wordmark behind the headline -->
+    <!-- Opening card: the entry rendering, with the headline over it (on phones, beneath it) -->
     <section class="rv-hero" id="top" data-header="light" aria-labelledby="rv-title">
       <div class="rv-card">
         <img class="rv-photo" src="assets/img/tour-entry.webp" alt="Rendering of the Belmont Estates main entry: a stone tower and long stone wall above beds of purple and pink flowers" width="1895" height="861" fetchpriority="high">
-        <span class="rv-wordmark" aria-hidden="true">Belmont</span>
         <div class="rv-top">
           <a class="rv-logo" href="#top"><img src="assets/logo/horizontal-white.svg" alt="Belmont Estates" width="188" height="45"></a>
           <nav class="rv-nav" aria-label="Sections">
@@ -167,8 +171,11 @@
           <svg class="dome-art" viewBox="0 0 1000 1000">
             <defs><path id="dome-arc" d="M139.6 247.6A440 440 0 0 1 860.4 247.6"/></defs>
             <text class="dome-arc-text"><textPath href="#dome-arc" startOffset="50%" text-anchor="middle">Three reasons to choose Belmont</textPath></text>
+            <!-- On phones the arc grows past the screen edges as the dome covers it, so a straight title reads instead -->
+            <text class="dome-title-straight" x="500" y="262" text-anchor="middle">Three reasons</text>
+            <text class="dome-title-straight" x="500" y="298" text-anchor="middle">to choose Belmont</text>
             <text class="dome-side" x="404" y="364" text-anchor="end">FULSHEAR</text>
-            <path class="dome-arch" d="M500 348C504 348 507.6 349.1 509.4 350.42Q510 350.86 510 351.74V366.26Q510 367.14 509.4 367.58C507.6 368.9 504 370 500 370C496 370 492.4 368.9 490.6 367.58Q490 367.14 490 366.26V351.74Q490 350.86 490.6 350.42C492.4 349.1 496 348 500 348Z"/>
+            <image class="dome-crest" href="assets/logo/icon.svg" x="488" y="346" width="24" height="26"/>
             <text class="dome-side" x="596" y="364">TEXAS</text>
             <path class="dome-line" d="M500 392V560"/>
             <text class="dome-caption" x="500" y="600" text-anchor="middle">A DIFFERENT BREED OF LIVING,</text>
@@ -250,6 +257,7 @@
                 <h2 class="map-title display" id="area-title"><span>Everything</span><em class="script">close</em><span>to home</span></h2>
                 <p class="am-lede">Schools, groceries, hospitals and weekend plans, all a short drive from Bois D'Arc Lane. Pick a type of place, then a place to see where it sits.</p>
                 <div class="am-filters" id="am-filters" role="toolbar" aria-label="Show places by type"></div>
+                <p class="am-hint">Pick a type of place to list it here, or tap a number on the map.</p>
                 <ul class="am-list" id="am-list" aria-label="Places on the map"></ul>
                 <a class="hs-link" href="#connect">Join the interest list</a>
               </div>
