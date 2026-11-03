@@ -1,0 +1,543 @@
+{
+ "note": "Everything here comes from the Belmont Estates brand kit. The site and the AI concierge both read this file.",
+ "facts": [
+  "Belmont Estates is an acreage community in Fulshear, Texas, that promises a different breed of living with beautiful custom homes and space to roam.",
+  "The 227-acre Belmont Estates will be home to just 75 residences on 2-acre properties, and the bijou setting will make it easy to know your neighbors.",
+  "Nestled in Fulshear, the community offers an expansive 2-acre homesite for just 75 families across 227 acres, designed for those seeking space, luxury and the freedom to roam.",
+  "The Belmont Estates materials said new homes were slated to begin mid-2025. Visitors should register for the latest timing.",
+  "With 2 acres, buyers can design the home of their dreams, and the builders are ready to help. The large homesites can accommodate a spacious single-story home.",
+  "The builders were selected for their distinctive design approach and unrivaled quality construction, and will deliver stately residences that create a gracious lifestyle in Belmont Estates. Whether buyers envision a spacious single-story or a stately estate, the builders are known for their quality and creativity.",
+  "The builders are William David Homes, Toll Brothers, Partners in Building and Autograph Homes.",
+  "The masterplan (Master Plan Update, 2/25) shows Phase 1 homesites assigned to each builder; the remaining homesites are marked Future Development. It is a conceptual rendering, subject to change without notice.",
+  "Belmont Estates is off Bois D’Arc Lane and near Bessie Creek. Down the stretch is FM 1093 and all the conveniences fast-growing Fulshear has to offer: the best of both worlds.",
+  "With a 2-acre homesite, residents can create their own wonderland, with space for a pool, play yard, garden and more.",
+  "In the community there are trails for walking and jogging, and parks and green space to meet neighbors and enjoy Mother Nature’s handiwork.",
+  "Belmont Estates is served by Lamar CISD, a progressive, growing school district unafraid to challenge students to explore, learn and grow, pairing rigorous curriculums with an array of extracurricular activities at all levels.",
+  "The schools listed for Belmont Estates are Huggins Elementary School, Roberts Middle School, Leaman Junior High School and Fulshear High School.",
+  "The developer is Highten Capital. Led by a team of seasoned real estate professionals, Highten Capital launched in 2018 with the idea to build communities rooted in connection to family, neighbors and nature.",
+  "Highten Capital spent several years acquiring land throughout Texas for communities that deliver beautiful homes, amenities, wide open spaces and an active calendar of events designed to forge friendships among neighbors.",
+  "Pricing and availability are subject to change without notice.",
+  "The area attractions map is not to scale."
+ ],
+ "voice": "Home is where your authentic self lives, a place where you can find joy in things small and large. Unfettered by worries, your thoroughbred spirit soars as you realize the possibilities surrounding you. It’s life to the fullest, today, tomorrow and every day.",
+ "builders": [
+  {
+   "id": "wdh",
+   "name": "William David Homes",
+   "logo": "img/logo-william-david.webp",
+   "w": 1500,
+   "h": 311
+  },
+  {
+   "id": "toll",
+   "name": "Toll Brothers",
+   "logo": "img/logo-toll-brothers.svg",
+   "w": 165,
+   "h": 75
+  },
+  {
+   "id": "pib",
+   "name": "Partners in Building",
+   "logo": "img/logo-partners-in-building.webp",
+   "w": 792,
+   "h": 262
+  },
+  {
+   "id": "autograph",
+   "name": "Autograph Homes",
+   "logo": "img/logo-autograph.webp",
+   "w": 1080,
+   "h": 679
+  }
+ ],
+ "builderColors": {
+  "wdh": "#C7B26D",
+  "toll": "#C38B51",
+  "pib": "#7C5041",
+  "autograph": "#43516C",
+  "": "#FCF9F2"
+ },
+ "categories": [
+  {
+   "id": "Schools",
+   "color": "#C9B46E"
+  },
+  {
+   "id": "Medical",
+   "color": "#9AB6AE"
+  },
+  {
+   "id": "Entertainment",
+   "color": "#75807E"
+  },
+  {
+   "id": "Grocery",
+   "color": "#8C612B"
+  },
+  {
+   "id": "Hardware",
+   "color": "#D8AD7D"
+  },
+  {
+   "id": "Daycares",
+   "color": "#6B9087"
+  },
+  {
+   "id": "Museums & Parks",
+   "color": "#456A63"
+  },
+  {
+   "id": "Shopping",
+   "color": "#33405F"
+  }
+ ],
+ "places": [
+  [
+   1,
+   "Huggins Elementary",
+   "Schools"
+  ],
+  [
+   2,
+   "Roberts Middle School",
+   "Schools"
+  ],
+  [
+   3,
+   "Dean Leaman Junior High",
+   "Schools"
+  ],
+  [
+   4,
+   "Fulshear High School",
+   "Schools"
+  ],
+  [
+   5,
+   "Houston Methodist West Hospital",
+   "Medical"
+  ],
+  [
+   6,
+   "Memorial Hermann Katy Hospital",
+   "Medical"
+  ],
+  [
+   7,
+   "Kelsey-Seybold Clinic",
+   "Medical"
+  ],
+  [
+   8,
+   "LaCenterra at Cinco Ranch",
+   "Entertainment"
+  ],
+  [
+   9,
+   "Cinemark 19 & XD",
+   "Entertainment"
+  ],
+  [
+   10,
+   "Typhoon Texas Waterpark",
+   "Entertainment"
+  ],
+  [
+   11,
+   "H-E-B",
+   "Grocery"
+  ],
+  [
+   12,
+   "Kroger",
+   "Grocery"
+  ],
+  [
+   13,
+   "Walmart Super Center",
+   "Grocery"
+  ],
+  [
+   14,
+   "Ace Hardware",
+   "Hardware"
+  ],
+  [
+   15,
+   "The Home Depot",
+   "Hardware"
+  ],
+  [
+   16,
+   "Lowe’s Home Improvement",
+   "Hardware"
+  ],
+  [
+   17,
+   "Kiddie Academy of Fulshear",
+   "Daycares"
+  ],
+  [
+   18,
+   "The Goddard School",
+   "Daycares"
+  ],
+  [
+   19,
+   "Fulshear Early Learning Center",
+   "Daycares"
+  ],
+  [
+   20,
+   "Fort Bend Museum",
+   "Museums & Parks"
+  ],
+  [
+   21,
+   "George Ranch Historical Park",
+   "Museums & Parks"
+  ],
+  [
+   22,
+   "Katy Heritage Museum",
+   "Museums & Parks"
+  ],
+  [
+   23,
+   "Jones Creek Ranch Park",
+   "Museums & Parks"
+  ],
+  [
+   24,
+   "LaCenterra at Cinco Ranch",
+   "Shopping"
+  ],
+  [
+   25,
+   "The Shops at Bella Terra",
+   "Shopping"
+  ],
+  [
+   26,
+   "Katy Mills Mall",
+   "Shopping"
+  ],
+  [
+   27,
+   "Costco",
+   "Shopping"
+  ],
+  [
+   28,
+   "Fulshear Farmer’s Market",
+   "Shopping"
+  ]
+ ],
+ "roads": [
+  "I-10",
+  "99",
+  "6",
+  "1093",
+  "359",
+  "1463",
+  "Westpark Tollway",
+  "Texas Heritage Parkway",
+  "Bois D’Arc Lane",
+  "Charger Way"
+ ],
+ "cats": [
+  "Community & Acreage Living",
+  "Homes & Builders",
+  "Lifestyle & Outdoors",
+  "Location & Fulshear",
+  "Schools & Education",
+  "The Developer",
+  "Buying & Updates"
+ ],
+ "faq": [
+  [
+   0,
+   "What makes Belmont Estates different?",
+   "Belmont Estates is an acreage community in Fulshear that promises a different breed of living, with beautiful custom homes and space to roam. Let life run wild."
+  ],
+  [
+   0,
+   "How large are the homesites?",
+   "Every homesite at Belmont Estates is an expansive 2-acre property, with room to design the home of your dreams."
+  ],
+  [
+   0,
+   "How many homes will Belmont Estates have?",
+   "The 227-acre Belmont Estates will be home to just 75 residences on 2-acre properties, and the bijou setting will make it easy to know your neighbors."
+  ],
+  [
+   0,
+   "Is the masterplan final?",
+   "No. The masterplan is a conceptual rendering and is subject to change without notice."
+  ],
+  [
+   1,
+   "Who are the builders at Belmont Estates?",
+   "Our family of builders is William David Homes, Toll Brothers, Partners in Building and Autograph Homes."
+  ],
+  [
+   1,
+   "Can I build a single-story home?",
+   "Yes. Want a spacious single-story home? Our large homesites can accommodate. Whether you envision a spacious single-story or a stately estate, our builders are ready to help."
+  ],
+  [
+   1,
+   "What can I expect from the builders?",
+   "Selected for their distinctive design approach and unrivaled quality construction, our family of builders will deliver stately residences that will create a gracious lifestyle in Belmont Estates."
+  ],
+  [
+   1,
+   "Which builder builds on which homesite?",
+   "The masterplan shows Phase 1 homesites assigned to William David Homes, Toll Brothers, Partners in Building and Autograph Homes, with the rest marked Future Development. See them on the interactive site map. The plan is conceptual and subject to change."
+  ],
+  [
+   2,
+   "What is there to do in the community?",
+   "When you want to venture out into the community, you’ll find trails for walking and jogging, and parks and green space to meet your neighbors and enjoy Mother Nature’s handiwork."
+  ],
+  [
+   2,
+   "What can I do with a 2-acre homesite?",
+   "With your expansive 2-acre homesite, you can create your own wonderland, with space for a pool, play yard, garden and more."
+  ],
+  [
+   3,
+   "Where is Belmont Estates?",
+   "Belmont Estates is in Fulshear, Texas, off Bois D’Arc Lane and near Bessie Creek. Down the stretch from your peaceful enclave is FM 1093 and all the conveniences fast-growing Fulshear has to offer."
+  ],
+  [
+   3,
+   "What is nearby?",
+   "The Belmont Estates area map includes schools, daycares, medical centers, grocery stores, hardware stores, shopping, entertainment, and museums and parks, from LaCenterra at Cinco Ranch to George Ranch Historical Park."
+  ],
+  [
+   3,
+   "Which hospitals and clinics are nearby?",
+   "The area map includes Houston Methodist West Hospital, Memorial Hermann Katy Hospital and Kelsey-Seybold Clinic."
+  ],
+  [
+   3,
+   "Where can I shop and run errands?",
+   "The area map includes LaCenterra at Cinco Ranch, The Shops at Bella Terra, Katy Mills Mall, Costco and the Fulshear Farmer’s Market, plus H-E-B, Kroger and Walmart Super Center, and Ace Hardware, The Home Depot and Lowe’s Home Improvement."
+  ],
+  [
+   3,
+   "What is there for families nearby?",
+   "Nearby on the area map are Cinemark 19 & XD, Typhoon Texas Waterpark, LaCenterra at Cinco Ranch, the Fort Bend Museum, George Ranch Historical Park, the Katy Heritage Museum and Jones Creek Ranch Park, plus daycares including Kiddie Academy of Fulshear, The Goddard School and Fulshear Early Learning Center."
+  ],
+  [
+   4,
+   "Which school district serves Belmont Estates?",
+   "Belmont Estates is served by Lamar CISD, a progressive, growing school district unafraid to challenge students to explore, learn and grow."
+  ],
+  [
+   4,
+   "Which schools will students attend?",
+   "The schools listed for Belmont Estates are Huggins Elementary School, Roberts Middle School, Leaman Junior High School and Fulshear High School."
+  ],
+  [
+   5,
+   "Who is developing Belmont Estates?",
+   "Highten Capital. Led by a team of seasoned real estate professionals, Highten Capital launched in 2018 with the idea to build communities rooted in connection to family, neighbors and nature."
+  ],
+  [
+   6,
+   "How do I learn more or get updates?",
+   "Register your interest on this site to stay connected, and we’ll be in touch. We can’t wait to help you build your dream home in this beautiful community!"
+  ],
+  [
+   6,
+   "How much are homesites?",
+   "Pricing hasn’t been published on this site. Register your interest to hear more. Pricing and availability are subject to change without notice."
+  ]
+ ],
+ "amenities": [
+  {
+   "id": "ponds",
+   "name": "Ponds",
+   "icon": "water",
+   "status": "On the masterplan",
+   "text": "Two ponds sit along the north edge of the Belmont Estates masterplan, with a trail around the larger one.",
+   "at": [
+    [
+     430,
+     62
+    ],
+    [
+     640,
+     62
+    ]
+   ]
+  },
+  {
+   "id": "trails",
+   "name": "Trails for walking & jogging",
+   "icon": "trail",
+   "status": "In the community",
+   "text": "Venture out into the community on trails made for walking and jogging. On the masterplan, a trail loops the north pond and follows the east green space.",
+   "at": [
+    [
+     596,
+     150
+    ]
+   ]
+  },
+  {
+   "id": "green",
+   "name": "Parks & green space",
+   "icon": "park",
+   "status": "In the community",
+   "text": "Parks and green space to meet your neighbors and enjoy Mother Nature’s handiwork.",
+   "at": [
+    [
+     668,
+     255
+    ]
+   ]
+  },
+  {
+   "id": "streets",
+   "name": "Tree-lined streets",
+   "icon": "tree",
+   "status": "On the masterplan",
+   "text": "The masterplan shows trees along every street in the community.",
+   "at": []
+  },
+  {
+   "id": "entries",
+   "name": "Two entries",
+   "icon": "gate",
+   "status": "On the masterplan",
+   "text": "The masterplan shows two street entries on the west side of the community.",
+   "at": [
+    [
+     10,
+     122
+    ],
+    [
+     10,
+     330
+    ]
+   ]
+  }
+ ],
+ "news": [
+  {
+   "cat": "Announcements",
+   "date": "November 2026",
+   "title": "Every homesite on one interactive map",
+   "img": "img/site-plan.webp",
+   "href": "#community/explore",
+   "cta": "Take a look",
+   "text": "The new site map shows all 74 homesites on the Belmont Estates masterplan, with Phase 1 homesites in their builder’s colour. Select any homesite for its details."
+  },
+  {
+   "cat": "Homes",
+   "date": "November 2026",
+   "title": "Meet our family of builders",
+   "img": "img/home-interior.webp",
+   "href": "#homes/builders",
+   "cta": "Meet the builders",
+   "text": "William David Homes, Toll Brothers, Partners in Building and Autograph Homes, selected for their distinctive design approach and unrivaled quality construction."
+  },
+  {
+   "cat": "Schools",
+   "date": "November 2026",
+   "title": "Lamar CISD campuses on the school map",
+   "img": "img/schools-classroom.webp",
+   "href": "#schools/school-map",
+   "cta": "See the school map",
+   "text": "Huggins Elementary, Roberts Middle School, Leaman Junior High and Fulshear High School, on one map with Belmont Estates."
+  },
+  {
+   "cat": "Lifestyle",
+   "date": "November 2026",
+   "title": "So much, so close",
+   "img": "img/moments-garden.webp",
+   "href": "#relocation/area-map",
+   "cta": "Open the area map",
+   "text": "All 28 places from the area attractions map, from H-E-B and Kroger to George Ranch Historical Park. Filter by category and select a place."
+  },
+  {
+   "cat": "Announcements",
+   "date": "Coming soon",
+   "title": "Builder announcements",
+   "img": "img/dream-home.webp",
+   "href": "#contact/get-in-touch",
+   "cta": "Get notified",
+   "soon": true,
+   "text": "Home designs and news from our builders will be posted here as they are released. Register your interest to hear first."
+  },
+  {
+   "cat": "Lifestyle",
+   "date": "Coming soon",
+   "title": "Life in the community",
+   "img": "img/life-running.webp",
+   "href": "#contact/get-in-touch",
+   "cta": "Get notified",
+   "soon": true,
+   "text": "Updates on the trails, parks and green space as Belmont Estates takes shape. Register your interest to hear first."
+  }
+ ],
+ "photos": [
+  [
+   "img/schools-classroom.webp",
+   "Learning together",
+   "Learning",
+   "A teacher helps a group of students working at a classroom table"
+  ],
+  [
+   "img/life-sprinkler.webp",
+   "Summer afternoons",
+   "Outdoors",
+   "A girl laughs and throws up her arms under a garden sprinkler"
+  ],
+  [
+   "img/life-running.webp",
+   "Room to run",
+   "Outdoors",
+   "A family running hand in hand through a meadow"
+  ],
+  [
+   "img/moments-garden.webp",
+   "Growing things",
+   "Family",
+   "Grandparents and a young girl planting lavender in the garden"
+  ],
+  [
+   "img/intro-family.webp",
+   "Evening light",
+   "Family",
+   "A father carries his laughing daughter on his back in the evening sun"
+  ],
+  [
+   "img/life-grandpa.webp",
+   "Family time",
+   "Family",
+   "A grandfather hugs his two smiling grandsons"
+  ],
+  [
+   "img/moments-picnic.webp",
+   "Backyard nights",
+   "Outdoors",
+   "Floor cushions and string lights on a backyard lawn"
+  ],
+  [
+   "img/dream-home.webp",
+   "Home together",
+   "Family",
+   "A mother and her two sons at home"
+  ],
+  [
+   "img/life-lupines.webp",
+   "Wildflowers",
+   "Outdoors",
+   "Purple lupines in a green meadow"
+  ]
+ ]
+}

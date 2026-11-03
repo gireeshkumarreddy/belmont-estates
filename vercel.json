@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/concierge.js": {
+      "maxDuration": 30,
+      "includeFiles": "{content/knowledge.json,js/plan-data.js}"
+    }
+  }
+}
