@@ -29,21 +29,117 @@
     park: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l5 7h-3l4 6H6l4-6H7z"/><path d="M12 16v5"/></svg>',
     tree: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="9" r="3.5"/><circle cx="16" cy="9" r="3.5"/><path d="M8 12.5V20M16 12.5V20M3 20h18"/></svg>',
     gate: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V8l4-3 4 3v12M12 20V8l4-3 4 3v12M2 20h20"/></svg>',
-    home: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-5h4v5"/></svg>'
+    home: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-5h4v5"/></svg>',
+    expand: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>'
   };
   function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); } catch (x) { return null; } }
+
+  // ================= motion: everything reveals as it scrolls in =================
+  // Images rise into view bottom to top, headings rise word by word with the script line written in,
+  // copy and cards fade up in turn, brushstrokes sweep across and numbers count up. Off for reduced motion.
+  var M = !reduce && 'IntersectionObserver' in window && !!window.CSS && CSS.supports('clip-path', 'inset(0 0 0 0)');
+  if (M) document.documentElement.classList.add('motion');
+  var KINDS = [
+    ['split', '.h1, .h2, .h3, .grace-h > span, .crafted-h, .dev-h, .lg-h, .cta-band-h, .grace-card-h'],
+    ['write', '.script, .poster-legend-h'],
+    ['clip', '.tile, .rel-tile, .photo-card, .collage figure, .pt-pair figure, .grace-row figure, .arr-pics figure, .dg-thumb, .gal, .vid-poster, .story, .fu-map, .poster-body, .loc-map .am-stage, .inc-map img, .news-card img, .am-card img, .step img, .lg-photo, .crest, .bcard-top'],
+    ['sweep', '.deco'],
+    ['fade', '.ghost, .dev-year'],
+    ['up', '.eyebrow, .lede, .pt-copy > p, .btns, .pt-tabs, .note, .note-pill, .note-card, .chips, .follow, .pt-stats li, .stats li, .dark-stats li, .ticks li, .roads li, .logos li, .logo-strip > p, .statement-sub, .mb-card, .news-card, .am-card, .bcard, .know, .tba, .near, .place-card, .step, .cat, .acc details, .fmx, .areamap, .schoolmap, .first, .lead-form, .inc-card, .fu-card, .nl-copy > p, .nl-form, .nl-side figcaption, .foot-top > *, .foot-mark, .foot-bar, .cols-copy p, .qa-cols p, .tag, .dev-meta, .dev-quote, .dg-dev .btn, .dg-top p, .dg-statement .round-btn, .vid-t, .vid-d, .vid-list, .crafted-card, .grace-card, .collage-card, .arr-card, .cta-band, .poster-top, .poster-logo, .poster-foot, .lg p, .lg .link-arrow, .lg-list li, .am-chips button, .opener p, .arrival p, .dev-sec p, .glance-lead, .head .link-arrow, .faq-tools, .grace-top .lede, .grace-h img, .story-nav']
+  ];
+  var COUNT = '.pt-stats b, .stats b, .collage-card b, .dark-stats b';
+  var NOT_IN = '.hero, .chat, .fmx-body, .fmx-bar, .fmx-sub, .menu, .dock, .viewer, .ask-tip, .tour, .story-track, .vid-list, .poster-body';
+  var io = M && new IntersectionObserver(function (es) {
+    es.forEach(function (x) {
+      var t = x.target;
+      if (x.isIntersecting) { if (!t.classList.contains('in')) { t.classList.add('in'); countIn(t); } }
+      else if (!t.offsetParent && t.classList.contains('in')) t.classList.remove('in'); // its page was hidden: play again next visit
+    });
+  }, { rootMargin: '0px 0px -6% 0px', threshold: 0.12 });
+  function splitWords(el) {
+    var i = 0;
+    Array.prototype.slice.call(el.childNodes).forEach(function (n) {
+      if (n.nodeType === 3) {
+        var frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(function (w) {
+          if (!w) return;
+          if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(' ')); return; }
+          var o = document.createElement('span'); o.className = 'w'; o.innerHTML = '<span style="--wi:' + (i++) + '">' + esc(w) + '</span>'; frag.appendChild(o);
+        });
+        n.parentNode.replaceChild(frag, n);
+      } else if (n.nodeName === 'EM') n.style.setProperty('--wi', i++);
+    });
+  }
+  function scan(root) {
+    if (!M) return;
+    var seen = new Map();
+    KINDS.forEach(function (k) {
+      $$(k[1], root).forEach(function (el) {
+        if (el.hasAttribute('data-m') || (el.parentElement && el.parentElement.closest(NOT_IN + ', [data-m="clip"]'))) return;
+        el.setAttribute('data-m', k[0]);
+        if (k[0] === 'split') splitWords(el);
+        var key = el.parentElement, n = seen.get(key) || 0; seen.set(key, n + 1);
+        if (n) el.style.setProperty('--d', (Math.min(n, 8) * 0.08).toFixed(2) + 's');
+        // A fully clipped element never counts as on screen, so photos and brushstrokes are checked by position
+        if (k[0] === 'clip' || k[0] === 'sweep' || k[0] === 'write') clipped.push(el); else io.observe(el);
+      });
+    });
+    requestAnimationFrame(checkClipped);
+  }
+  var clipped = [];
+  function checkClipped() {
+    var vh = innerHeight, show = [], hide = [];
+    clipped.forEach(function (el) {
+      if (!el.offsetParent) { if (el.classList.contains('in')) hide.push(el); return; }
+      if (el.classList.contains('in')) return;
+      var r = el.getBoundingClientRect();
+      if (r.top < vh * 0.92 && r.bottom > vh * 0.04 && r.width) show.push(el);
+    });
+    hide.forEach(function (el) { el.classList.remove('in'); });
+    show.forEach(function (el) { el.classList.add('in'); });
+  }
+  function countUp(b, delay) {
+    // The number to reach is kept from the first run, so a count that starts again mid-way still ends right
+    var src = b.getAttribute('data-to') || b.textContent.trim(), m = /^(\d[\d,]*)(.*)$/.exec(src); if (!m) return;
+    b.setAttribute('data-to', src);
+    var to = +m[1].replace(/,/g, ''), suf = m[2], t0 = 0, run = (+b.getAttribute('data-run') || 0) + 1;
+    b.setAttribute('data-run', run); b.textContent = '0' + suf;
+    setTimeout(function () { requestAnimationFrame(function tick(t) { if (+b.getAttribute('data-run') !== run) return; if (!t0) t0 = t; var k = Math.min(1, (t - t0) / 1500), e = 1 - Math.pow(1 - k, 3); b.textContent = Math.round(to * e).toLocaleString('en-US') + suf; if (k < 1) requestAnimationFrame(tick); }); }, delay || 0);
+  }
+  function countIn(el) { $$(COUNT, el).forEach(function (b) { countUp(b, 200); }); }
+
+  // the page curtain: a Juniper panel with the crest covers the move from one page to the next
+  var curtain = document.createElement('div');
+  curtain.className = 'curtain'; curtain.setAttribute('aria-hidden', 'true'); curtain.innerHTML = '<img src="img/logo-icon.svg" alt="">';
+  document.body.appendChild(curtain);
+  var curtainBusy = false;
+  // reading progress along the top of the screen
+  var bar = document.createElement('div'); bar.className = 'progress'; bar.setAttribute('aria-hidden', 'true'); bar.innerHTML = '<i></i>';
+  document.body.appendChild(bar);
 
   // ================= pages =================
   var views = {}, current = '', onRoute = [];
   var ALIAS = { fulshear: 'relocation', 'site-map': 'explore', homesites: 'available', dev: 'developer', campuses: 'school-map', 'builders-sec': 'builders' };
   $$('.view').forEach(function (v) { views[v.getAttribute('data-page')] = v; });
-  function route() {
+  function route(now) {
     var h = decodeURIComponent(location.hash.replace(/^#/, '')), parts = h.split('/'), page = ALIAS[parts[0]] || parts[0], anchor = ALIAS[parts[1]] || parts[1], arg = parts[2];
     if (!views[page]) {
       var el = page && document.getElementById(page), v = el && el.closest('.view');
       if (v) { arg = anchor; anchor = page; page = v.getAttribute('data-page'); } else page = 'home';
     }
     var changed = page !== current;
+    // Moving to another page: the curtain rises over this one, the page changes behind it, then it lifts away
+    if (changed && current && M && now !== true) {
+      if (curtainBusy) return;
+      curtainBusy = true; setMenu(false);
+      curtain.classList.remove('leave'); curtain.classList.add('cover');
+      setTimeout(function () {
+        curtainBusy = false; route(true);
+        curtain.classList.remove('cover'); curtain.classList.add('leave');
+        setTimeout(function () { if (!curtainBusy) curtain.classList.remove('leave'); }, 800);
+      }, 600);
+      return;
+    }
     if (changed) {
       Object.keys(views).forEach(function (k) { views[k].hidden = k !== page; });
       current = page;
@@ -61,7 +157,7 @@
     onRoute.forEach(function (f) { f(page, anchor, arg); });
   }
   function go(hash) { if (location.hash === hash) route(); else location.hash = hash; }
-  window.addEventListener('hashchange', route);
+  window.addEventListener('hashchange', function () { route(); });
   document.addEventListener('click', function (e) {
     var a = e.target.closest('a[href^="#"]');
     if (a && a.getAttribute('href') === location.hash) { e.preventDefault(); route(); }
@@ -79,8 +175,13 @@
   if (store('be-proto') === 1) proto.hidden = true;
   $('[data-hide-proto]').addEventListener('click', function () { proto.hidden = true; store('be-proto', 1); });
   var menuBtn = $('.top-menu'), menu = $('#menu');
-  function setMenu(open) { menu.hidden = !open; menuBtn.setAttribute('aria-expanded', open); document.body.classList.toggle('menu-open', open); }
-  menuBtn.addEventListener('click', function () { setMenu(menu.hidden); if (!menu.hidden) $('a', menu).focus(); });
+  var menuT;
+  function setMenu(open) {
+    menuBtn.setAttribute('aria-expanded', open); document.body.classList.toggle('menu-open', open); clearTimeout(menuT);
+    if (open) { menu.hidden = false; requestAnimationFrame(function () { requestAnimationFrame(function () { menu.classList.add('open'); }); }); }
+    else if (!menu.hidden) { menu.classList.remove('open'); menuT = setTimeout(function () { menu.hidden = true; }, M ? 650 : 0); }
+  }
+  menuBtn.addEventListener('click', function () { var o = menu.hidden || !menu.classList.contains('open'); setMenu(o); if (o) $('a', menu).focus(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { setMenu(false); menuBtn.focus(); } });
   document.addEventListener('click', function (e) { if (!menu.hidden && !e.target.closest('#menu, .top-menu')) setMenu(false); });
 
@@ -156,6 +257,83 @@
     el.innerHTML = '<div>' + row + row + '</div><div>' + row + row + '</div>';
   });
 
+
+  // ================= hero intro, scroll effects and hands-on touches =================
+  var hero = $('.hero'), heroFirst = true;
+  if (M) {
+    var hw = $('.hero-h span');
+    hw.innerHTML = hw.textContent.split('').map(function (c, i) { return '<span class="ch" style="--ci:' + i + '">' + esc(c) + '</span>'; }).join('');
+    $$('.hero-stats li').forEach(function (li, i) { li.style.setProperty('--i', i); });
+  }
+  // The photo rises in, UNBRIDLED rises letter by letter, "Living" is written in, then the copy and numbers follow
+  var heroPlaying = false;
+  function playHero() {
+    if (!M || heroPlaying) return;
+    heroPlaying = true; hero.classList.remove('ready'); void hero.offsetWidth;
+    var start = function () { requestAnimationFrame(function () { heroPlaying = false; hero.classList.add('ready'); $$('.hero-stats b').forEach(function (b, i) { countUp(b, 1900 + i * 140); }); }); };
+    var img = $('.hero-img');
+    if (heroFirst && img.decode) img.decode().then(start, start); else start();
+    heroFirst = false;
+  }
+  onRoute.push(function (page) { if (page === 'home') { if (!hero.classList.contains('ready')) playHero(); } else hero.classList.remove('ready'); });
+  if (M) {
+    requestAnimationFrame(function () { top.classList.add('shown'); });
+    setTimeout(function () { $('#dock').classList.add('shown'); $('.ask').classList.add('shown'); }, 1700);
+  }
+
+  // Scroll: the progress line, gentle parallax on the script words and brushstrokes, and a ticker that speeds up with you
+  var PAR = $$('.ghost, .dev-year, .deco, .hero-img'), mq = [], mqRate = 1, lastS = scrollY, ticking = false;
+  function frame() {
+    ticking = false;
+    var y = scrollY, dy = y - lastS, vh = innerHeight, max = document.documentElement.scrollHeight - vh; lastS = y;
+    bar.style.setProperty('--p', max > 0 ? Math.min(1, y / max).toFixed(4) : '0');
+    if (!M) return;
+    checkClipped();
+    PAR.forEach(function (el) {
+      if (!el.offsetParent) return;
+      var r = el.getBoundingClientRect(); if (r.bottom < -300 || r.top > vh + 300) return;
+      if (el.classList.contains('hero-img')) { el.style.translate = '0 ' + (Math.min(y, vh) * 0.25).toFixed(1) + 'px'; return; }
+      var k = (r.top + r.height / 2 - vh / 2) / vh;
+      el.style.translate = el.classList.contains('deco') ? '0 ' + (k * -70).toFixed(1) + 'px' : (k * -90).toFixed(1) + 'px 0';
+    });
+    if (!mq.length) mq = $$('.mq-track').map(function (t) { return t.getAnimations ? t.getAnimations()[0] : null; }).filter(Boolean);
+    mqRate = Math.max(1 + Math.min(5, Math.abs(dy) / 10), 1 + (mqRate - 1) * 0.9);
+    mq.forEach(function (a) { a.playbackRate = mqRate; });
+    if (mqRate > 1.02) { ticking = true; requestAnimationFrame(frame); }
+  }
+  addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+  addEventListener('resize', function () { requestAnimationFrame(frame); });
+  onRoute.push(function () { requestAnimationFrame(frame); setTimeout(frame, 120); });
+
+  // Cards and photos lean toward the pointer with a soft light; round buttons are pulled toward it
+  var TILT = '.tile, .rel-tile, .photo-card, .mb-card, .gal, .dg-thumb', MAG = '.round-btn, .ask', tiltEl = null, magEl = null;
+  if (M && matchMedia('(hover: hover)').matches) {
+    document.addEventListener('pointermove', function (e) {
+      var t = e.target.closest ? e.target.closest(TILT) : null;
+      if (tiltEl && tiltEl !== t) { tiltEl.style.transform = ''; tiltEl = null; }
+      if (t) {
+        var r = t.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, yy = (e.clientY - r.top) / r.height; tiltEl = t;
+        t.style.transform = 'perspective(1000px) rotateX(' + ((.5 - yy) * 5).toFixed(2) + 'deg) rotateY(' + ((x - .5) * 6).toFixed(2) + 'deg)';
+        t.style.setProperty('--mx', (x * 100).toFixed(1) + '%'); t.style.setProperty('--my', (yy * 100).toFixed(1) + '%');
+      }
+      var m = e.target.closest ? e.target.closest(MAG) : null;
+      if (magEl && magEl !== m) { magEl.style.translate = ''; magEl = null; }
+      if (m) { var q = m.getBoundingClientRect(); magEl = m; m.style.translate = ((e.clientX - q.left - q.width / 2) * .2).toFixed(1) + 'px ' + ((e.clientY - q.top - q.height / 2) * .3).toFixed(1) + 'px'; }
+    }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', function () { if (tiltEl) tiltEl.style.transform = ''; if (magEl) magEl.style.translate = ''; tiltEl = magEl = null; });
+  }
+
+  // Every photo in a figure can be seen larger
+  $$('.collage figure, .pt-pair figure, .grace-row figure, .arr-pics figure').forEach(function (f) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'xl'; b.setAttribute('aria-label', 'See this photo larger'); b.innerHTML = ICON.expand; f.appendChild(b);
+  });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.xl'); if (!b) return;
+    var f = b.closest('figure'), img = $('img', f), cap = $('figcaption', f);
+    openHTML(img.alt, '<figure class="lb"><img src="' + (img.currentSrc || img.src) + '" alt="' + esc(img.alt) + '"><figcaption><b>' + esc(cap ? cap.textContent : img.alt) + '</b></figcaption></figure>');
+  });
+  scan(document);
+
   // ================= load the kit content, then build everything that uses it =================
   // Route again once it's built: the page has grown, and links like #community/explore/12 need the site map
   route();
@@ -201,9 +379,17 @@
     if (tabs && srow) {
       tabs.innerHTML = STEPS.map(function (s, i) { return '<button type="button" role="tab" aria-selected="' + (i === 0) + '" data-step="' + i + '">Step ' + (i + 1) + '</button>'; }).join('');
       srow.innerHTML = STEPS.map(function (s, i) { return '<article class="step' + (i ? '' : ' on') + '" data-step="' + i + '"><small>Step ' + (i + 1) + '</small><h3>' + s[0] + '</h3><p>' + s[1] + '</p><a class="link-arrow" href="' + s[3] + '">Go</a><img src="' + s[2] + '" alt="" loading="lazy"></article>'; }).join('');
-      var setStep = function (n) { $$('[data-step]', tabs).forEach(function (b) { b.setAttribute('aria-selected', +b.getAttribute('data-step') === n); }); $$('.step', srow).forEach(function (s) { s.classList.toggle('on', +s.getAttribute('data-step') === n); }); };
+      var stepAt = 0, stepHold = false, stepsSeen = false;
+      var setStep = function (n) { stepAt = n; $$('[data-step]', tabs).forEach(function (b) { b.setAttribute('aria-selected', +b.getAttribute('data-step') === n); }); $$('.step', srow).forEach(function (s) { s.classList.toggle('on', +s.getAttribute('data-step') === n); }); };
       tabs.addEventListener('click', function (e) { var b = e.target.closest('[data-step]'); if (b) setStep(+b.getAttribute('data-step')); });
-      srow.addEventListener('mouseover', function (e) { var s = e.target.closest('.step'); if (s) setStep(+s.getAttribute('data-step')); });
+      srow.addEventListener('mouseover', function (e) { var s = e.target.closest('.step'); if (s && +s.getAttribute('data-step') !== stepAt) setStep(+s.getAttribute('data-step')); });
+      // The steps play through on their own while they're on screen, and wait while you point at one
+      srow.addEventListener('mouseenter', function () { stepHold = true; }); srow.addEventListener('mouseleave', function () { stepHold = false; });
+      srow.addEventListener('focusin', function () { stepHold = true; }); srow.addEventListener('focusout', function () { stepHold = false; });
+      if (M) {
+        new IntersectionObserver(function (es) { stepsSeen = es[0].isIntersecting; }, { threshold: 0.3 }).observe(srow);
+        setInterval(function () { if (stepsSeen && !stepHold && !document.hidden) setStep((stepAt + 1) % STEPS.length); }, 4200);
+      }
     }
 
     // ---------- FAQ ----------
@@ -283,9 +469,9 @@
           '<div class="fmx-map">' +
             '<div class="fmx-canvas"><div class="fmx-plan"><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Belmont Estates site map with every homesite">' +
               '<rect class="fmx-ground" width="' + W + '" height="' + H + '"/><image class="fmx-art" href="img/site-plan.webp" width="' + W + '" height="' + H + '"/>' +
-              '<g class="fmx-lots">' + LOTS.map(function (l, i) { return '<path class="fmx-lot ' + (l.b || 'future') + '" data-i="' + i + '" d="' + l.d + '" style="--c:' + (l.b ? COLORS[l.b] : '#FBF8F1') + '"/>'; }).join('') + '</g>' +
+              '<g class="fmx-lots">' + LOTS.map(function (l, i) { return '<path class="fmx-lot ' + (l.b || 'future') + '" data-i="' + i + '" d="' + l.d + '" style="--c:' + (l.b ? COLORS[l.b] : '#FBF8F1') + ';--k:' + i + '"/>'; }).join('') + '</g>' +
               '<g class="fmx-nums" text-anchor="middle">' + LOTS.map(function (l, i) { return '<text x="' + l.c[0] + '" y="' + (l.c[1] + 2.4) + '"' + (l.b === 'autograph' || l.b === 'pib' ? ' class="dark"' : '') + '>' + (i + 1) + '</text>'; }).join('') + '</g></svg>' +
-              '<div class="fmx-pins">' + pins.map(function (p, k) { return '<button type="button" class="fmx-pin pin-' + p.a.id + '" data-pin="' + k + '" aria-label="' + esc(p.a.name) + '">' + ICON[p.a.icon] + '</button>'; }).join('') + '</div>' +
+              '<div class="fmx-pins">' + pins.map(function (p, k) { return '<button type="button" class="fmx-pin pin-' + p.a.id + '" data-pin="' + k + '" style="--k:' + k + '" aria-label="' + esc(p.a.name) + '">' + ICON[p.a.icon] + '</button>'; }).join('') + '</div>' +
             '</div></div>' +
             '<div class="fmx-ctrl"><button type="button" data-c="layers" aria-label="Map layers" aria-expanded="false">' + ICON.layers + '</button>' +
               '<div class="fmx-layers" hidden><button type="button" data-layer="art" aria-pressed="true">Masterplan</button><button type="button" data-layer="flat" aria-pressed="false">Homesites only</button></div>' +
@@ -331,18 +517,18 @@
       function drawCards() {
         if (tab === 'homesites') {
           var r = ids();
-          cards.innerHTML = r.length ? r.map(function (i) {
+          cards.innerHTML = r.length ? r.map(function (i, j) {
             var l = LOTS[i];
-            return '<article class="fmx-card' + (i === sel ? ' on' : '') + '" data-i="' + i + '"><button type="button" class="fmx-card-main" data-pick="' + i + '"><span class="fmx-thumb">' + lotThumb(i) + '</span><span class="fmx-card-t">Homesite ' + (i + 1) + '</span><span class="fmx-card-m">' + (l.b ? 'Phase 1 · ' + esc(builderName(l.b)) : 'Future development') + '</span><span class="fmx-card-m">2 acres · 87,120 sq ft</span>' + statusChip(l) + '</button>' + heart(i + 1) + '</article>';
+            return '<article class="fmx-card' + (i === sel ? ' on' : '') + '" data-i="' + i + '" style="--k:' + Math.min(j, 12) + '"><button type="button" class="fmx-card-main" data-pick="' + i + '"><span class="fmx-thumb">' + lotThumb(i) + '</span><span class="fmx-card-t">Homesite ' + (i + 1) + '</span><span class="fmx-card-m">' + (l.b ? 'Phase 1 · ' + esc(builderName(l.b)) : 'Future development') + '</span><span class="fmx-card-m">2 acres · 87,120 sq ft</span>' + statusChip(l) + '</button>' + heart(i + 1) + '</article>';
           }).join('') : '<p class="fmx-empty">' + (f.saved ? 'No saved homesites yet. Select the heart on any homesite to save it here.' : 'No homesites match these filters. Reset them to see every homesite.') + '</p>';
         } else if (tab === 'builders') {
-          cards.innerHTML = K.builders.map(function (b) {
-            return '<article class="fmx-bcard"><div class="fmx-blogo"><img src="' + b.logo + '" alt="' + esc(b.name) + '" width="' + b.w + '" height="' + b.h + '" loading="lazy"></div><p><b>' + esc(b.name) + '</b> is assigned ' + plural(counts[b.id], 'Phase 1 homesite') + ' on the masterplan. Home designs for Belmont Estates’ 2-acre homesites will be listed here as they are released.</p>' +
+          cards.innerHTML = K.builders.map(function (b, j) {
+            return '<article class="fmx-bcard" style="--k:' + j + '"><div class="fmx-blogo"><img src="' + b.logo + '" alt="' + esc(b.name) + '" width="' + b.w + '" height="' + b.h + '" loading="lazy"></div><p><b>' + esc(b.name) + '</b> is assigned ' + plural(counts[b.id], 'Phase 1 homesite') + ' on the masterplan. Home designs for Belmont Estates’ 2-acre homesites will be listed here as they are released.</p>' +
               '<div class="fmx-acts"><button type="button" class="btn btn-ink" data-only="' + b.id + '">See their homesites</button><a class="link-arrow" href="#homes/builders">About ' + esc(b.name) + '</a><a class="link-arrow" href="#contact/get-in-touch" data-interest="' + esc(b.name) + '">Get updates</a></div></article>';
           }).join('');
         } else {
-          cards.innerHTML = K.amenities.map(function (a) {
-            return '<article class="fmx-acard"><button type="button" data-amenity="' + a.id + '"><span class="fmx-aic">' + ICON[a.icon] + '</span><span><b>' + esc(a.name) + '</b><span class="chip">' + esc(a.status) + '</span><span class="fmx-atext">' + esc(a.text) + '</span></span></button></article>';
+          cards.innerHTML = K.amenities.map(function (a, j) {
+            return '<article class="fmx-acard" style="--k:' + j + '"><button type="button" data-amenity="' + a.id + '"><span class="fmx-aic">' + ICON[a.icon] + '</span><span><b>' + esc(a.name) + '</b><span class="chip">' + esc(a.status) + '</span><span class="fmx-atext">' + esc(a.text) + '</span></span></button></article>';
           }).join('');
         }
         cards.classList.toggle('grid', layout === 'grid' && tab === 'homesites');
@@ -552,9 +738,9 @@
       var svg = '<svg viewBox="' + vb.map(function (v) { return v.toFixed(0); }).join(' ') + '" role="img" aria-label="' + (schools ? 'Map of the schools near Belmont Estates' : 'Belmont Estates area attractions map') + '"><rect x="-500" y="-500" width="' + (A.w + 1000) + '" height="' + (A.h + 1000) + '" fill="#5E7783"/><image href="img/area-roads.svg" width="' + A.w + '" height="' + A.h + '"/>' +
         '<g transform="translate(' + A.home.x + ' ' + A.home.y + ')"><circle r="' + A.home.r + '" fill="#42516B" stroke="#FAF8F2" stroke-width="4"/><image href="img/logo-icon.svg" x="-24" y="-26" width="48" height="52"/></g>' +
         '<text x="' + A.home.x + '" y="' + (A.home.y + A.home.r + 32) + '" text-anchor="middle" font-family="Spectral, Georgia, serif" font-size="26" fill="#FAF8F2" letter-spacing="3">BELMONT ESTATES</text>' +
-        shown.map(function (n) { var p = A.pins[n]; return '<g class="am-pin' + (light[PLACE[n].cat] ? ' light' : '') + '" data-n="' + n + '" tabindex="0" role="button" aria-label="' + esc(PLACE[n].name) + ', ' + PLACE[n].cat + '"><circle class="am-pulse" cx="' + p.x + '" cy="' + p.y + '" r="' + p.r + '"/><circle cx="' + p.x + '" cy="' + p.y + '" r="' + p.r + '" fill="' + p.fill + '" stroke="#FAF8F2" stroke-width="3"/><text x="' + p.x + '" y="' + (p.y + 6) + '" text-anchor="middle">' + n + '</text></g>'; }).join('') + '</svg>';
+        shown.map(function (n, j) { var p = A.pins[n]; return '<g class="am-pin' + (light[PLACE[n].cat] ? ' light' : '') + '" data-n="' + n + '" style="--k:' + j + '" tabindex="0" role="button" aria-label="' + esc(PLACE[n].name) + ', ' + PLACE[n].cat + '"><circle class="am-pulse" cx="' + p.x + '" cy="' + p.y + '" r="' + p.r + '"/><circle cx="' + p.x + '" cy="' + p.y + '" r="' + p.r + '" fill="' + p.fill + '" stroke="#FAF8F2" stroke-width="3"/><text x="' + p.x + '" y="' + (p.y + 6) + '" text-anchor="middle">' + n + '</text></g>'; }).join('') + '</svg>';
       if (homeMode) {
-        var labels = shown.map(function (n) { var p = A.pins[n]; return '<button type="button" class="am-label" data-place="' + n + '" style="left:' + ((p.x - vb[0]) / vb[2] * 100) + '%;top:' + ((p.y - vb[1]) / vb[3] * 100) + '%"><span class="num" style="background:' + p.fill + '">' + n + '</span>' + esc(PLACE[n].name) + '</button>'; }).join('');
+        var labels = shown.map(function (n, j) { var p = A.pins[n]; return '<button type="button" class="am-label" data-place="' + n + '" style="--k:' + j + ';left:' + ((p.x - vb[0]) / vb[2] * 100) + '%;top:' + ((p.y - vb[1]) / vb[3] * 100) + '%"><span class="num" style="background:' + p.fill + '">' + n + '</span>' + esc(PLACE[n].name) + '</button>'; }).join('');
         el.innerHTML = '<div class="am-stage" style="aspect-ratio:' + vb[2] + '/' + vb[3] + '">' + svg + labels + '</div><div class="am-chips">' + shown.map(function (n) { return '<button type="button" data-place="' + n + '"><span class="num" style="background:' + A.pins[n].fill + '">' + n + '</span>' + esc(PLACE[n].name) + '<small>' + esc(PLACE[n].cat) + '</small></button>'; }).join('') + '<button type="button" class="all" data-show-cat="All">Show every place</button></div>';
         return {};
       }
@@ -631,6 +817,7 @@
         var items = K.news.filter(function (n) { return filt === 'All' || n.cat === filt; });
         if (!isPage) items = items.slice(0, 5);
         grid.innerHTML = items.map(function (n, i) { return newsCard(n, isPage ? -1 : i); }).join('');
+        scan(grid);
         if (bar) $$('button', bar).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-nf') === filt); });
       }
       if (bar) {
@@ -656,7 +843,7 @@
       var v = VIDEOS[el.getAttribute('data-videos')], k = 0, pad = function (n) { return ('0' + n).slice(-2); };
       el.innerHTML = '<div class="vid-main"><div class="vid-poster"><img alt="" loading="lazy"><span class="chip">Coming soon</span><span class="vid-play" aria-hidden="true">' + ICON.play + '</span></div><p class="vid-t"><span></span><b></b></p><p class="vid-d"></p></div>' +
         '<div class="vid-list"><p class="eyebrow">Videos</p>' + v.map(function (x, i) { return '<button type="button" data-v="' + i + '" aria-pressed="' + (i === 0) + '"><img src="' + x[2] + '" alt="" loading="lazy"><span><b>' + esc(x[0]) + '</b><small>Coming soon</small></span></button>'; }).join('') + '</div>';
-      function show(i) { k = i; var x = v[i]; $('.vid-poster img', el).src = x[2]; $('.vid-t span', el).textContent = pad(i + 1) + ' / ' + pad(v.length); $('.vid-t b', el).textContent = x[0]; $('.vid-d', el).textContent = x[1] + ' Coming soon.'; $$('[data-v]', el).forEach(function (b, j) { b.setAttribute('aria-pressed', j === i); }); }
+      function show(i) { k = i; var x = v[i], im = $('.vid-poster img', el); im.src = x[2]; im.classList.remove('swap'); void im.offsetWidth; im.classList.add('swap'); $('.vid-t span', el).textContent = pad(i + 1) + ' / ' + pad(v.length); $('.vid-t b', el).textContent = x[0]; $('.vid-d', el).textContent = x[1] + ' Coming soon.'; $$('[data-v]', el).forEach(function (b, j) { b.setAttribute('aria-pressed', j === i); }); }
       el.addEventListener('click', function (e) { var b = e.target.closest('[data-v]'); if (b) show(+b.getAttribute('data-v')); });
       show(0);
     });
@@ -668,6 +855,7 @@
       var grid = $('.gal-grid', el);
       function draw() {
         grid.innerHTML = ph.map(function (p, i) { return filt === 'All' || p[2] === filt ? '<button type="button" class="gal" data-g="' + i + '" aria-label="Open photo: ' + esc(p[1]) + '"><img src="' + p[0] + '" alt="' + esc(p[3]) + '" loading="lazy"><span>' + esc(p[1]) + '</span></button>' : ''; }).join('');
+        scan(grid);
         $$('[data-gf]', el).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-gf') === filt); });
       }
       function lightbox(i) {
@@ -825,6 +1013,8 @@
       var b = e.target.closest('button'); if (!b) return; tip.hidden = true; try { sessionStorage.setItem('be-tip', '1'); } catch (x) {}
       if (b.hasAttribute('data-tip')) askQ(b.getAttribute('data-tip')); else if (b.hasAttribute('data-tip-tour')) startTour();
     });
+
+    scan(document);
 
     // ---------- guided tour ----------
     var TOUR = [

@@ -47,6 +47,26 @@ On every page:
 - **AI concierge:** on Vercel, `api/concierge.js` answers with Claude (Claude Opus 5.5 by default), using only `content/knowledge.json` and the masterplan data. Answers can open the site map, a place on the map, the school map, the register form or a page. Without `ANTHROPIC_API_KEY`, and on GitHub Pages, the page's built-in answers reply instead, from the same content.
 - **Forms:** a prototype. They show the kit's thank-you message but don't send anything.
 
+## Motion
+
+Everything animates as it scrolls into view. Visitors who ask their device for reduced motion get the site with no animation.
+
+- **Photos:** every photo rises into view from the bottom, settling from a slight zoom.
+- **Headings:** they rise word by word, and the script line is written in after them.
+- **Copy and cards:** they fade up in turn. Brushstrokes sweep across, numbers count up, and the script words drift as you scroll.
+- **Hero:** the photo rises in, UNBRIDLED rises letter by letter, and "Living" is written in. Then the copy and numbers follow, and the header, search dock and concierge arrive.
+- **Moving between pages and menus:**
+  - A Juniper curtain with the crest covers each change of page.
+  - The phone menu opens as a circle.
+  - A gold line along the top shows reading progress.
+- **Maps:** the site map's homesites shimmer in and its markers drop; area map places pop in and their labels follow.
+- **Hands-on touches:**
+  - Cards and photos tilt toward the pointer with a soft light, and round buttons are pulled toward it.
+  - Buttons shine on hover.
+  - Photos in figures can be opened larger.
+  - The steps play through on their own.
+  - The ticker speeds up while you scroll.
+
 ## Content and data
 
 - `content/knowledge.json`: the kit's facts, builders, places, categories, roads and question-and-answer pairs. It also holds the masterplan's amenities, the journal entries and the gallery photos. Both the site and the concierge read it.

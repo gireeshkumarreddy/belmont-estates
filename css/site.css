@@ -182,7 +182,7 @@ body.menu-open { overflow: hidden; }
 .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
 .hero::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(52, 59, 60, .35) 0%, rgba(52, 59, 60, 0) 30%, rgba(52, 59, 60, 0) 46%, rgba(52, 59, 60, .62) 82%); }
 .hero-brush { position: absolute; z-index: 1; right: -10%; bottom: 6%; width: min(760px, 70%); opacity: .9; }
-.hero-in { position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(120px, 17vh, 190px); display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 30px; }
+.hero-in { position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(150px, 19vh, 210px); display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 30px; }
 .hero-h { margin-top: 14px; font-weight: 300; line-height: 1; }
 .hero-h span { display: block; font: 300 clamp(52px, 8.6vw, 126px)/1 var(--display); letter-spacing: .1em; text-transform: uppercase; text-shadow: 0 2px 30px rgba(0, 0, 0, .2); }
 .hero-h img { width: clamp(220px, 34vw, 480px); height: auto; margin: -2.6vw 0 0 clamp(70px, 12vw, 190px); }
@@ -320,8 +320,12 @@ body.menu-open { overflow: hidden; }
 .steps { display: grid; gap: 14px; }
 @media (min-width: 700px) { .steps { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1100px) { .steps { grid-template-columns: repeat(4, 1fr); } }
-.step { display: flex; flex-direction: column; padding: 22px 20px 20px; background: #FFFFFF; border-top: 3px solid transparent; box-shadow: 0 20px 40px -34px rgba(40, 46, 47, .5); transition: transform .3s, border-color .3s; }
-.step.on { border-color: var(--saffron); transform: translateY(-6px); }
+.step { position: relative; display: flex; flex-direction: column; padding: 22px 20px 20px; background: #FFFFFF; border-top: 3px solid var(--line); box-shadow: 0 20px 40px -34px rgba(40, 46, 47, .5); transition: transform .3s, border-color .3s; }
+.step.on { transform: translateY(-6px); box-shadow: 0 34px 50px -30px rgba(40, 46, 47, .45); }
+.step::before { content: ""; position: absolute; left: 0; right: 0; top: -3px; height: 3px; background: var(--saffron); transform-origin: left; scale: 0 1; }
+.step.on::before { scale: 1 1; }
+.motion .step.on::before { animation: stepBar 4.2s linear both; }
+@keyframes stepBar { from { scale: 0 1; } to { scale: 1 1; } }
 .step small { font: 600 10.5px/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--saffron); }
 .step h3 { margin-top: 12px; font: 400 21px/1.25 var(--display); }
 .step p { margin-top: 8px; font-size: 14px; }
@@ -901,7 +905,8 @@ body.menu-open { overflow: hidden; }
 .foot-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 30px; padding: 20px 0 30px; border-top: 1px solid rgba(220, 210, 197, .16); font-size: 12px; }
 .foot-bar p { color: rgba(220, 210, 197, .75); }
 .foot-bar button { font-size: 12px; text-decoration: underline; color: inherit; }
-.foot-band { height: 44px; background: url(../img/horseshoes.webp) center / auto 100% repeat-x; }
+.foot-band { height: 44px; background: url(../img/horseshoes.webp) 0 50% / 311px 44px repeat-x; animation: band 40s linear infinite; }
+@keyframes band { to { background-position: -622px 50%; } }
 
 /* ---------- search dock ---------- */
 .dock { position: fixed; z-index: 45; left: 50%; bottom: 18px; display: none; align-items: center; gap: 6px; padding: 7px; background: var(--ink); box-shadow: 0 20px 40px -18px rgba(20, 24, 25, .7); transform: translateX(-50%); transition: transform .35s, opacity .35s; }
@@ -990,6 +995,171 @@ body:has(.tour:not([hidden])) .dock { transform: translate(-50%, 160%); opacity:
 
 /* crest-shaped photos keep their shape from the image's transparency */
 .crest { height: auto; }
+
+
+/* ================= motion =================
+   Only with .motion on <html> (set by the script, never for reduced motion): without it everything simply shows.
+   Reveals use the translate, scale and clip-path properties so hover transforms keep working. */
+:root { --ease: cubic-bezier(.2, .7, .2, 1); --ease-io: cubic-bezier(.76, 0, .24, 1); }
+@keyframes fadeUp { from { opacity: 0; translate: 0 16px; } }
+@keyframes fadeIn { from { opacity: 0; } }
+@keyframes lbIn { from { opacity: 0; scale: .96; } }
+
+/* copy and cards fade up, in turn */
+.motion [data-m="up"] { opacity: 0; translate: 0 36px; }
+.motion [data-m="up"].in { opacity: 1; translate: 0 0; transition: opacity .9s var(--ease) var(--d, 0s), translate 1.1s var(--ease) var(--d, 0s), transform .45s var(--ease), box-shadow .4s, border-color .3s, background .3s; }
+.motion .eyebrow[data-m]::before { scale: 0; }
+.motion .eyebrow[data-m].in::before { scale: 1; transition: scale .6s var(--ease) calc(var(--d, 0s) + .35s); }
+.motion [data-m="fade"] { opacity: 0; }
+.motion [data-m="fade"].in { opacity: 1; transition: opacity 1.6s var(--ease) .2s; }
+
+/* every photo rises into view from the bottom, settling from a slight zoom */
+.motion [data-m="clip"] { clip-path: inset(100% 0 0 0); }
+.motion [data-m="clip"].in { clip-path: inset(0 0 0 0); transition: clip-path 1.35s var(--ease-io) var(--d, 0s), transform .45s var(--ease); }
+.motion [data-m="clip"] img { scale: 1.22; }
+.motion [data-m="clip"].in img { scale: 1; transition: scale 1.9s var(--ease) var(--d, 0s), transform .9s var(--ease); }
+.motion img[data-m="clip"] { scale: 1.12; }
+.motion img[data-m="clip"].in { scale: 1; transition: clip-path 1.35s var(--ease-io) var(--d, 0s), scale 1.9s var(--ease) var(--d, 0s); }
+
+/* headings rise word by word; the script line is written in after them */
+.motion [data-m="split"] .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; }
+.motion [data-m="split"] .w > span { display: inline-block; translate: 0 110%; }
+.motion [data-m="split"].in .w > span { translate: 0 0; transition: translate 1.05s var(--ease) calc(var(--d, 0s) + .1s + var(--wi, 0) * 60ms); }
+.motion [data-m="split"] em { clip-path: inset(-25% 100% -45% -6%); }
+.motion [data-m="split"].in em { clip-path: inset(-25% -10% -45% -6%); transition: clip-path 1.6s var(--ease-io) calc(var(--d, 0s) + .25s + var(--wi, 0) * 60ms); }
+.motion [data-m="write"] { clip-path: inset(-25% 100% -45% -6%); }
+.motion [data-m="write"].in { clip-path: inset(-25% -10% -45% -6%); transition: clip-path 1.7s var(--ease-io) calc(var(--d, 0s) + .1s); }
+
+/* brushstrokes sweep across */
+.motion [data-m="sweep"] { clip-path: inset(0 100% 0 0); }
+.motion [data-m="sweep"].in { clip-path: inset(0 -2% 0 0); transition: clip-path 2.2s var(--ease-io) calc(var(--d, 0s) + .2s); }
+
+/* numbers keep their width while they count */
+.stats b, .pt-stats b, .dark-stats b, .collage-card b, .hero-stats b { font-variant-numeric: tabular-nums; }
+
+/* hero: the photo rises in, UNBRIDLED letter by letter, "Living" written in, then the rest */
+.hero-h .ch { display: inline-block; }
+.motion .hero-img { clip-path: inset(100% 0 0 0); scale: 1.16; }
+.motion .hero.ready .hero-img { clip-path: inset(0 0 0 0); scale: 1; transition: clip-path 1.7s var(--ease-io), scale 3.6s var(--ease); }
+.motion .hero-h .ch { opacity: 0; translate: 0 .5em; }
+.motion .hero.ready .hero-h .ch { opacity: 1; translate: 0 0; transition: opacity .9s var(--ease) calc(.75s + var(--ci) * 65ms), translate 1.2s var(--ease) calc(.75s + var(--ci) * 65ms); }
+.motion .hero-h img { clip-path: inset(-10% 100% -10% -5%); }
+.motion .hero.ready .hero-h img { clip-path: inset(-10% -5% -10% -5%); transition: clip-path 1.9s var(--ease-io) 1.45s; }
+.motion .hero-copy .eyebrow, .motion .hero-sub, .motion .hero-stats li, .motion .scroll-cue { opacity: 0; translate: 0 22px; }
+.motion .hero.ready .hero-copy .eyebrow { opacity: 1; translate: 0 0; transition: opacity .8s .55s, translate 1s var(--ease) .55s; }
+.motion .hero.ready .hero-sub { opacity: 1; translate: 0 0; transition: opacity .9s 2s, translate 1.1s var(--ease) 2s; }
+.motion .hero.ready .hero-stats li { opacity: 1; translate: 0 0; transition: opacity .9s calc(1.9s + var(--i) * .14s), translate 1.1s var(--ease) calc(1.9s + var(--i) * .14s); }
+.motion .hero.ready .scroll-cue { opacity: 1; translate: -50% 0; transition: opacity .9s 2.8s, translate 1s var(--ease) 2.8s; }
+.motion .hero-brush { clip-path: inset(0 100% 0 0); }
+.motion .hero.ready .hero-brush { clip-path: inset(0 -2% 0 0); transition: clip-path 2.4s var(--ease-io) 1.2s; }
+.scroll-cue { position: absolute; z-index: 2; left: 50%; bottom: 100px; width: 24px; height: 38px; translate: -50% 0; border: 1.5px solid rgba(250, 248, 242, .75); border-radius: 14px; }
+.motion .scroll-cue { translate: -50% 22px; }
+.scroll-cue::after { content: ""; position: absolute; left: 50%; top: 7px; width: 3px; height: 8px; border-radius: 2px; background: var(--canvas); translate: -50% 0; animation: cue 1.8s var(--ease) infinite; }
+@keyframes cue { 0% { opacity: 0; translate: -50% 0; } 30% { opacity: 1; } 100% { opacity: 0; translate: -50% 13px; } }
+@media (max-width: 899px) { .scroll-cue { bottom: 26px; } }
+
+/* header, dock and concierge arrive after the hero has started */
+.motion .top:not(.shown) { opacity: 0; translate: 0 -24px; }
+.motion .top.shown { transition: opacity .9s var(--ease) .25s, translate 1.1s var(--ease) .25s, transform .35s, top .35s; }
+.dock { transition: transform .35s, opacity .5s, translate .9s var(--ease); }
+.motion .dock:not(.shown) { opacity: 0; translate: 0 50px; pointer-events: none; }
+.ask { transition: transform .3s, opacity .4s, scale .6s var(--ease), translate .3s var(--ease); }
+.motion .ask:not(.shown) { opacity: 0; scale: .6; pointer-events: none; }
+
+/* page curtain */
+.curtain { position: fixed; z-index: 92; inset: 0; display: grid; place-items: center; background: var(--juniper); translate: 0 100%; visibility: hidden; pointer-events: none; }
+.curtain img { width: 70px; opacity: 0; translate: 0 16px; }
+.curtain.cover { visibility: visible; translate: 0 0; transition: translate .6s var(--ease-io); }
+.curtain.cover img { opacity: 1; translate: 0 0; transition: opacity .35s .25s, translate .55s var(--ease) .2s; }
+.curtain.leave { visibility: visible; translate: 0 -100%; transition: translate .75s var(--ease-io); }
+.curtain.leave img { opacity: 0; transition: opacity .2s; }
+
+/* reading progress */
+.progress { position: fixed; z-index: 96; left: 0; right: 0; top: 0; height: 3px; pointer-events: none; }
+.progress i { display: block; height: 100%; background: linear-gradient(90deg, var(--gold), var(--saffron)); transform-origin: left; scale: var(--p, 0) 1; }
+
+/* menu opens as a circle from the Menu button; its links rise in */
+.motion .menu { clip-path: circle(0% at calc(100% - 60px) calc(var(--proto) + 43px)); transition: clip-path .75s var(--ease-io); }
+.motion .menu.open { clip-path: circle(150% at calc(100% - 60px) calc(var(--proto) + 43px)); }
+.motion .menu li, .motion .menu > .btn { opacity: 0; translate: 0 26px; transition: opacity .4s, translate .5s var(--ease); }
+.motion .menu.open li, .motion .menu.open > .btn { opacity: 1; translate: 0 0; transition: opacity .7s var(--ease), translate .9s var(--ease); }
+.motion .menu.open li:nth-child(1) { transition-delay: .22s; }
+.motion .menu.open li:nth-child(2) { transition-delay: .29s; }
+.motion .menu.open li:nth-child(3) { transition-delay: .36s; }
+.motion .menu.open li:nth-child(4) { transition-delay: .43s; }
+.motion .menu.open li:nth-child(5) { transition-delay: .5s; }
+.motion .menu.open li:nth-child(6) { transition-delay: .57s; }
+.motion .menu.open > .btn { transition-delay: .66s; }
+
+/* hands-on touches */
+.btn { position: relative; }
+.btn::after { content: ""; position: absolute; top: 0; bottom: 0; left: -50%; width: 40%; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .38), transparent); translate: -100% 0; pointer-events: none; }
+.btn:hover::after { translate: 420% 0; transition: translate .85s var(--ease); }
+.btn:active { scale: .97; }
+.tile, .rel-tile, .photo-card, .mb-card, .gal, .dg-thumb { transition: transform .45s var(--ease); will-change: transform; }
+.tile::before, .rel-tile::before, .photo-card::before, .mb-card::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(440px circle at var(--mx, 50%) var(--my, 50%), rgba(250, 248, 242, .18), transparent 45%); opacity: 0; transition: opacity .4s; }
+.tile:hover::before, .rel-tile:hover::before, .photo-card:hover::before, .mb-card:hover::before { opacity: 1; }
+.mb-card > * { position: relative; z-index: 2; }
+.round-btn, .ask { transition: transform .3s, translate .35s var(--ease), opacity .4s, scale .6s var(--ease); }
+.news-card a, .know, .am-card, .near, .place-card, .bcard, .tba, .fmx-acard, .fmx-bcard, .fmx-card, .inc-card { transition: transform .45s var(--ease), box-shadow .4s, border-color .3s; }
+.news-card:hover a, .know:hover, .am-card:hover, .near:hover, .place-card:hover, .bcard:hover, .tba:hover, .inc-card:hover { transform: translateY(-6px); box-shadow: 0 36px 50px -34px rgba(40, 46, 47, .55); }
+.fmx-card:hover, .fmx-bcard:hover, .fmx-acard:hover { transform: translateY(-3px); box-shadow: 0 18px 28px -22px rgba(40, 46, 47, .5); }
+.news-card img, .am-card img, .step img, .bcard-logo img { transition: transform .9s var(--ease); }
+.news-card:hover img, .am-card:hover img, .step:hover img { transform: scale(1.05); }
+.collage figure img, .pt-pair img, .grace-row img, .arr-pics img, .lg-photo, .fu-map img { transition: transform 1.1s var(--ease); }
+.collage figure:hover img, .pt-pair figure:hover img, .grace-row figure:hover img, .arr-pics figure:hover img, .fu-map:hover img { transform: scale(1.06); }
+.logos a { transition: transform .4s var(--ease), filter .4s; }
+.logos a:hover { transform: translateY(-5px); }
+.cat .n { transition: transform .35s var(--ease); }
+.cat:hover .n { transform: translateX(-6px); }
+.chip-btn, .pt-tabs a, .am-filters button, .am-tabs button, .steps-tabs button, .fmx-tabs [role="tab"] { transition: background .3s, color .3s, border-color .3s, transform .3s var(--ease); }
+.chip-btn:hover, .pt-tabs a:hover, .am-filters button:hover { transform: translateY(-2px); }
+.field > span:not(.sr) { transition: color .3s; }
+.field:focus-within > span:not(.sr) { color: var(--saffron); }
+.xl { position: absolute; z-index: 3; right: 10px; top: 10px; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; background: rgba(250, 248, 242, .94); color: var(--juniper); box-shadow: 0 8px 18px -10px rgba(0, 0, 0, .5); opacity: 0; scale: .8; transition: opacity .3s, scale .35s var(--ease); }
+.xl svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+figure:hover .xl, .xl:focus-visible { opacity: 1; scale: 1; }
+@media (hover: none) { .xl { opacity: 1; scale: 1; } }
+.mq-track { cursor: default; }
+.marquee:hover .mq-track { animation-play-state: paused; }
+
+/* maps: homesites shimmer in, markers drop, places pop */
+.motion .fmx.in .fmx-lot { animation: lotWave 1.5s var(--ease) calc(.5s + var(--k, 0) * 16ms); }
+@keyframes lotWave { 0% { fill-opacity: 0; } 35% { fill-opacity: .85; } 100% { fill-opacity: 0; } }
+.motion .fmx.in .fmx-pin { animation: pinDrop .8s var(--ease) calc(1.3s + var(--k, 0) * 120ms) backwards; }
+@keyframes pinDrop { from { opacity: 0; translate: 0 -22px; } }
+.fmx-pin:hover { scale: 1.12; }
+.fmx-cards > * { animation: fadeUp .5s var(--ease) both; animation-delay: calc(var(--k, 0) * 28ms); }
+.fmx-detail:not([hidden]) > * { animation: fadeUp .55s var(--ease) both; }
+.fmx-detail > :nth-child(2) { animation-delay: .05s; } .fmx-detail > :nth-child(3) { animation-delay: .1s; } .fmx-detail > :nth-child(4) { animation-delay: .13s; }
+.fmx-detail > :nth-child(5) { animation-delay: .16s; } .fmx-detail > :nth-child(6) { animation-delay: .2s; } .fmx-detail > :nth-child(n+7) { animation-delay: .24s; }
+.fmx-plans:not([hidden]) .fmx-plans-in > *, .fmx-plan-cards article { animation: fadeUp .6s var(--ease) both; }
+.fmx-plan-cards article:nth-child(2) { animation-delay: .08s; } .fmx-plan-cards article:nth-child(3) { animation-delay: .16s; } .fmx-plan-cards article:nth-child(4) { animation-delay: .24s; }
+.fmx-layers:not([hidden]), .fmx-hover:not([hidden]) { animation: fadeUp .3s var(--ease); }
+.am-pin { transform-box: fill-box; transform-origin: center; transition: scale .25s var(--ease), opacity .3s; }
+.am-pin:hover, .am-pin.sel { scale: 1.15; }
+.motion :is(.areamap, .schoolmap).in .am-pin, .motion .am-stage.in .am-pin { animation: pinPop .6s var(--ease) calc(.45s + var(--k, 0) * 40ms) backwards; }
+@keyframes pinPop { from { opacity: 0; scale: 0; } }
+.motion .am-stage.in .am-label { animation: labelIn .7s var(--ease) calc(1s + var(--k, 0) * 80ms) backwards; }
+@keyframes labelIn { from { opacity: 0; translate: 0 12px; } }
+.am-list li { animation: fadeUp .45s var(--ease) both; }
+.am-info.swap { animation: fadeUp .45s var(--ease); }
+
+/* small moments */
+.acc details[open] > p { animation: fadeUp .5s var(--ease); }
+.acc summary::after { transition: background .3s, color .3s, rotate .45s var(--ease); }
+.acc details[open] summary::after { rotate: 180deg; }
+.msg { animation: fadeUp .45s var(--ease) both; }
+.chat:not([hidden]) { animation: lbIn .45s var(--ease); transform-origin: bottom right; }
+.ask-tip:not([hidden]), .tour:not([hidden]) { animation: fadeUp .5s var(--ease); }
+.viewer[open] { animation: lbIn .45s var(--ease); }
+.lb img { animation: lbIn .6s var(--ease); }
+.vid-poster img.swap { animation: posterIn .8s var(--ease); }
+@keyframes posterIn { from { opacity: .2; scale: 1.06; } }
+.story-slide[aria-hidden="false"] > div > * { animation: fadeUp .7s var(--ease) both; }
+.story-slide[aria-hidden="false"] > div > :nth-child(2) { animation-delay: .08s; } .story-slide[aria-hidden="false"] > div > :nth-child(3) { animation-delay: .16s; } .story-slide[aria-hidden="false"] > div > :nth-child(4) { animation-delay: .24s; }
+.form-done { animation: fadeUp .6s var(--ease); }
+.drop { transition: opacity .25s, visibility .25s, transform .35s var(--ease); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
