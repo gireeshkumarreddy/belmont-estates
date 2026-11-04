@@ -771,8 +771,10 @@
         map.setFilter('b-sel', ['==', ['id'], sel + 1]);
       }
       function initGL() {
-        map = new maplibregl.Map({ container: $('.fmx-glmap', el), style: STREETS, bounds: boundsOf(G.parcel), fitBoundsOptions: { padding: 26 }, cooperativeGestures: true, attributionControl: { compact: true }, maxPitch: 70 });
-        map.once('style.load', function () {
+        var gl = new maplibregl.Map({ container: $('.fmx-glmap', el), style: STREETS, bounds: boundsOf(G.parcel), fitBoundsOptions: { padding: 26 }, cooperativeGestures: true, attributionControl: { compact: true }, maxPitch: 70 });
+        // Everything else talks to the map only once this is set: until the style loads the plain plan is in charge
+        gl.once('style.load', function () {
+          map = gl;
           map.addSource('sat', { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, maxzoom: 19, attribution: 'Imagery © Esri, Maxar, Earthstar Geographics' });
           map.addSource('cover', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [[[-180, -85], [180, -85], [180, 85], [-180, 85], [-180, -85]]] } } });
           map.addSource('art', { type: 'image', url: 'img/site-plan-geo.webp', coordinates: G.art });
@@ -806,7 +808,7 @@
           if (M) LOTS.forEach(function (l, i) { setTimeout(function () { map.setFeatureState({ source: 'lots', id: i + 1 }, { wave: true }); }, 500 + i * 18); setTimeout(function () { map.setFeatureState({ source: 'lots', id: i + 1 }, { wave: false }); }, 860 + i * 18); });
           if (sel >= 0) map.fitBounds(boundsOf(G.lots[sel]), { padding: 90, maxZoom: 17.7, duration: 0 });
         });
-        if (window.ResizeObserver) new ResizeObserver(function () { map.resize(); }).observe($('.fmx-map', el));
+        if (window.ResizeObserver) new ResizeObserver(function () { gl.resize(); }).observe($('.fmx-map', el));
       }
       whenNear(el, initGL);
       function pulse(id) { pinEls.forEach(function (p, k) { p.classList.toggle('pulse', pins[k].a.id === id); }); setTimeout(function () { pinEls.forEach(function (p) { p.classList.remove('pulse'); }); }, 2400); }
