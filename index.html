@@ -20,15 +20,16 @@
 <div class="proto" id="proto"><p><b>Prototype</b> Photos, maps and words are from the Belmont Estates brand kit. Forms don’t send anything yet.</p><button type="button" data-hide-proto>Hide</button></div>
 
 <header class="top" id="top">
-  <a class="top-logo" href="#home" aria-label="Belmont Estates home"><img src="img/logo-horizontal.svg" alt="Belmont Estates" width="375" height="90"></a>
+  <a class="top-logo" href="#home" aria-label="Belmont Estates home"><img src="img/logo-gold-deep.svg" alt="Belmont Estates" width="375" height="90"></a>
   <nav class="top-nav" aria-label="Main">
     <div class="nav-item has-drop"><a href="#community" data-nav="community">Community</a>
-      <div class="drop"><a href="#community/explore">Site Map</a><a href="#relocation">About Fulshear</a><a href="#news">News &amp; Updates</a><a href="#community/ownership">HOA &amp; Tax Rates</a><a href="#community/developer">Our Developer</a></div></div>
+      <div class="drop"><a href="#community/explore">Site Map</a><a href="#relocation">About Fulshear</a><a href="#news">News &amp; Announcements</a><a href="#hoa">HOA &amp; Tax Rates</a><a href="#community/developer">Our Developer</a></div></div>
     <div class="nav-item has-drop"><a href="#homes" data-nav="homes">Find Your Home</a>
-      <div class="drop"><a href="#homes/available">Available Homesites</a><a href="#homes/builders">Builders</a><a href="#homes/incentives">Builder Incentives</a><a href="#homes/homes-faq">Homebuyer Questions</a></div></div>
+      <div class="drop"><a href="#realtors">Realtor Specialist</a><a href="#homes/builders">Builders &amp; Models</a><a href="#homes/incentives">Builder Incentives</a><a href="#homes/homes-faq">Homebuyer Resources</a></div></div>
     <div class="nav-item"><a href="#lifestyle" data-nav="lifestyle">Lifestyle</a></div>
     <div class="nav-item"><a href="#relocation" data-nav="relocation">Relocation</a></div>
     <div class="nav-item"><a href="#schools" data-nav="schools">Schools</a></div>
+    <div class="nav-item"><a href="#residents" data-nav="residents">Residents</a></div>
     <div class="nav-item"><a href="#contact" data-nav="contact">Contact</a></div>
   </nav>
   <a class="btn btn-ink top-cta" href="#contact/get-in-touch">Register Interest</a>
@@ -37,12 +38,13 @@
 
 <nav class="menu" id="menu" aria-label="Pages" hidden>
   <ol>
-    <li><a href="#community"><small>01</small>Community</a><span><a href="#community/explore">Site Map</a><a href="#community/developer">Our Developer</a><a href="#news">News &amp; Updates</a></span></li>
-    <li><a href="#homes"><small>02</small>Find Your Home</a><span><a href="#homes/available">Available Homesites</a><a href="#homes/builders">Builders</a></span></li>
+    <li><a href="#community"><small>01</small>Community</a><span><a href="#community/explore">Site Map</a><a href="#community/developer">Our Developer</a><a href="#news">News &amp; Announcements</a><a href="#hoa">HOA &amp; Tax Rates</a></span></li>
+    <li><a href="#homes"><small>02</small>Find Your Home</a><span><a href="#homes/available">Available Homesites</a><a href="#homes/builders">Builders</a><a href="#realtors">Realtor Specialist</a></span></li>
     <li><a href="#lifestyle"><small>03</small>Lifestyle</a></li>
     <li><a href="#relocation"><small>04</small>Relocation</a></li>
     <li><a href="#schools"><small>05</small>Schools</a></li>
-    <li><a href="#contact"><small>06</small>Contact</a></li>
+    <li><a href="#residents"><small>06</small>Residents</a></li>
+    <li><a href="#contact"><small>07</small>Contact</a></li>
   </ol>
   <a class="btn btn-gold" href="#contact/get-in-touch">Register Interest</a>
 </nav>
@@ -52,7 +54,18 @@
 <!-- ================= HOME ================= -->
 <div class="view" data-page="home" data-title="Belmont Estates | 2-Acre Homesites in Fulshear, Texas">
   <section class="hero" aria-label="Belmont Estates">
-    <img class="hero-img" src="img/hero.webp" alt="Children running hand in hand with their parents through a sunlit meadow" width="1440" height="850">
+    <div class="hero-frame">
+      <div class="hero-slides">
+        <img class="hero-img on" src="img/hero.webp" alt="Children running hand in hand with their parents through a sunlit meadow" width="1440" height="850">
+        <img class="hero-img s2" src="img/dream-home.webp" alt="A mother and her two sons at home" width="1811" height="1358">
+        <img class="hero-img s3" src="img/moments-picnic.webp" alt="Two sisters on floor cushions under string lights on a backyard lawn" width="1535" height="1027">
+      </div>
+    </div>
+    <div class="hero-dots" role="group" aria-label="Hero photos">
+      <button type="button" data-slide="0" aria-label="Photo 1: Room to run" aria-current="true"><span>Room to run</span></button>
+      <button type="button" data-slide="1" aria-label="Photo 2: Home together" aria-current="false"><span>Home together</span></button>
+      <button type="button" data-slide="2" aria-label="Photo 3: Backyard nights" aria-current="false"><span>Backyard nights</span></button>
+    </div>
     <img class="deco hero-brush" src="img/brush-mint-hero.webp" alt="">
     <span class="scroll-cue" aria-hidden="true"></span>
     <div class="wrap hero-in">
@@ -185,7 +198,7 @@
         <div><p class="lede">Off Bois D’Arc Lane and near Bessie Creek, Belmont Estates will have you savoring country living. Down the stretch is FM 1093 and all the conveniences fast-growing Fulshear has to offer.</p><a class="btn btn-ink" href="#relocation">Explore the area</a></div>
       </div>
       <div class="loc-map" data-areamap="home"></div>
-      <p class="note">Places from the Belmont Estates area attractions map. Map not to scale.</p>
+      <p class="note" data-loc-note>Places from the Belmont Estates area attractions map. Map not to scale.</p>
     </div>
   </section>
 
@@ -226,6 +239,7 @@
 <!-- ================= COMMUNITY ================= -->
 <div class="view" data-page="community" data-title="Community Plan | Belmont Estates, Fulshear, Texas" hidden>
   <section class="opener tone-juniper"><img class="deco" src="img/brush-mint-hero.webp" alt=""><p>Belmont Estates community plan</p></section>
+  <div class="pg-photo top"><img src="img/hero.webp" alt="Children running hand in hand with their parents through a sunlit meadow" loading="lazy"></div>
   <section class="sec page-top">
     <div class="wrap pt">
       <div class="pt-copy">
@@ -253,7 +267,7 @@
       </div>
       <div class="poster">
         <p class="poster-top">An acreage community · Fulshear, Texas</p>
-        <img class="poster-logo" src="img/logo-horizontal.svg" alt="Belmont Estates" width="375" height="90">
+        <img class="poster-logo" src="img/logo-gold.svg" alt="Belmont Estates" width="375" height="90">
         <div class="poster-body">
           <button class="poster-plan" type="button" data-open="masterplan" aria-label="Open the masterplan full size"><img src="img/site-plan.webp" alt="The Belmont Estates masterplan, with Phase 1 homesites coloured by builder" width="1833" height="1300" loading="lazy"></button>
           <div class="poster-legend"><p class="poster-legend-h">Legend</p><ul data-legend></ul><p class="small">Conceptual rendering. Subject to change without notice.</p></div>
@@ -343,11 +357,11 @@
     <div class="wrap">
       <div class="head">
         <div><p class="eyebrow">Homeowner information</p><h2 class="h2" id="own-h">HOA &amp; <em>taxes</em></h2></div>
-        <p class="lede">Details for future Belmont Estates homeowners will be published here as they are finalized.</p>
+        <p class="lede">A summary of the fees and tax rates for Belmont Estates homeowners. Details will be published as they are finalized; see the full page for what’s confirmed.</p>
       </div>
       <div class="tba-cards">
-        <article class="tba"><span class="chip">To be announced</span><h3>Homeowners association</h3><p>HOA information for Belmont Estates will be shared here once it is finalized. Register your interest to be notified when details are available.</p><a class="link-arrow" href="#contact/get-in-touch" data-interest="All Belmont Estates updates" data-comment="Please send me HOA details for Belmont Estates when they’re available.">Get HOA updates</a></article>
-        <article class="tba"><span class="chip">To be announced</span><h3>Property taxes</h3><p>Property tax information for Belmont Estates will be shared here as it becomes available. Register your interest to receive updates.</p><a class="link-arrow" href="#contact/get-in-touch" data-interest="All Belmont Estates updates" data-comment="Please send me property tax details for Belmont Estates when they’re available.">Get tax updates</a></article>
+        <article class="tba"><span class="chip">To be announced</span><h3>Homeowners association</h3><p>HOA information for Belmont Estates will be shared here once it is finalized. Register your interest to be notified when details are available.</p><a class="link-arrow" href="#hoa/hoa-fees">See HOA details</a></article>
+        <article class="tba"><span class="chip">To be announced</span><h3>Property taxes</h3><p>Property tax information for Belmont Estates will be shared here as it becomes available. Register your interest to receive updates.</p><a class="link-arrow" href="#hoa/property-tax">See tax details</a></article>
       </div>
     </div>
   </section>
@@ -358,6 +372,7 @@
 <!-- ================= FIND YOUR HOME ================= -->
 <div class="view" data-page="homes" data-title="Homes | Belmont Estates, Fulshear, Texas" hidden>
   <section class="opener tone-saffron"><img class="deco" src="img/brush-mint-developer.webp" alt=""><p>Homes at Belmont Estates</p></section>
+  <div class="pg-photo"><img src="img/dream-home.webp" alt="A mother and her two sons at home" loading="lazy"></div>
   <section class="sec page-top">
     <div class="wrap pt">
       <div class="pt-copy">
@@ -452,6 +467,32 @@
     <div class="wrap"><div class="cta-band"><div><p class="script">Site map</p><p class="cta-band-h">See every homesite and amenity on the site map.</p></div><div class="btns"><a class="btn btn-light" href="#community/explore">Open the site map</a><button class="btn btn-ink" type="button" data-open="masterplan">View the masterplan</button></div></div></div>
   </section>
 
+  <section class="sec" id="gather" aria-labelledby="ga2-h">
+    <div class="wrap gather">
+      <div>
+        <p class="eyebrow">Parks, ponds &amp; green space</p>
+        <h2 class="h2" id="ga2-h">A place <em>to gather</em></h2>
+        <p class="lede">When you do want to venture out into the community, you’ll find trails for walking and jogging, and parks and green space to meet your neighbors and enjoy Mother Nature’s handiwork.</p>
+        <ol class="gather-key" data-gather-key></ol>
+        <div class="btns"><a class="btn btn-ink" href="#community/explore">View it on the site map</a></div>
+      </div>
+      <figure class="gather-map" data-gather>
+        <img src="img/site-plan.webp" alt="The north end of the Belmont Estates masterplan, with its two ponds, trail and green space" width="1833" height="1300" loading="lazy">
+        <figcaption>From the Belmont Estates masterplan. Conceptual rendering, subject to change without notice.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec tone-sand" id="lifestyle-videos" aria-labelledby="lv-h">
+    <div class="wrap">
+      <div class="head">
+        <div><p class="eyebrow">Videos</p><h2 class="h2" id="lv-h">Life at Belmont Estates <em>on video</em></h2></div>
+        <p class="lede">Tours of the community and everyday life around Fulshear. Videos appear here as they are released.</p>
+      </div>
+      <div class="videos" data-videos="lifestyle"></div>
+    </div>
+  </section>
+
   <section class="sec crafted-sec">
     <div class="wrap crafted">
       <div class="crafted-card">
@@ -481,6 +522,7 @@
 <!-- ================= RELOCATION ================= -->
 <div class="view" data-page="relocation" data-title="Moving to Fulshear | Belmont Estates" hidden>
   <section class="opener tone-gold"><img class="deco" src="img/brush-navy.webp" alt=""><p>Living in Fulshear at Belmont Estates</p></section>
+  <div class="pg-photo"><img src="img/moments-picnic.webp" alt="Two sisters on floor cushions under string lights on a backyard lawn" loading="lazy"></div>
   <section class="sec page-top">
     <div class="wrap pt">
       <div class="pt-copy">
@@ -572,10 +614,10 @@
     <div class="wrap">
       <div class="head">
         <div><p class="eyebrow">School map</p><h2 class="h2" id="sm-h">Campuses <em>near home</em></h2></div>
-        <p class="lede">The four Lamar CISD campuses listed for Belmont Estates, on the area map with the community. Select a school to see it pinned.</p>
+        <p class="lede">The four Lamar CISD campuses listed for Belmont Estates, on a real street map with the drive from the community entrance. Select a school to see its details and route.</p>
       </div>
       <div class="schoolmap" data-areamap="schools"></div>
-      <p class="note">Schools from the Belmont Estates materials, placed on the area attractions map. Map not to scale.</p>
+      <p class="note">Drive distances and times are approximate, from OpenStreetMap road data. School assignments are set by Lamar CISD; confirm yours with the district.</p>
     </div>
   </section>
 
@@ -587,7 +629,7 @@
       </div>
       <div class="know-cards">
         <article class="know"><h3>Confirm your campus</h3><p>Lamar CISD sets school zones. Confirm your assigned campuses and enroll through the district.</p><a class="link-arrow" href="https://www.lamarcisd.net/" target="_blank" rel="noopener">Lamar CISD website</a></article>
-        <article class="know"><h3>Close to home</h3><p>Huggins Elementary, Roberts Middle, Leaman Junior High and Fulshear High are all on the area map.</p><a class="link-arrow" href="#schools/school-map">See them on the map</a></article>
+        <article class="know"><h3>A short drive</h3><p data-short-drive>Huggins Elementary, Roberts Middle, Leaman Junior High and Fulshear High are all on the area map.</p><a class="link-arrow" href="#schools/school-map">See it on the map</a></article>
         <article class="know"><h3>Buses and calendars</h3><p>Ask Lamar CISD about bus routes and the school calendar for your new address.</p><a class="link-arrow" href="https://www.lamarcisd.net/" target="_blank" rel="noopener">Ask the district</a></article>
         <article class="know"><h3>Get school updates</h3><p>Register your interest to hear when new school details are posted here.</p><a class="link-arrow" href="#contact/get-in-touch" data-interest="All Belmont Estates updates">Register interest</a></article>
       </div>
@@ -620,12 +662,15 @@
 <!-- ================= CONTACT ================= -->
 <div class="view" data-page="contact" data-title="Contact | Belmont Estates, Fulshear, Texas" hidden>
   <section class="opener tone-juniper"><img class="deco" src="img/brush-saffron.webp" alt=""><p>Contact Belmont Estates</p></section>
+  <div class="pg-photo top"><img src="img/dream-home.webp" alt="A mother and her two sons at home" loading="lazy"></div>
   <section class="sec page-top" id="get-in-touch">
     <div class="wrap contact-grid">
       <div>
         <p class="eyebrow">Get in touch</p>
         <h1 class="h1">We’d love to <em>hear from you</em></h1>
         <p class="lede">Register your interest in Belmont Estates to hear about homesites, our builders and community updates. We can’t wait to help you build your dream home in this beautiful community!</p>
+        <ul class="ticks"><li>Homesite details</li><li>Announcements from William David Homes, Toll Brothers, Partners in Building and Autograph Homes</li><li>Project updates and early insights</li></ul>
+        <p class="contact-addr"><b>Off Bois D’Arc Lane, Fulshear, Texas</b> Near Bessie Creek and FM 1093. Sales contact details will be published here.</p>
         <p class="follow">Follow Belmont Estates <span data-social></span></p>
       </div>
       <form class="lead-form card" data-form="contact" novalidate>
@@ -635,7 +680,7 @@
           <label class="field"><span>Email *</span><input name="email" type="email" autocomplete="email" required></label>
           <label class="field"><span>Phone</span><input name="phone" type="tel" autocomplete="tel"></label>
           <label class="field"><span>Zip code</span><input name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="10"></label>
-          <label class="field"><span>I’m interested in</span><select name="interest" id="f-interest"><option>All Belmont Estates updates</option><option>Homesites</option><option>William David Homes</option><option>Toll Brothers</option><option>Partners in Building</option><option>Autograph Homes</option></select></label>
+          <label class="field"><span>I’m interested in</span><select name="interest" id="f-interest"><option>All Belmont Estates updates</option><option>Homesites</option><option>Builder announcements</option><option>William David Homes</option><option>Toll Brothers</option><option>Partners in Building</option><option>Autograph Homes</option><option>Resident updates</option></select></label>
           <label class="field field-wide"><span>Comments</span><textarea name="comments" id="f-comments" rows="4"></textarea></label>
         </div>
         <label class="check"><input type="checkbox" name="realtor"> I am a Realtor®</label>
@@ -671,6 +716,143 @@
   </section>
 </div>
 
+<!-- ================= RESIDENTS ================= -->
+<div class="view" data-page="residents" data-title="Residents | Belmont Estates, Fulshear, Texas" hidden>
+  <section class="opener tone-mint"><img class="deco" src="img/brush-mint-moments.webp" alt=""><p>Belmont Estates residents</p></section>
+  <div class="pg-photo"><img src="img/moments-picnic.webp" alt="Two sisters on floor cushions under string lights on a backyard lawn" loading="lazy"></div>
+  <section class="sec page-top">
+    <div class="wrap">
+      <div class="pt-split">
+        <div><p class="eyebrow">Residents</p><h1 class="h1">You found your home. <em>Now what?</em></h1></div>
+        <p class="lede">Congratulations, and welcome to Belmont Estates. This is your guide to how the community works, who looks after it and where to go for help. Belmont Estates is still taking shape, so anything not yet confirmed is marked below.</p>
+      </div>
+      <div class="res-help">
+        <div>
+          <h2 class="h3">Need help with amenity access or have a question about your home?</h2>
+          <p>The Homeowners Association looks after the community’s common areas. The HOA management company and its contact details will be posted here as soon as they are confirmed.</p>
+          <div class="btns"><a class="btn btn-ink" href="#lifestyle/amenities">The inside scoop on our amenities</a><a class="btn btn-gold" href="#contact/get-in-touch" data-interest="Resident updates">Get resident updates</a></div>
+        </div>
+        <dl class="res-facts"><div><dt>Management company</dt><dd>To be announced</dd></div><div><dt>Phone</dt><dd>To be announced</dd></div><div><dt>Email</dt><dd>To be announced</dd></div><div><dt>Office hours</dt><dd>To be announced</dd></div><div><dt>Resident portal</dt><dd>Coming soon</dd></div></dl>
+      </div>
+    </div>
+  </section>
+  <section class="sec tone-sand" id="res-hoa" aria-labelledby="rh-h">
+    <div class="wrap">
+      <div class="head">
+        <div><p class="eyebrow">Community association</p><h2 class="h2" id="rh-h">HOA assessments <em>&amp; property taxes</em></h2></div>
+        <p class="lede">The HOA will be responsible for maintaining designated common areas and preserving the overall appearance and quality of the community. Amounts will be published here as they are finalized.</p>
+      </div>
+      <ul class="tbd-stats"><li><b>To be announced</b><span>Annual HOA assessment per homesite</span></li><li><b>To be announced</b><span>One-time capitalization fee</span></li><li><b>To be announced</b><span>HOA transfer fee per ownership transfer</span></li><li><b>To be announced</b><span>Total combined property tax rate</span></li></ul>
+      <div class="btns"><a class="btn btn-ink" href="#hoa">See full HOA &amp; tax details</a></div>
+    </div>
+  </section>
+  <section class="sec" id="res-resources" aria-labelledby="rr-h">
+    <div class="wrap">
+      <div class="head">
+        <div><p class="eyebrow">Resident resources</p><h2 class="h2" id="rr-h">Everything <em>in one place</em></h2></div>
+        <p class="lede">Links are added here as each service is confirmed, so you always have one place to start.</p>
+      </div>
+      <div class="res-cards">
+        <article class="know"><h3>Amenities &amp; access</h3><p>Trails for walking and jogging, parks and green space to meet your neighbors, and two ponds on the masterplan.</p><a class="link-arrow" href="#lifestyle/amenities">See the amenities</a></article>
+        <article class="know"><span class="chip">Coming soon</span><h3>Community documents</h3><p>Association documents, forms and payment options will be linked here once the HOA management company is confirmed.</p></article>
+        <article class="know"><span class="chip">Coming soon</span><h3>Report a concern</h3><p>How to report a common-area maintenance concern will be posted here with the confirmed contact details.</p></article>
+        <article class="know"><h3>Your home builder</h3><p>Questions about your home? William David Homes, Toll Brothers, Partners in Building and Autograph Homes are the Belmont Estates builders.</p><a class="link-arrow" href="#homes/builders">Meet the builders</a></article>
+        <article class="know"><h3>Taxing authorities</h3><p>Belmont Estates is in Fort Bend County and is served by Lamar CISD. The full list of taxing authorities will be posted as it is confirmed.</p><a class="link-arrow" href="#hoa/property-tax">See the tax rates</a></article>
+        <article class="know"><h3>Emergencies</h3><p>In an emergency, call 911. Utility providers and other useful contacts will be added here as they are confirmed.</p></article>
+      </div>
+    </div>
+  </section>
+  <section class="sec tone-sand" id="res-news" aria-labelledby="rn-h">
+    <div class="wrap">
+      <div class="head">
+        <div><p class="eyebrow">Community news</p><h2 class="h2" id="rn-h">The latest <em>announcements</em></h2></div>
+        <div><p class="lede">Notices, events and community updates are posted here and on the News page.</p><a class="btn btn-ink" href="#news">All news &amp; announcements</a></div>
+      </div>
+      <div class="res-news" data-res-news></div>
+    </div>
+  </section>
+  <section class="sec" id="res-faq"><div class="wrap acc-wrap"><div><p class="eyebrow">Questions</p><h2 class="h2">Resident <em>questions</em></h2></div><div class="acc" data-faq="20,21,22,23,24,25,26"></div></div></section>
+</div>
+
+<!-- ================= HOA & TAX RATES ================= -->
+<div class="view" data-page="hoa" data-title="HOA &amp; Tax Rates | Belmont Estates, Fulshear, Texas" hidden>
+  <section class="opener tone-mint"><img class="deco" src="img/brush-mint-hero.webp" alt=""><p>Belmont Estates HOA &amp; tax rates</p></section>
+  <div class="pg-photo top"><img src="img/hero.webp" alt="Children running hand in hand with their parents through a sunlit meadow" loading="lazy"></div>
+  <section class="sec page-top">
+    <div class="wrap">
+      <div class="pt-split">
+        <div><p class="eyebrow">Belmont Estates, Fulshear, Texas</p><h1 class="h1">HOA fees &amp; <em>property tax information</em></h1></div>
+        <p class="lede">Belmont Estates is designed to provide a well-maintained residential environment. The Homeowners Association (HOA) will be responsible for maintaining designated common areas and preserving the overall appearance and quality of the community. Amounts will be published here as they are finalized.</p>
+      </div>
+      <ul class="tbd-stats"><li><b>To be announced</b><span>Annual HOA assessment per homesite</span></li><li><b>To be announced</b><span>One-time capitalization fee</span></li><li><b>To be announced</b><span>HOA transfer fee per ownership transfer</span></li><li><b>To be announced</b><span>Total combined property tax rate</span></li></ul>
+    </div>
+  </section>
+  <section class="sec tone-sand" id="hoa-fees" aria-labelledby="hf-h">
+    <div class="wrap two-col">
+      <div>
+        <h2 class="h3" id="hf-h">Homeowners Association (HOA) fees</h2>
+        <table class="rates"><caption class="sr">HOA fees for Belmont Estates</caption><thead><tr><th scope="col">Fee description</th><th scope="col">Amount</th></tr></thead><tbody><tr><td>Annual HOA Assessment</td><td>To be announced</td></tr><tr><td>One-Time Capitalization Fee</td><td>To be announced</td></tr><tr><td>HOA Transfer Fee</td><td>To be announced</td></tr><tr><td>Resale Certificate Fee</td><td>To be announced</td></tr></tbody></table>
+      </div>
+      <div class="rates-notes">
+        <p><b>Annual HOA assessment:</b> supports the ongoing maintenance and management of community common areas, landscaping, entrance features, trails and other shared amenities, as applicable.</p>
+        <p><b>Capitalization fee:</b> a one-time contribution collected at the initial home purchase, where one applies, to help establish HOA operating reserves.</p>
+        <p><b>Transfer and resale fees:</b> may be assessed during later ownership transfers. Belmont Estates’ amounts will be listed here when they are confirmed.</p>
+      </div>
+    </div>
+  </section>
+  <section class="sec" id="property-tax" aria-labelledby="pt-h">
+    <div class="wrap two-col">
+      <div>
+        <h2 class="h3" id="pt-h">Property tax information</h2>
+        <p>Belmont Estates is located in Fort Bend County, Texas, and is served by Lamar CISD. Property owners are subject to property taxes assessed by the applicable local taxing authorities.</p>
+        <table class="rates"><caption class="sr">Property tax rates for Belmont Estates</caption><thead><tr><th scope="col">Taxing authority</th><th scope="col">Tax rate</th></tr></thead><tbody><tr><td>Fort Bend County</td><td>To be announced</td></tr><tr><td>Lamar Consolidated ISD</td><td>To be announced</td></tr><tr><td>Other local taxing authorities</td><td>To be announced</td></tr></tbody><tfoot><tr><th scope="row">Total combined property tax rate</th><td>To be announced</td></tr></tfoot></table>
+        <p class="note">Tax rates are expressed as percentages of taxable property value. Rates are subject to change.</p>
+      </div>
+      <div class="rates-notes card-note">
+        <h3 class="h3">Municipal Utility District (MUD)</h3>
+        <p>Some Texas communities sit within a Municipal Utility District, which finances public infrastructure and utility improvements. Whether a MUD applies to Belmont Estates will be confirmed here.</p>
+      </div>
+    </div>
+  </section>
+  <section class="sec tone-sand" id="tax-estimates" aria-labelledby="te-h">
+    <div class="wrap two-col">
+      <div>
+        <h2 class="h3" id="te-h">Understanding your property taxes</h2>
+        <p>Property taxes are generally calculated by applying the combined tax rate to the property’s taxable assessed value, after applicable exemptions.</p>
+        <p class="note">Belmont Estates’ combined rate isn’t published yet, so this calculator starts empty. Enter any rate to see how the math works. It’s an illustration, not a quote, and excludes HOA assessments and other charges.</p>
+      </div>
+      <form class="tax-calc" data-tax-calc>
+        <label class="field"><span>Taxable property value ($)</span><input name="v" inputmode="numeric" placeholder="For example 1,000,000" autocomplete="off"></label>
+        <label class="field"><span>Combined tax rate (%)</span><input name="r" inputmode="decimal" placeholder="For example 2.5" autocomplete="off"></label>
+        <p class="tax-out" aria-live="polite"><span>Estimated annual property tax</span><b data-tax-out>Enter a value and a rate</b></p>
+      </form>
+    </div>
+  </section>
+  <section class="sec" id="hoa-disclosures" aria-labelledby="hd-h">
+    <div class="wrap narrow">
+      <h2 class="h3" id="hd-h">Important information &amp; disclosures</h2>
+      <ul class="disc"><li>HOA assessments and fees are subject to the community’s governing documents and may be adjusted from time to time.</li><li>Prospective buyers are encouraged to independently verify current tax rates, HOA fees and applicable assessments with the appropriate taxing authorities and HOA management company before purchasing a homesite or home.</li><li>All information is subject to change without notice.</li></ul>
+      <div class="btns"><a class="btn btn-ink" href="#residents">Residents page</a><a class="btn btn-gold" href="#contact/get-in-touch">Register your interest</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= REALTORS ================= -->
+<div class="view" data-page="realtors" data-title="Realtor Specialist | Belmont Estates, Fulshear, Texas" hidden>
+  <section class="opener tone-mint"><img class="deco" src="img/brush-saffron.webp" alt=""><p>Belmont Estates realtors</p></section>
+  <section class="sec page-top">
+    <div class="wrap pt">
+      <div class="pt-copy">
+        <span class="chip">Coming soon</span>
+        <h1 class="h1">Realtor <em>Specialist</em></h1>
+        <p class="lede">A dedicated page for real estate professionals is on the way. Realtor Specialist details will be shared here when they are available.</p>
+        <div class="btns"><a class="btn btn-ink" href="#contact/get-in-touch">Register your interest</a><a class="btn btn-gold" href="#community/explore">Site map</a></div>
+      </div>
+      <img class="crest pt-crest" src="img/crest-vase.webp" alt="A ceramic vase of blossoming branches on a table by a window" width="385" height="477" loading="lazy">
+    </div>
+  </section>
+</div>
+
 <!-- ================= NEWS ================= -->
 <div class="view" data-page="news" data-title="News & Updates | Belmont Estates" hidden>
   <section class="opener tone-mint"><img class="deco" src="img/brush-mint-hero.webp" alt=""><p>Belmont Estates news &amp; updates</p></section>
@@ -681,7 +863,7 @@
         <div><p class="lede">Project updates, announcements and community highlights will be posted here as Belmont Estates takes shape. Register your interest to hear first.</p><p class="follow">Follow along <span data-social></span></p></div>
       </div>
       <div class="story" data-story></div>
-      <div class="news-tools"><div class="chips" data-news-filter="page"></div></div>
+      <div class="news-tools"><div class="chips" data-news-filter="page"></div><div class="news-sel"><label><span class="sr">Category</span><select data-news-cat></select></label><label><span class="sr">Month</span><select data-news-month></select></label></div></div>
       <div class="news-grid" data-news="page"></div>
     </div>
   </section>
@@ -734,6 +916,7 @@
 </main>
 
 <footer class="foot" id="stay-connected">
+  <div class="foot-band" aria-hidden="true"></div>
   <div class="wrap">
     <div class="foot-top">
       <div class="foot-intro">
@@ -742,17 +925,16 @@
         <p class="foot-label">Follow Belmont Estates</p>
         <p class="foot-social" data-social></p>
       </div>
-      <nav class="foot-col" aria-label="Explore"><p class="foot-label">Explore</p><a href="#community">Community</a><a href="#homes">Homes</a><a href="#lifestyle">Lifestyle</a><a href="#relocation">Relocation</a><a href="#schools">Schools</a></nav>
-      <nav class="foot-col" aria-label="Information"><p class="foot-label">Information</p><a href="#contact">Contact</a><a href="#contact/questions">Questions</a><a href="#news">News &amp; updates</a><a href="#community/explore">Site map</a><button type="button" data-open="masterplan">Masterplan</button></nav>
+      <nav class="foot-col" aria-label="Explore"><p class="foot-label">Explore</p><a href="#community">Community</a><a href="#homes">Homes</a><a href="#lifestyle">Lifestyle</a><a href="#relocation">Relocation</a></nav>
+      <nav class="foot-col" aria-label="Information"><p class="foot-label">Information</p><a href="#schools">Schools</a><a href="#contact">Contact</a><a href="#contact/questions">Questions</a><a href="#news">News &amp; announcements</a><a href="#residents">Residents</a><a href="#hoa">HOA &amp; tax rates</a><a href="#realtors">Realtors</a></nav>
       <div class="foot-col"><p class="foot-label">Our developer</p><p class="foot-dev">Highten Capital</p><a href="#community/developer">About Highten Capital</a></div>
     </div>
-    <a class="foot-mark" href="#home" aria-label="Belmont Estates home"><img src="img/logo-horizontal.svg" alt="Belmont Estates" width="375" height="90"></a>
+    <a class="foot-mark" href="#home" aria-label="Belmont Estates home"><img src="img/logo-gold.svg" alt="Belmont Estates" width="375" height="90"></a>
     <div class="foot-bar">
       <p>©2026 Belmont Estates · <button type="button" data-open="disclaimer">Disclaimer</button></p>
       <p>Pricing and availability subject to change without notice. The masterplan is a conceptual rendering.</p>
     </div>
   </div>
-  <div class="foot-band" aria-hidden="true"></div>
 </footer>
 
 <!-- Find your new home: docked at the bottom of the screen -->
@@ -766,7 +948,7 @@
 
 <!-- ================= AI CONCIERGE ================= -->
 <button class="ask" type="button" aria-controls="chat" aria-expanded="false"><span class="ask-ic"><img src="img/logo-icon.svg" alt=""></span><span class="ask-txt"><b>Ask Belmont Estates</b><small>Your AI concierge</small></span></button>
-<div class="ask-tip" hidden><p><b>Hi, I’m your Belmont Estates concierge.</b> Want to see the homesites by builder?</p><div class="row"><button type="button" class="yes" data-tip="Show me the homesites by builder">Show me</button><button type="button" data-tip-tour>Take the tour</button><button type="button" class="no">Not now</button></div></div>
+<div class="ask-tip" hidden><p><b>Hi, I’m your Belmont Estates concierge.</b> Want to see how big a 2-acre homesite really is?</p><div class="row"><button type="button" class="yes" data-tip="How big is 2 acres?">Show me</button><button type="button" data-tip-tour>Take the tour</button><button type="button" class="no">Not now</button></div></div>
 <section class="chat" id="chat" aria-label="Belmont Estates concierge" hidden>
   <header class="chat-head"><span class="chat-mark"><img src="img/logo-icon.svg" alt=""></span><div><b>Belmont Estates Concierge</b><small>Answers from the Belmont Estates materials</small></div><button type="button" class="chat-reset" aria-label="Start over">↺</button><button type="button" class="chat-x" aria-label="Close the concierge">×</button></header>
   <div class="chat-topics" role="group" aria-label="Topics"></div>
@@ -783,6 +965,8 @@
 </dialog>
 
 <script src="js/plan-data.js"></script>
+<script src="js/plan-geo.js"></script>
+<script src="js/place-geo.js"></script>
 <script src="js/site.js"></script>
 </body>
 </html>

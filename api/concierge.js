@@ -12,7 +12,7 @@ const PLAN = JSON.parse(planText.slice(planText.indexOf('{'), planText.lastIndex
 const MODEL = process.env.CONCIERGE_MODEL || 'claude-opus-5-5';
 const FALLBACK_MODELS = ['claude-opus-5-5', 'claude-opus-5', 'claude-fable-5-1', 'claude-sonnet-5-5'];
 
-const PAGES = { home: 'Home', community: 'Community', homes: 'Find Your Home', lifestyle: 'Lifestyle', relocation: 'Relocation', schools: 'Schools', contact: 'Contact', news: 'News & Updates' };
+const PAGES = { home: 'Home', community: 'Community', homes: 'Find Your Home', lifestyle: 'Lifestyle', relocation: 'Relocation', schools: 'Schools', residents: 'Residents', hoa: 'HOA & Tax Rates', realtors: 'Realtor Specialist', contact: 'Contact', news: 'News & Updates' };
 const BUILDERS = Object.fromEntries(K.builders.map((b) => [b.id, b.name]));
 const PHASE1 = {};
 for (const l of PLAN.plan.lots) if (l.b) PHASE1[l.b] = (PHASE1[l.b] || 0) + 1;
@@ -21,7 +21,7 @@ const CATEGORIES = K.categories.map((c) => c.id);
 
 // Site actions an answer can attach, with the options each accepts (the first is the default)
 const TOOLS = {
-  none: [''], menu: [''], tour: [''], masterplan: [''], directions: [''], register: [''], schools: [''],
+  none: [''], menu: [''], tour: [''], masterplan: [''], directions: [''], register: [''], schools: [''], size: [''],
   homesites: ['', ...Object.keys(BUILDERS)],
   place: K.places.map((p) => String(p[0])),
   category: CATEGORIES,
@@ -71,6 +71,7 @@ Choose the one tool that best helps the visitor act on the answer, or "none".
 - register: the register-interest form.
 - tour: a guided tour of the website.
 - menu: shortcuts to everything the concierge can do; use for greetings or "what can you do".
+- size: an interactive view of how big a 2-acre homesite is, in the visitor's units.
 - page: open a page. option: ${Object.entries(PAGES).map(([k, v]) => `${k} (${v})`).join(', ')}.
 
 # Output
@@ -93,7 +94,7 @@ ${CATEGORIES.map((c) => `- ${c}: ${K.places.filter((p) => p[2] === c).map((p) =>
 - Roads on the area map: ${K.roads.join(', ')}.
 
 ## Website pages
-Home (the Unbridled Living story, builders, location, journal); Community (masterplan, interactive site map, planning notes, at a glance, developer, HOA and taxes to be announced); Find Your Home (homesite search, be first in line, builders, builder incentives not yet announced); Lifestyle (amenities and nearby museums, parks and entertainment); Relocation (moving to Fulshear: area map, roads, shopping); Schools (Lamar CISD campuses on a map, school videos coming soon, photos); Contact (register interest, directions, all questions); News & Updates (the journal, videos coming soon, photos). On the site map, visitors can filter by builder and phase, save favorite homesites on their device, share a homesite, and tilt the map into 3D.
+Home (the Unbridled Living story, builders, location, journal); Community (masterplan, interactive site map, planning notes, at a glance, developer, HOA and taxes to be announced); Find Your Home (homesite search, be first in line, builders, builder incentives not yet announced); Lifestyle (amenities and nearby museums, parks and entertainment); Relocation (moving to Fulshear: area map, roads, shopping); Schools (Lamar CISD campuses on a street map with the drive from the entrance, school videos coming soon, photos); Residents (guide for homeowners, contacts to be announced); HOA & Tax Rates (fees and rates to be announced); Realtor Specialist (coming soon); Contact (register interest, directions, all questions); News & Updates (the journal, videos coming soon, photos). On the site map, visitors can switch between street, plan and satellite views, filter by builder and phase, save favorite homesites on their device, share a homesite, get directions to it, and tilt the map into 3D.
 - Amenities on the masterplan: ${K.amenities.map((a) => `${a.name}: ${a.text}`).join(' ')}`;
 
 const BLOCKED = [/\$\s?\d/];

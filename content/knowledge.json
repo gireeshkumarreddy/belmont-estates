@@ -17,7 +17,10 @@
   "The developer is Highten Capital. Led by a team of seasoned real estate professionals, Highten Capital launched in 2018 with the idea to build communities rooted in connection to family, neighbors and nature.",
   "Highten Capital spent several years acquiring land throughout Texas for communities that deliver beautiful homes, amenities, wide open spaces and an active calendar of events designed to forge friendships among neighbors.",
   "Pricing and availability are subject to change without notice.",
-  "The area attractions map is not to scale."
+  "The area attractions map is not to scale.",
+  "Belmont Estates is in Fort Bend County, Texas.",
+  "HOA assessments, one-time fees and the combined property tax rate have not been announced; they will be posted on the HOA & Tax Rates page.",
+  "Approximate drives from the Bois D’Arc Lane entry, from OpenStreetMap road data: Fulshear Farmers Market 4 minutes; Roberts Middle School 5; Dean Leaman Junior High 6; Huggins Elementary 7; Fulshear High School 8; H-E-B on FM 1463 11; LaCenterra at Cinco Ranch 18; Katy Mills and Typhoon Texas 22; Houston Methodist West and the Fort Bend Museum 29; George Ranch Historical Park 41."
  ],
  "voice": "Home is where your authentic self lives, a place where you can find joy in things small and large. Unfettered by worries, your thoroughbred spirit soars as you realize the possibilities surrounding you. It’s life to the fullest, today, tomorrow and every day.",
  "builders": [
@@ -252,7 +255,8 @@
   "Location & Fulshear",
   "Schools & Education",
   "The Developer",
-  "Buying & Updates"
+  "Buying & Updates",
+  "Residents & HOA"
  ],
  "faq": [
   [
@@ -354,6 +358,41 @@
    6,
    "How much are homesites?",
    "Pricing hasn’t been published on this site. Register your interest to hear more. Pricing and availability are subject to change without notice."
+  ],
+  [
+   7,
+   "How much is the annual HOA assessment?",
+   "The HOA assessment for Belmont Estates hasn’t been announced. It will be posted on the HOA & Tax Rates page once it is finalized."
+  ],
+  [
+   7,
+   "Is there a capitalization fee?",
+   "Any one-time capitalization fee will be listed on the HOA & Tax Rates page once it is finalized."
+  ],
+  [
+   7,
+   "Are there fees when a home is resold?",
+   "Transfer and resale certificate fees, if any, will be listed on the HOA & Tax Rates page once they are finalized."
+  ],
+  [
+   7,
+   "What is the property tax rate?",
+   "The combined property tax rate for Belmont Estates hasn’t been published yet. Belmont Estates is in Fort Bend County and is served by Lamar CISD, and the rate will be posted once it is confirmed."
+  ],
+  [
+   7,
+   "Is there a MUD?",
+   "Whether a Municipal Utility District applies to Belmont Estates will be confirmed on the HOA & Tax Rates page."
+  ],
+  [
+   7,
+   "Are the amenities open yet?",
+   "Belmont Estates is still taking shape. Amenity details will be posted on the Residents page as they are confirmed."
+  ],
+  [
+   7,
+   "Who do I contact with a question?",
+   "The HOA management company and its contact details will be posted on the Residents page as soon as they are confirmed. Until then, register your interest and the team will follow up."
   ]
  ],
  "amenities": [
@@ -430,11 +469,29 @@
   {
    "cat": "Announcements",
    "date": "November 2026",
-   "title": "Every homesite on one interactive map",
+   "title": "Satellite and street views on the site map",
    "img": "img/site-plan.webp",
    "href": "#community/explore",
    "cta": "Take a look",
-   "text": "The new site map shows all 74 homesites on the Belmont Estates masterplan, with Phase 1 homesites in their builder’s colour. Select any homesite for its details."
+   "text": "The site map now shows every homesite on a real street map and on satellite imagery, as well as on the masterplan. Select a homesite for directions to it."
+  },
+  {
+   "cat": "Announcements",
+   "date": "November 2026",
+   "title": "A new page for residents",
+   "img": "img/moments-picnic.webp",
+   "href": "#residents",
+   "cta": "Take a look",
+   "text": "The Residents page brings together the HOA, amenities, community news and useful contacts, and will grow as Belmont Estates takes shape."
+  },
+  {
+   "cat": "Announcements",
+   "date": "November 2026",
+   "title": "A home for HOA and tax details",
+   "img": "img/dream-home.webp",
+   "href": "#hoa",
+   "cta": "Take a look",
+   "text": "A new page will carry the annual HOA assessment, one-time fees and the combined property tax rate as they are finalized."
   },
   {
    "cat": "Homes",
@@ -462,6 +519,15 @@
    "href": "#relocation/area-map",
    "cta": "Open the area map",
    "text": "All 28 places from the area attractions map, from H-E-B and Kroger to George Ranch Historical Park. Filter by category and select a place."
+  },
+  {
+   "cat": "Announcements",
+   "date": "November 2026",
+   "title": "Every homesite on one interactive map",
+   "img": "img/site-plan.webp",
+   "href": "#community/explore",
+   "cta": "Take a look",
+   "text": "The new site map shows all 74 homesites on the Belmont Estates masterplan, with Phase 1 homesites in their builder’s colour. Select any homesite for its details."
   },
   {
    "cat": "Announcements",

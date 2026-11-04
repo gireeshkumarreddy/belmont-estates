@@ -74,4 +74,8 @@ for pdf, name, w in [('BEL 25000 Master Plan Update v2.pdf', 'masterplan.webp', 
 # Logos
 for src, name in [('Horizontal/Belmont-Estates-logo-horizontal.svg', 'logo-horizontal.svg'), ('Icon/Belmont-Estates-logo-icon.svg', 'logo-icon.svg')]:
     shutil.copy(KIT / 'Logo' / src, OUT / name)
+# Every logo on the site is gold: the kit's gold, and a deeper gold where it sits on the pale header
+logo = (OUT / 'logo-horizontal.svg').read_text(encoding='utf-8')
+(OUT / 'logo-gold.svg').write_text(logo.replace('#747e7c', '#c7b36e'), encoding='utf-8')
+(OUT / 'logo-gold-deep.svg').write_text(logo.replace('#747e7c', '#a98c43').replace('#c7b36e', '#a98c43'), encoding='utf-8')
 print('done')

@@ -30,7 +30,9 @@
     tree: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="9" r="3.5"/><circle cx="16" cy="9" r="3.5"/><path d="M8 12.5V20M16 12.5V20M3 20h18"/></svg>',
     gate: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V8l4-3 4 3v12M12 20V8l4-3 4 3v12M2 20h20"/></svg>',
     home: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-5h4v5"/></svg>',
-    expand: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>'
+    expand: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',
+    compass: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l3 9h-6z" fill="currentColor"/><path d="M12 21l-3-9h6z"/></svg>',
+    size: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8l8-4 8 4-8 4zM4 8v8l8 4 8-4V8M12 12v8"/></svg>'
   };
   function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); } catch (x) { return null; } }
 
@@ -42,10 +44,10 @@
   var KINDS = [
     ['split', '.h1, .h2, .h3, .grace-h > span, .crafted-h, .dev-h, .lg-h, .cta-band-h, .grace-card-h'],
     ['write', '.script, .poster-legend-h'],
-    ['clip', '.tile, .rel-tile, .photo-card, .collage figure, .pt-pair figure, .grace-row figure, .arr-pics figure, .dg-thumb, .gal, .vid-poster, .story, .fu-map, .poster-body, .loc-map .am-stage, .inc-map img, .news-card img, .am-card img, .step img, .lg-photo, .crest, .bcard-top'],
+    ['clip', '.pg-photo, .gather-map .frame, .tile, .rel-tile, .photo-card, .collage figure, .pt-pair figure, .grace-row figure, .arr-pics figure, .dg-thumb, .gal, .vid-poster, .story, .fu-map, .poster-body, .loc-map .am-stage, .inc-map img, .news-card img, .am-card img, .step img, .lg-photo, .crest, .bcard-top'],
     ['sweep', '.deco'],
     ['fade', '.ghost, .dev-year'],
-    ['up', '.eyebrow, .lede, .pt-copy > p, .btns, .pt-tabs, .note, .note-pill, .note-card, .chips, .follow, .pt-stats li, .stats li, .dark-stats li, .ticks li, .roads li, .logos li, .logo-strip > p, .statement-sub, .mb-card, .news-card, .am-card, .bcard, .know, .tba, .near, .place-card, .step, .cat, .acc details, .fmx, .areamap, .schoolmap, .first, .lead-form, .inc-card, .fu-card, .nl-copy > p, .nl-form, .nl-side figcaption, .foot-top > *, .foot-mark, .foot-bar, .cols-copy p, .qa-cols p, .tag, .dev-meta, .dev-quote, .dg-dev .btn, .dg-top p, .dg-statement .round-btn, .vid-t, .vid-d, .vid-list, .crafted-card, .grace-card, .collage-card, .arr-card, .cta-band, .poster-top, .poster-logo, .poster-foot, .lg p, .lg .link-arrow, .lg-list li, .am-chips button, .opener p, .arrival p, .dev-sec p, .glance-lead, .head .link-arrow, .faq-tools, .grace-top .lede, .grace-h img, .story-nav']
+    ['up', '.tbd-stats li, .res-help, .res-cards .know, .res-item, .gather-key li, .gather-map figcaption, .rates, .rates-notes p, .rates-notes h3, .disc li, .tax-calc, .two-col > div > p, .contact-addr, .news-sel, .eyebrow, .lede, .pt-copy > p, .btns, .pt-tabs, .note, .note-pill, .note-card, .chips, .follow, .pt-stats li, .stats li, .dark-stats li, .ticks li, .roads li, .logos li, .logo-strip > p, .statement-sub, .mb-card, .news-card, .am-card, .bcard, .know, .tba, .near, .place-card, .step, .cat, .acc details, .fmx, .areamap, .schoolmap, .first, .lead-form, .inc-card, .fu-card, .nl-copy > p, .nl-form, .nl-side figcaption, .foot-top > *, .foot-mark, .foot-bar, .cols-copy p, .qa-cols p, .tag, .dev-meta, .dev-quote, .dg-dev .btn, .dg-top p, .dg-statement .round-btn, .vid-t, .vid-d, .vid-list, .crafted-card, .grace-card, .collage-card, .arr-card, .cta-band, .poster-top, .poster-logo, .poster-foot, .lg p, .lg .link-arrow, .lg-list li, .am-chips button, .opener p, .arrival p, .dev-sec p, .glance-lead, .head .link-arrow, .faq-tools, .grace-top .lede, .grace-h img, .story-nav']
   ];
   var COUNT = '.pt-stats b, .stats b, .collage-card b, .dark-stats b';
   var NOT_IN = '.hero, .chat, .fmx-body, .fmx-bar, .fmx-sub, .menu, .dock, .viewer, .ask-tip, .tour, .story-track, .vid-list, .poster-body';
@@ -276,6 +278,36 @@
     heroFirst = false;
   }
   onRoute.push(function (page) { if (page === 'home') { if (!hero.classList.contains('ready')) playHero(); } else hero.classList.remove('ready'); });
+
+  // Three family photos: they play on their own, each rising in from the bottom, and follow the dashes, a drag or the arrow keys
+  var slides = $$('.hero-img'), dashes = $$('[data-slide]'), slideAt = 0, slideT = 0, heroHold = false, dragX = null, heroSet = $('.hero-slides');
+  function runSlides() {
+    clearTimeout(slideT); hero.classList.remove('run'); void hero.offsetWidth;
+    if (!M || heroHold || current !== 'home') return;
+    hero.classList.add('run');
+    slideT = setTimeout(function () { if (scrollY > innerHeight || document.hidden) runSlides(); else showSlide(slideAt + 1); }, 6500);
+  }
+  function showSlide(i) {
+    i = (i + slides.length) % slides.length;
+    if (i !== slideAt) {
+      slides.forEach(function (im, k) { im.classList.toggle('prev', k === slideAt); im.classList.toggle('on', k === i); });
+      dashes.forEach(function (d, k) { d.setAttribute('aria-current', k === i); });
+      slideAt = i;
+    }
+    runSlides();
+  }
+  var dashBox = $('.hero-dots');
+  dashBox.addEventListener('click', function (e) { var b = e.target.closest('[data-slide]'); if (b) showSlide(+b.getAttribute('data-slide')); });
+  dashBox.addEventListener('keydown', function (e) { var k = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key]; if (k) { e.preventDefault(); showSlide(slideAt + k); dashes[slideAt].focus(); } });
+  dashBox.addEventListener('mouseenter', function () { heroHold = true; runSlides(); });
+  dashBox.addEventListener('mouseleave', function () { heroHold = false; runSlides(); });
+  hero.addEventListener('dragstart', function (e) { e.preventDefault(); });
+  hero.addEventListener('pointerdown', function (e) { if (!e.target.closest('button, a')) dragX = e.clientX; });
+  addEventListener('pointerup', function (e) { if (dragX === null) return; var dx = e.clientX - dragX; dragX = null; if (Math.abs(dx) > 50) showSlide(slideAt + (dx < 0 ? 1 : -1)); });
+  if (M && matchMedia('(hover: hover)').matches) hero.addEventListener('pointermove', function (e) {
+    var r = hero.getBoundingClientRect(); heroSet.style.translate = (((e.clientX - r.left) / r.width - .5) * -22).toFixed(1) + 'px ' + (((e.clientY - r.top) / r.height - .5) * -14).toFixed(1) + 'px';
+  });
+  onRoute.push(function (page) { if (page === 'home') runSlides(); else clearTimeout(slideT); });
   if (M) {
     requestAnimationFrame(function () { top.classList.add('shown'); });
     setTimeout(function () { $('#dock').classList.add('shown'); $('.ask').classList.add('shown'); }, 1700);
@@ -324,14 +356,20 @@
   }
 
   // Every photo in a figure can be seen larger
-  $$('.collage figure, .pt-pair figure, .grace-row figure, .arr-pics figure').forEach(function (f) {
-    var b = document.createElement('button'); b.type = 'button'; b.className = 'xl'; b.setAttribute('aria-label', 'See this photo larger'); b.innerHTML = ICON.expand; f.appendChild(b);
-  });
+  var XL = 'figure, .photo-card, .am-card, .step, .news-card';
+  function addExpand() {
+    $$('.collage figure, .pt-pair figure, .grace-row figure, .arr-pics figure, .photo-card, .am-card:not(.noimg), .step').forEach(function (f) {
+      if ($('.xl', f)) return;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'xl'; b.setAttribute('aria-label', 'See this photo larger'); b.innerHTML = ICON.expand; f.appendChild(b);
+    });
+  }
+  addExpand();
   document.addEventListener('click', function (e) {
     var b = e.target.closest('.xl'); if (!b) return;
-    var f = b.closest('figure'), img = $('img', f), cap = $('figcaption', f);
-    openHTML(img.alt, '<figure class="lb"><img src="' + (img.currentSrc || img.src) + '" alt="' + esc(img.alt) + '"><figcaption><b>' + esc(cap ? cap.textContent : img.alt) + '</b></figcaption></figure>');
-  });
+    e.preventDefault(); e.stopPropagation();
+    var f = b.closest(XL), img = $('img', f), cap = $('figcaption, b, h3', f);
+    openHTML(img.alt || 'Photo', '<figure class="lb"><img src="' + (img.currentSrc || img.src) + '" alt="' + esc(img.alt) + '"><figcaption><b>' + esc(cap ? cap.textContent : img.alt) + '</b></figcaption></figure>');
+  }, true);
   scan(document);
 
   // ================= load the kit content, then build everything that uses it =================
@@ -352,6 +390,24 @@
     function builderName(id) { return BY[id] ? BY[id].name : ''; }
     function showHomesites(f) { go('#homes/available'); setTimeout(function () { if (explorers.homes) explorers.homes.filter(f || {}); }, 60); }
 
+    // ---------- real maps: MapLibre loads only when a map comes near the screen ----------
+    var G = window.BE_GEO, PL = window.BE_PLACES, glLoad = null, STREETS = 'https://tiles.openfreemap.org/styles/positron';
+    var GLOK = !!G && (function () { try { var c = document.createElement('canvas'); return !!(window.WebGLRenderingContext && (c.getContext('webgl2') || c.getContext('webgl'))); } catch (x) { return false; } })();
+    function loadGL() {
+      return glLoad || (glLoad = new Promise(function (ok, no) {
+        var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'js/vendor/maplibre-gl.css'; document.head.appendChild(l);
+        var sc = document.createElement('script'); sc.src = 'js/vendor/maplibre-gl.js'; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc);
+      }));
+    }
+    function whenNear(box, fn) { if (GLOK) new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { o.disconnect(); loadGL().then(fn, function () {}); } }, { rootMargin: '600px' }).observe(box); }
+    function boundsOf(pts) { var b = new maplibregl.LngLatBounds(pts[0], pts[0]); pts.forEach(function (q) { b.extend(q); }); return b; }
+    function crestMark() { var d = document.createElement('div'); d.className = 'map-crest'; d.innerHTML = '<img src="img/logo-icon.svg" alt="Belmont Estates">'; return d; }
+    function parcelLayers(map) {
+      map.addSource('parcel', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [G.parcel] } } });
+      map.addLayer({ id: 'parcel-fill', type: 'fill', source: 'parcel', paint: { 'fill-color': '#C7B36E', 'fill-opacity': .22 } });
+      map.addLayer({ id: 'parcel-line', type: 'line', source: 'parcel', paint: { 'line-color': '#42516B', 'line-width': 2, 'line-dasharray': [2, 1.5] } });
+    }
+
     // ---------- search dock ----------
     var dock = $('#dock');
     dock.addEventListener('submit', function (e) {
@@ -365,7 +421,7 @@
         es.forEach(function (x) { var k = covering.indexOf(x.target); if (x.isIntersecting && k < 0) covering.push(x.target); if (!x.isIntersecting && k >= 0) covering.splice(k, 1); });
         dock.classList.toggle('away', covering.length > 0);
       }, { threshold: 0.05 });
-      $$('.news-band, .foot, .fmx').forEach(function (x) { io.observe(x); });
+      $$('.news-band, .foot, .fmx, .schoolmap, .loc-map').forEach(function (x) { io.observe(x); });
     }
 
     // ---------- steps ----------
@@ -454,7 +510,7 @@
       var f = { builder: '', phase: '', saved: false }, sort = 'num', tab = 'homesites', layout = 'grid', sel = -1, open = innerWidth < 900, mode = '2d', layer = 'art';
       var builderOpts = K.builders.map(function (b) { return '<option value="' + b.id + '">' + esc(b.name) + '</option>'; }).join('');
       var pins = [];
-      K.amenities.forEach(function (a) { a.at.forEach(function (p) { pins.push({ a: a, x: p[0], y: p[1] }); }); });
+      K.amenities.forEach(function (a) { a.at.forEach(function (p, j) { pins.push({ a: a, x: p[0], y: p[1], ll: G ? G.pins[a.id][j] : null }); }); });
       el.innerHTML =
         '<div class="fmx-bar">' +
           '<div class="fmx-seg" role="group" aria-label="View"><button type="button" data-view="map" aria-pressed="true">' + ICON.map + 'Map view</button><button type="button" data-view="plans" aria-pressed="false">Explore plans</button></div>' +
@@ -473,16 +529,19 @@
               '<g class="fmx-nums" text-anchor="middle">' + LOTS.map(function (l, i) { return '<text x="' + l.c[0] + '" y="' + (l.c[1] + 2.4) + '"' + (l.b === 'autograph' || l.b === 'pib' ? ' class="dark"' : '') + '>' + (i + 1) + '</text>'; }).join('') + '</g></svg>' +
               '<div class="fmx-pins">' + pins.map(function (p, k) { return '<button type="button" class="fmx-pin pin-' + p.a.id + '" data-pin="' + k + '" style="--k:' + k + '" aria-label="' + esc(p.a.name) + '">' + ICON[p.a.icon] + '</button>'; }).join('') + '</div>' +
             '</div></div>' +
+            '<div class="fmx-glmap"></div>' +
             '<div class="fmx-ctrl"><button type="button" data-c="layers" aria-label="Map layers" aria-expanded="false">' + ICON.layers + '</button>' +
               '<div class="fmx-layers" hidden><button type="button" data-layer="art" aria-pressed="true">Masterplan</button><button type="button" data-layer="flat" aria-pressed="false">Homesites only</button></div>' +
               '<button type="button" data-c="fit" aria-label="Show the whole community">' + ICON.fit + '</button>' +
-              '<div class="fmx-zoom"><button type="button" data-z="1" aria-label="Zoom in">+</button><button type="button" data-z="-1" aria-label="Zoom out">−</button></div></div>' +
+              '<div class="fmx-zoom"><button type="button" data-z="1" aria-label="Zoom in">+</button><button type="button" data-z="-1" aria-label="Zoom out">−</button></div>' +
+              '<button type="button" data-c="north" class="only-gl" aria-label="Reset the map to north up">' + ICON.compass + '</button></div>' +
             '<button type="button" class="fmx-showlist" aria-expanded="false"></button>' +
             '<div class="fmx-legend"><p class="fmx-lh">Legend</p><ul>' +
               K.builders.map(function (b) { return '<li><button type="button" data-lb="' + b.id + '"><i style="background:' + COLORS[b.id] + '"></i>' + esc(b.name) + '<b>' + counts[b.id] + '</b></button></li>'; }).join('') +
               '<li><button type="button" data-lb="future"><i class="future"></i>Future development<b>' + counts.future + '</b></button></li></ul>' +
-              '<ul class="fmx-lkey"><li><i class="sel"></i>Selected homesite</li><li><i class="fav">' + ICON.heart + '</i>Saved homesite</li><li><i class="pond"></i>Pond</li><li><i class="trail"></i>Trail</li><li><i class="green"></i>Green space</li></ul></div>' +
-            '<button type="button" class="fmx-info" aria-label="Show or hide the legend" aria-pressed="true">' + ICON.info + '</button>' +
+              '<ul class="fmx-lkey"><li><i class="sel"></i>Selected homesite</li><li><i class="fav">' + ICON.heart + '</i>Saved homesite</li><li><i class="pond"></i>Pond</li><li><i class="trail"></i>Trail</li><li><i class="green"></i>Green space</li><li><i class="bound"></i>Community boundary</li>' +
+              K.amenities.filter(function (a) { return a.at.length; }).map(function (a) { return '<li><i class="mk pin-' + a.id + '">' + ICON[a.icon] + '</i>' + esc(a.name) + '</li>'; }).join('') + '</ul></div>' +
+            '<button type="button" class="fmx-info" aria-label="Show the legend" title="Legend" aria-pressed="false">' + ICON.info + '</button>' +
             '<div class="fmx-dim" role="group" aria-label="2D or 3D"><button type="button" data-mode="2d" aria-pressed="true">2D</button><button type="button" data-mode="3d" aria-pressed="false">3D</button></div>' +
             '<div class="fmx-hover" hidden></div>' +
           '</div>' +
@@ -493,7 +552,7 @@
           '</aside>' +
           '<div class="fmx-plans" hidden></div>' +
         '</div>' +
-        '<p class="fmx-note">Homesite outlines are traced from the Belmont Estates masterplan (2/25), a conceptual rendering subject to change without notice. Homesite numbers are for this map only; homesite details are sample information until our builders release them.</p>';
+        '<p class="fmx-note">Homesite outlines are traced from the Belmont Estates masterplan (2/25), a conceptual rendering subject to change without notice, and fitted to satellite imagery, so positions are approximate. Homesite numbers are for this map only; homesite details are sample information until our builders release them.</p>';
 
       var svg = $('.fmx-plan > svg', el), canvas = $('.fmx-canvas', el), plan = $('.fmx-plan', el), hover = $('.fmx-hover', el), cards = $('.fmx-cards', el), detail = $('.fmx-detail', el), list = $('.fmx-list', el), body = $('.fmx-body', el);
       var pinEls = $$('.fmx-pin', el), countEl = $('.fmx-count', el), showBtn = $('.fmx-showlist', el), favBtn = $('.fmx-fav', el), plans = $('.fmx-plans', el);
@@ -540,6 +599,7 @@
         $('[data-f="builder"]', el).value = f.builder; $('[data-f="phase"]', el).value = f.phase;
         favBtn.setAttribute('aria-pressed', f.saved); $('b', favBtn).textContent = saved.length;
         $$('[data-lb]', el).forEach(function (b) { var id = b.getAttribute('data-lb'); b.setAttribute('aria-pressed', id === 'future' ? f.phase === 'future' : f.builder === id); });
+        glSync();
       }
       function filter(o) {
         f.builder = o.builder && BY[o.builder] ? o.builder : ''; f.phase = o.phase === '1' || o.phase === 'future' ? o.phase : ''; f.saved = !!o.saved;
@@ -570,16 +630,17 @@
         detail.innerHTML = '<div class="fmx-dh"><div><p class="eyebrow">' + (b ? 'Phase 1 · ' + esc(b.name) : 'Future development') + '</p><h3>Homesite ' + n + '</h3></div><button type="button" class="fmx-x" aria-label="Close homesite ' + n + '">' + ICON.close + '</button></div>' +
           '<div class="fmx-dacts"><a class="btn btn-gold" href="#contact/get-in-touch" data-interest="' + (b ? esc(b.name) : 'Homesites') + '" data-comment="I’m interested in homesite ' + n + (b ? ' (' + esc(b.name) + ')' : '') + ' on the Belmont Estates site map.">Register interest</a>' +
             '<button type="button" class="fmx-dbtn" data-save="' + n + '" aria-pressed="' + isSaved(n) + '">' + ICON.heart + '<span>' + (isSaved(n) ? 'Saved' : 'Save') + '</span></button><button type="button" class="fmx-dbtn" data-share="' + n + '">' + ICON.share + '<span>Share</span></button></div>' +
-          '<div class="fmx-dacts two"><a class="fmx-dbtn ink" href="' + HOME_DIR + '" target="_blank" rel="noopener">' + ICON.nav + '<span>Get directions</span></a><a class="fmx-dbtn" href="' + HOME_MAP + '" target="_blank" rel="noopener">' + ICON.pin + '<span>Open in Google Maps</span></a></div>' +
-          '<p class="fmx-small">Opens Google Maps at Bois D’Arc Lane, Fulshear, the road Belmont Estates is off.</p>' +
+          '<div class="fmx-dacts two"><a class="fmx-dbtn ink" href="' + lotDir(i) + '" target="_blank" rel="noopener">' + ICON.nav + '<span>Get directions</span></a><a class="fmx-dbtn" href="' + lotMap(i) + '" target="_blank" rel="noopener">' + ICON.pin + '<span>Open in Google Maps</span></a></div>' +
+          '<p class="fmx-small">Opens Google Maps at this homesite, so you can see the drive and what is nearby. Streets inside Belmont Estates may not show yet.</p>' +
           '<figure class="fmx-scene">' + scene + '<figcaption>Homesite ' + n + ' on the masterplan.</figcaption></figure>' +
           '<dl class="fmx-stats"><div><dt>Homesite size</dt><dd>2 acres</dd></div><div><dt>Area</dt><dd>87,120 sq ft</dd></div><div><dt>Price</dt><dd>To be announced</dd></div><div><dt>Phase</dt><dd>' + (b ? 'Phase 1' : 'Future development') + '</dd></div><div><dt>Builder</dt><dd>' + (b ? esc(b.name) : 'To be announced') + '</dd></div><div><dt>Homesite</dt><dd>' + n + ' of ' + LOTS.length + '</dd></div></dl>' +
           (b ? '<div class="fmx-dbuilder"><div class="fmx-blogo"><img src="' + b.logo + '" alt="' + esc(b.name) + '" width="' + b.w + '" height="' + b.h + '"></div><div><button type="button" class="link-arrow" data-only="' + l.b + '">See their homesites</button><a class="link-arrow" href="#homes/builders">About ' + esc(b.name) + '</a></div></div>' : '<p class="fmx-small">Builders for the Future Development homesites haven’t been announced. Register your interest to hear first.</p>') +
           '<div class="fmx-dplans"><b>Home plans</b><p>Builder floor plans and elevations for this homesite will appear here as they are released.</p></div>' +
           '<p class="fmx-small">The 2-acre size comes from the Belmont Estates materials. The outline is traced from the masterplan, a conceptual rendering subject to change without notice.</p>';
         detail.scrollTop = 0;
+        if (fly && map) map.fitBounds(boundsOf(G.lots[i]), { padding: 90, maxZoom: 17.7, duration: reduce ? 0 : 1000, pitch: map.getPitch(), bearing: map.getBearing() });
         // Zoom so the homesite takes about a fifth of the map's width
-        if (fly) { var k = Math.max(.25, Math.min(1, (bb[2] - bb[0]) * 5 / W)); vb = [cx - W * k / 2, cy - H * k / 2, W * k, H * k]; clamp(); apply(); }
+        if (fly && !map) { var k = Math.max(.25, Math.min(1, (bb[2] - bb[0]) * 5 / W)); vb = [cx - W * k / 2, cy - H * k / 2, W * k, H * k]; clamp(); apply(); }
       }
       function savedChanged() {
         drawMap(); if (tab === 'homesites') drawCards();
@@ -592,8 +653,13 @@
         var done = function () { var b = $('[data-share] span', detail); if (b) { b.textContent = 'Link copied'; setTimeout(function () { b.textContent = 'Share'; }, 1800); } };
         if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, function () { prompt('Copy this link', url); }); else prompt('Copy this link', url);
       }
+      // The middle of a homesite, for directions
+      function lotLL(i) { var g = G.lots[i], x = 0, y = 0, n = g.length - 1; for (var k = 0; k < n; k++) { x += g[k][0]; y += g[k][1]; } return (y / n).toFixed(6) + ',' + (x / n).toFixed(6); }
+      function lotDir(i) { return G ? 'https://www.google.com/maps/dir/?api=1&destination=' + lotLL(i) : HOME_DIR; }
+      function lotMap(i) { return G ? MAPS + lotLL(i) : HOME_MAP; }
       function flyTo(x, y) { var k = .42; vb = [x - W * k / 2, y - H * k / 2, W * k, H * k]; clamp(); apply(); }
       function apply() {
+        if (el.classList.contains('gl')) return;
         svg.setAttribute('viewBox', vb.map(function (v) { return v.toFixed(1); }).join(' '));
         el.classList.toggle('nonum', canvas.clientWidth / vb[2] * 7 < 6.5);
         canvas.classList.toggle('zoomed', vb[2] < VB[2] * .99);
@@ -649,7 +715,7 @@
       el.addEventListener('click', function (e) {
         var t = e.target, c;
         if ((c = t.closest('[data-view]'))) { setView(c.getAttribute('data-view')); return; }
-        if (t.closest('.fmx-reset')) { sort = 'num'; $('[data-sort]', el).value = 'num'; vb = VB.slice(); apply(); closeDetail(); filter({}); return; }
+        if (t.closest('.fmx-reset')) { sort = 'num'; $('[data-sort]', el).value = 'num'; vb = VB.slice(); apply(); closeDetail(); filter({}); if (map) fitAll(); return; }
         if (t.closest('.fmx-fav')) { filter({ builder: f.builder, phase: f.phase, saved: !f.saved }); setOpen(true); return; }
         if ((c = t.closest('[data-save]'))) { toggleSave(+c.getAttribute('data-save')); return; }
         if ((c = t.closest('[data-share]'))) { share(+c.getAttribute('data-share')); return; }
@@ -658,28 +724,94 @@
         if ((c = t.closest('[data-lb]'))) { var id = c.getAttribute('data-lb'); filter(id === 'future' ? (f.phase === 'future' ? {} : { phase: 'future' }) : (f.builder === id ? {} : { builder: id })); return; }
         if ((c = t.closest('[data-tab]'))) { if (sel >= 0) closeDetail(); setTab(c.getAttribute('data-tab')); return; }
         if ((c = t.closest('[data-gl]'))) { layout = c.getAttribute('data-gl'); $$('[data-gl]', el).forEach(function (b) { b.setAttribute('aria-pressed', b === c); }); drawCards(); return; }
-        if ((c = t.closest('[data-amenity]'))) { var a = AM[c.getAttribute('data-amenity')]; pulse(a.id); if (a.at.length) flyTo(a.at[0][0], a.at[0][1]); else { vb = VB.slice(); apply(); el.classList.add('show-streets'); setTimeout(function () { el.classList.remove('show-streets'); }, 2400); } return; }
+        if ((c = t.closest('[data-amenity]'))) { var a = AM[c.getAttribute('data-amenity')]; pulse(a.id); if (map) { if (a.at.length) map.flyTo({ center: G.pins[a.id][0], zoom: 16.1, duration: reduce ? 0 : 1000 }); else fitAll(); } else if (a.at.length) flyTo(a.at[0][0], a.at[0][1]); else { vb = VB.slice(); apply(); el.classList.add('show-streets'); setTimeout(function () { el.classList.remove('show-streets'); }, 2400); } return; }
         if ((c = t.closest('.fmx-pin'))) { var pa = pins[+c.getAttribute('data-pin')].a; setOpen(true); if (sel >= 0) closeDetail(); setTab('amenities'); pulse(pa.id); var card = $('[data-amenity="' + pa.id + '"]', el); if (card) { card.focus({ preventScroll: true }); card.scrollIntoView({ block: 'nearest' }); } return; }
         if (t.closest('.fmx-x')) { closeDetail(); return; }
         if (t.closest('.fmx-showlist')) { setOpen(!open); return; }
-        if ((c = t.closest('[data-z]'))) { zoomAt(+c.getAttribute('data-z') > 0 ? 1.6 : 1 / 1.6, .5, .5); return; }
+        if ((c = t.closest('[data-z]'))) { var up2 = +c.getAttribute('data-z') > 0; if (map) { if (up2) map.zoomIn(); else map.zoomOut(); } else zoomAt(up2 ? 1.6 : 1 / 1.6, .5, .5); return; }
         if ((c = t.closest('[data-c]'))) {
           var k = c.getAttribute('data-c');
-          if (k === 'fit') { vb = VB.slice(); apply(); }
+          if (k === 'fit') { if (map) fitAll(); else { vb = VB.slice(); apply(); } }
+          if (k === 'north' && map) { mode = '2d'; $$('[data-mode]', el).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-mode') === '2d'); }); map.easeTo({ bearing: 0, pitch: 0, duration: 700 }); }
           if (k === 'layers') { var m = $('.fmx-layers', el); m.hidden = !m.hidden; c.setAttribute('aria-expanded', !m.hidden); }
           return;
         }
+        if ((c = t.closest('[data-layer]')) && map) { setGL(c.getAttribute('data-layer')); $('.fmx-layers', el).hidden = true; return; }
         if ((c = t.closest('[data-layer]'))) { layer = c.getAttribute('data-layer'); el.classList.toggle('flat', layer === 'flat'); $$('[data-layer]', el).forEach(function (b) { b.setAttribute('aria-pressed', b === c); }); $('.fmx-layers', el).hidden = true; return; }
-        if ((c = t.closest('.fmx-info'))) { var on = !el.classList.toggle('nolegend'); c.setAttribute('aria-pressed', on); return; }
+        if ((c = t.closest('.fmx-info'))) { var on = !el.classList.toggle('nolegend'); c.setAttribute('aria-pressed', on); c.setAttribute('aria-label', on ? 'Hide the legend' : 'Show the legend'); return; }
         if ((c = t.closest('[data-mode]'))) {
           mode = c.getAttribute('data-mode'); el.classList.toggle('is3d', mode === '3d');
           $$('[data-mode]', el).forEach(function (b) { b.setAttribute('aria-pressed', b === c); });
+          if (map) { map.easeTo({ pitch: mode === '3d' ? 58 : 0, bearing: mode === '3d' ? -18 : 0, duration: reduce ? 0 : 900 }); return; }
           vb = VB.slice(); apply(); return;
         }
       });
+      // The real map: streets, plan and satellite. Until it loads, or without WebGL, the plain plan stands in
+      var map = null, glLayer = 'streets', glHover = 0;
+      function fitAll(ms) { map.fitBounds(boundsOf(G.parcel), { padding: 26, duration: ms === 0 || reduce ? 0 : 900, pitch: mode === '3d' ? 58 : 0, bearing: mode === '3d' ? -18 : 0 }); }
+      function glFill(sat) {
+        return ['case', ['boolean', ['feature-state', 'sel'], false], .55, ['boolean', ['feature-state', 'wave'], false], .85, ['boolean', ['feature-state', 'hover'], false], .5,
+          ['boolean', ['feature-state', 'dim'], false], sat ? .55 : .6, sat ? ['case', ['==', ['get', 'b'], ''], .1, .5] : 0];
+      }
+      function setGL(m) {
+        glLayer = m; var sat = m === 'sat';
+        map.setLayoutProperty('b-cover', 'visibility', m === 'plan' ? 'visible' : 'none');
+        map.setLayoutProperty('b-sat', 'visibility', sat ? 'visible' : 'none');
+        map.setLayoutProperty('b-art', 'visibility', sat ? 'none' : 'visible');
+        map.setPaintProperty('b-fill', 'fill-opacity', glFill(sat));
+        map.setPaintProperty('b-line', 'line-color', ['case', ['boolean', ['feature-state', 'sel'], false], sat ? '#FFFFFF' : '#343B3C', ['boolean', ['feature-state', 'fav'], false], '#A4572F', sat ? 'rgba(255,255,255,.75)' : 'rgba(255,255,255,0)']);
+        map.setPaintProperty('b-num', 'text-color', sat ? '#FFFFFF' : '#343B3C');
+        map.setPaintProperty('b-num', 'text-halo-color', sat ? 'rgba(0,0,0,.7)' : 'rgba(255,255,255,.85)');
+        map.setPaintProperty('b-edge', 'line-color', sat ? '#F2E6B8' : '#42516B');
+        $$('[data-layer]', el).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-layer') === m); });
+      }
+      function glSync() {
+        if (!map) return;
+        LOTS.forEach(function (l, i) { map.setFeatureState({ source: 'lots', id: i + 1 }, { dim: !match(i), sel: i === sel, fav: isSaved(i + 1) }); });
+        map.setFilter('b-sel', ['==', ['id'], sel + 1]);
+      }
+      function initGL() {
+        map = new maplibregl.Map({ container: $('.fmx-glmap', el), style: STREETS, bounds: boundsOf(G.parcel), fitBoundsOptions: { padding: 26 }, cooperativeGestures: true, attributionControl: { compact: true }, maxPitch: 70 });
+        map.once('style.load', function () {
+          map.addSource('sat', { type: 'raster', tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'], tileSize: 256, maxzoom: 19, attribution: 'Imagery © Esri, Maxar, Earthstar Geographics' });
+          map.addSource('cover', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [[[-180, -85], [180, -85], [180, 85], [-180, 85], [-180, -85]]] } } });
+          map.addSource('art', { type: 'image', url: 'img/site-plan-geo.webp', coordinates: G.art });
+          map.addSource('lots', { type: 'geojson', data: { type: 'FeatureCollection', features: LOTS.map(function (l, i) { return { type: 'Feature', id: i + 1, properties: { b: l.b, c: l.b ? COLORS[l.b] : '#FBF8F1' }, geometry: { type: 'Polygon', coordinates: [G.lots[i]] } }; }) } });
+          map.addSource('nums', { type: 'geojson', data: { type: 'FeatureCollection', features: LOTS.map(function (l, i) { var q = lotLL(i).split(','); return { type: 'Feature', properties: { n: String(i + 1) }, geometry: { type: 'Point', coordinates: [+q[1], +q[0]] } }; }) } });
+          map.addSource('edge', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: G.parcel } } });
+          map.addLayer({ id: 'b-cover', type: 'fill', source: 'cover', layout: { visibility: 'none' }, paint: { 'fill-color': '#EFEADF' } });
+          map.addLayer({ id: 'b-sat', type: 'raster', source: 'sat', layout: { visibility: 'none' } });
+          map.addLayer({ id: 'b-art', type: 'raster', source: 'art', paint: { 'raster-fade-duration': 0 } });
+          map.addLayer({ id: 'b-edge', type: 'line', source: 'edge', paint: { 'line-color': '#42516B', 'line-width': 1.6, 'line-dasharray': [3, 2] } });
+          map.addLayer({ id: 'b-fill', type: 'fill', source: 'lots', paint: { 'fill-color': ['case', ['boolean', ['feature-state', 'dim'], false], '#3F4748', ['boolean', ['feature-state', 'sel'], false], '#FFFFFF', ['get', 'c']], 'fill-opacity': 0 } });
+          map.addLayer({ id: 'b-line', type: 'line', source: 'lots', paint: { 'line-color': 'rgba(255,255,255,0)', 'line-width': ['case', ['boolean', ['feature-state', 'sel'], false], 3, ['boolean', ['feature-state', 'fav'], false], 2, 1] } });
+          map.addLayer({ id: 'b-sel', type: 'fill-extrusion', source: 'lots', filter: ['==', ['id'], 0], paint: { 'fill-extrusion-color': '#C7B36E', 'fill-extrusion-height': 9, 'fill-extrusion-opacity': .8 } });
+          map.addLayer({ id: 'b-num', type: 'symbol', source: 'nums', minzoom: 15, layout: { 'text-field': ['get', 'n'], 'text-font': ['Noto Sans Bold'], 'text-size': ['interpolate', ['linear'], ['zoom'], 15, 9, 17, 13], 'text-allow-overlap': true }, paint: { 'text-color': '#343B3C', 'text-halo-color': 'rgba(255,255,255,.85)', 'text-halo-width': 1 } });
+          pins.forEach(function (q, k) {
+            var box = document.createElement('div'); box.className = 'fmx-mk';
+            box.innerHTML = '<button type="button" class="fmx-pin pin-' + q.a.id + '" data-pin="' + k + '" style="--k:' + k + '" aria-label="' + esc(q.a.name) + '">' + ICON[q.a.icon] + '</button>';
+            new maplibregl.Marker({ element: box, anchor: 'bottom' }).setLngLat(q.ll).addTo(map);
+          });
+          pinEls = $$('.fmx-glmap .fmx-pin', el);
+          map.on('mousemove', 'b-fill', function (e) {
+            var id = e.features[0].id; map.getCanvas().style.cursor = 'pointer';
+            if (glHover !== id) { if (glHover) map.setFeatureState({ source: 'lots', id: glHover }, { hover: false }); glHover = id; map.setFeatureState({ source: 'lots', id: id }, { hover: true }); }
+            hover.innerHTML = '<b>Homesite ' + id + '</b>' + (LOTS[id - 1].b ? 'Phase 1 · ' + esc(builderName(LOTS[id - 1].b)) : 'Future development'); hover.hidden = false;
+            hover.style.transform = 'translate(' + Math.min(e.point.x + 14, map.getContainer().clientWidth - hover.offsetWidth - 8) + 'px,' + (e.point.y + 16) + 'px)';
+          });
+          map.on('mouseleave', 'b-fill', function () { map.getCanvas().style.cursor = ''; hover.hidden = true; if (glHover) map.setFeatureState({ source: 'lots', id: glHover }, { hover: false }); glHover = 0; });
+          map.on('click', 'b-fill', function (e) { pick(e.features[0].id - 1); });
+          $('.fmx-layers', el).innerHTML = '<button type="button" data-layer="streets" aria-pressed="true">Streets</button><button type="button" data-layer="plan" aria-pressed="false">Plan</button><button type="button" data-layer="sat" aria-pressed="false">Satellite</button>';
+          setGL('streets'); el.classList.add('gl'); glSync(); map.resize(); fitAll(0);
+          if (M) LOTS.forEach(function (l, i) { setTimeout(function () { map.setFeatureState({ source: 'lots', id: i + 1 }, { wave: true }); }, 500 + i * 18); setTimeout(function () { map.setFeatureState({ source: 'lots', id: i + 1 }, { wave: false }); }, 860 + i * 18); });
+          if (sel >= 0) map.fitBounds(boundsOf(G.lots[sel]), { padding: 90, maxZoom: 17.7, duration: 0 });
+        });
+        if (window.ResizeObserver) new ResizeObserver(function () { map.resize(); }).observe($('.fmx-map', el));
+      }
+      whenNear(el, initGL);
       function pulse(id) { pinEls.forEach(function (p, k) { p.classList.toggle('pulse', pins[k].a.id === id); }); setTimeout(function () { pinEls.forEach(function (p) { p.classList.remove('pulse'); }); }, 2400); }
       if (window.ResizeObserver) new ResizeObserver(apply).observe(canvas);
-      setOpen(open); setTab('homesites'); drawMap(); apply();
+      el.classList.add('nolegend'); setOpen(open); setTab('homesites'); drawMap(); apply();
       return { filter: filter, select: function (n) { if (n >= 1 && n <= LOTS.length) { filter({}); pick(n - 1, true); } }, savedChanged: savedChanged, el: el };
     }
     $$('[data-explorer]').forEach(function (el) { var k = el.getAttribute('data-explorer') || 'community'; explorers[k] = explorer(el, k); });
@@ -694,8 +826,8 @@
     function bLine(b) { return plural(counts[b.id], 'Phase 1 homesite') + ' on the masterplan'; }
     $$('[data-builder-cards]').forEach(function (el) {
       el.innerHTML = K.builders.map(function (b) {
-        return '<article class="mb-card"><p class="mb-name">' + esc(b.name) + '</p><span class="chip light"><i style="background:' + COLORS[b.id] + '"></i>' + bLine(b) + '</span><h3>Custom homes on 2-acre homesites</h3><p>With 2 acres, you can design the home of your dreams, and ' + esc(b.name) + ' is ready to help, from a spacious single-story to a stately estate.</p>' +
-          '<div class="mb-acts"><button type="button" class="btn btn-gold" data-show-builder="' + b.id + '">See on homes</button><a class="link-arrow light" href="#contact/get-in-touch" data-interest="' + esc(b.name) + '">Get ' + esc(b.name.split(' ')[0]) + ' updates</a></div></article>';
+        return '<article class="mb-card"><div class="mb-top"><span class="mb-lg"><img src="' + b.logo + '" alt="' + esc(b.name) + '" width="' + b.w + '" height="' + b.h + '" loading="lazy"></span><span class="chip light"><i style="background:' + COLORS[b.id] + '"></i>' + bLine(b) + '</span></div><h3>Custom homes on 2-acre homesites</h3><p>With 2 acres, you can design the home of your dreams, and ' + esc(b.name) + ' is ready to help, from a spacious single-story to a stately estate.</p>' +
+          '<div class="mb-acts"><a class="btn btn-gold" href="#homes/b-' + b.id + '">Explore Homes</a><a class="mb-line" href="#contact/get-in-touch" data-interest="' + esc(b.name) + '">Get ' + esc(b.name.replace(/ Homes$/, '')) + ' updates</a></div></article>';
       }).join('');
     });
     $$('[data-builder-chips]').forEach(function (el) {
@@ -707,7 +839,7 @@
         return '<article class="bcard" id="b-' + b.id + '"><div class="bcard-top"><span class="chip light">Home designs to come</span><div class="bcard-logo"><img src="' + b.logo + '" alt="' + esc(b.name) + '" width="' + b.w + '" height="' + b.h + '" loading="lazy"></div></div>' +
           '<dl class="bcard-facts"><div><dt>Homesites</dt><dd>' + plural(counts[b.id], 'Phase 1 homesite') + ', 2 acres each</dd></div><div><dt>Pricing</dt><dd>To be announced</dd></div></dl>' +
           '<details class="bcard-more"><summary>Learn more</summary><p>' + esc(b.name) + ' is one of the Belmont Estates family of builders, selected for their distinctive design approach and unrivaled quality construction. Whether you envision a spacious single-story or a stately estate, our builders are known for their quality and creativity.</p></details>' +
-          '<div class="bcard-acts"><button type="button" class="btn btn-light" data-show-builder="' + b.id + '">See their homesites</button><a class="btn btn-ink" href="#contact/get-in-touch" data-interest="' + esc(b.name) + '">Get ' + esc(b.name) + ' updates</a></div></article>';
+          '<div class="bcard-acts"><button type="button" class="btn btn-light" data-show-builder="' + b.id + '">Explore home options</button><a class="btn btn-ink" href="#contact/get-in-touch" data-interest="' + esc(b.name) + '">Get ' + esc(b.name) + ' updates</a></div></article>';
       }).join('');
     });
     document.addEventListener('click', function (e) { var b = e.target.closest('[data-show-builder]'); if (b) showHomesites({ builder: b.getAttribute('data-show-builder') }); });
@@ -723,7 +855,8 @@
 
     // ================= area map, school map and the home page map =================
     var LEVEL = { 1: 'Elementary', 2: 'Middle school', 3: 'Junior high', 4: 'High school' };
-    var HOME_PICKS = [4, 11, 5, 8, 10, 21, 26, 28];
+    var HOME_PICKS = [28, 4, 11, 8, 10, 26, 5];
+    function drive(n) { var q = PL && PL.places[n]; return q ? q.mi + ' mi · about ' + q.min + ' min drive' : ''; }
     function areamap(el, mode) {
       var A = DATA.area, pins = Object.keys(A.pins).map(Number), schools = mode === 'schools', homeMode = mode === 'home', cat = 'All', sel = 0;
       var shown = pins.filter(function (n) { return schools ? PLACE[n].cat === 'Schools' : homeMode ? HOME_PICKS.indexOf(n) >= 0 : true; });
@@ -740,8 +873,36 @@
         '<text x="' + A.home.x + '" y="' + (A.home.y + A.home.r + 32) + '" text-anchor="middle" font-family="Spectral, Georgia, serif" font-size="26" fill="#FAF8F2" letter-spacing="3">BELMONT ESTATES</text>' +
         shown.map(function (n, j) { var p = A.pins[n]; return '<g class="am-pin' + (light[PLACE[n].cat] ? ' light' : '') + '" data-n="' + n + '" style="--k:' + j + '" tabindex="0" role="button" aria-label="' + esc(PLACE[n].name) + ', ' + PLACE[n].cat + '"><circle class="am-pulse" cx="' + p.x + '" cy="' + p.y + '" r="' + p.r + '"/><circle cx="' + p.x + '" cy="' + p.y + '" r="' + p.r + '" fill="' + p.fill + '" stroke="#FAF8F2" stroke-width="3"/><text x="' + p.x + '" y="' + (p.y + 6) + '" text-anchor="middle">' + n + '</text></g>'; }).join('') + '</svg>';
       if (homeMode) {
-        var labels = shown.map(function (n, j) { var p = A.pins[n]; return '<button type="button" class="am-label" data-place="' + n + '" style="--k:' + j + ';left:' + ((p.x - vb[0]) / vb[2] * 100) + '%;top:' + ((p.y - vb[1]) / vb[3] * 100) + '%"><span class="num" style="background:' + p.fill + '">' + n + '</span>' + esc(PLACE[n].name) + '</button>'; }).join('');
-        el.innerHTML = '<div class="am-stage" style="aspect-ratio:' + vb[2] + '/' + vb[3] + '">' + svg + labels + '</div><div class="am-chips">' + shown.map(function (n) { return '<button type="button" data-place="' + n + '"><span class="num" style="background:' + A.pins[n].fill + '">' + n + '</span>' + esc(PLACE[n].name) + '<small>' + esc(PLACE[n].cat) + '</small></button>'; }).join('') + '<button type="button" class="all" data-show-cat="All">Show every place</button></div>';
+        var labels = shown.map(function (n, j) { var p = A.pins[n]; return '<button type="button" class="am-label" data-hp="' + n + '" style="--k:' + j + ';left:' + ((p.x - vb[0]) / vb[2] * 100) + '%;top:' + ((p.y - vb[1]) / vb[3] * 100) + '%"><span class="num" style="background:' + p.fill + '">' + n + '</span>' + esc(PLACE[n].name) + '</button>'; }).join('');
+        el.innerHTML = '<div class="am-stage" style="aspect-ratio:' + vb[2] + '/' + vb[3] + '">' + svg + labels + '</div><div class="am-chips">' + shown.map(function (n) { return '<button type="button" data-hp="' + n + '"><span class="num" style="background:' + A.pins[n].fill + '">' + n + '</span>' + esc(PLACE[n].name) + '<small>' + (PL ? PL.places[n].min + ' min' : esc(PLACE[n].cat)) + '</small></button>'; }).join('') + '<button type="button" class="all" data-show-cat="All">Show every place</button></div>';
+        var hm = null;
+        el.addEventListener('click', function (e) {
+          var b = e.target.closest('[data-hp]'); if (!b) return; var n = +b.getAttribute('data-hp');
+          if (!hm) { showPlace(n); return; }
+          $$('[data-hp]', el).forEach(function (x) { x.classList.toggle('sel', +x.getAttribute('data-hp') === n); });
+          hm.flyTo({ center: PL.places[n].ll, zoom: 13.4, duration: reduce ? 0 : 1100 });
+        });
+        whenNear(el, function () {
+          var stage = $('.am-stage', el), box = document.createElement('div'); box.className = 'am-gl'; stage.appendChild(box);
+          var all = shown.map(function (n) { return PL.places[n].ll; }).concat([G.center]);
+          hm = new maplibregl.Map({ container: box, style: STREETS, bounds: boundsOf(all), fitBoundsOptions: { padding: { top: 50, bottom: 50, left: 80, right: 300 } }, cooperativeGestures: true, attributionControl: { compact: true } });
+          hm.once('style.load', function () {
+            parcelLayers(hm);
+            new maplibregl.Marker({ element: crestMark(), anchor: 'center' }).setLngLat(G.center).addTo(hm);
+            shown.forEach(function (n, j) {
+              var d = document.createElement('div'); d.className = 'map-tag';
+              d.innerHTML = '<button type="button" data-hp="' + n + '" style="--k:' + j + '"><span class="num" style="background:' + A.pins[n].fill + '">' + n + '</span>' + esc(PLACE[n].name) + '<small>' + PL.places[n].min + ' min</small></button>';
+              // Katy Mills sits beside Typhoon Texas, so its label opens the other way
+              new maplibregl.Marker({ element: d, anchor: n === 26 ? 'right' : 'left', offset: [n === 26 ? 12 : -12, 0] }).setLngLat(PL.places[n].ll).addTo(hm);
+            });
+            var ctl = document.createElement('div'); ctl.className = 'mapctl';
+            ctl.innerHTML = '<button type="button" data-mz="1" aria-label="Zoom in">+</button><button type="button" data-mz="-1" aria-label="Zoom out">−</button><button type="button" data-mfit aria-label="Show every place">' + ICON.fit + '</button>';
+            stage.appendChild(ctl);
+            ctl.addEventListener('click', function (e) { var z = e.target.closest('[data-mz]'); if (z) { if (+z.getAttribute('data-mz') > 0) hm.zoomIn(); else hm.zoomOut(); } if (e.target.closest('[data-mfit]')) hm.fitBounds(boundsOf(all), { padding: { top: 50, bottom: 50, left: 80, right: 300 } }); });
+            stage.classList.add('gl-on');
+            var note = $('[data-loc-note]'); if (note) note.textContent = 'Drive times are approximate, from the Bois D’Arc Lane entry, using OpenStreetMap road data.';
+          });
+        });
         return {};
       }
       var cats = K.categories.filter(function (c) { return shown.some(function (n) { return PLACE[n].cat === c.id; }); });
@@ -756,9 +917,10 @@
         $$('[data-lv]', el).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-lv') === String(lv)); });
         $$('.am-pin', el).forEach(function (g) { g.classList.toggle('dim', !inView(+g.getAttribute('data-n'))); });
         var items = shown.filter(inView);
+        if (sm) sm.level(lv);
         list.innerHTML = items.map(function (n) {
           return schools
-            ? '<li><button type="button" class="sch" data-n="' + n + '" aria-pressed="' + (n === sel) + '"><span class="num" style="background:' + A.pins[n].fill + '">' + n + '</span><span><b>' + esc(PLACE[n].name) + '</b><span class="chip">' + LEVEL[n] + '</span><small>Lamar CISD · number ' + n + ' on the area map</small></span></button></li>'
+            ? '<li><button type="button" class="sch" data-n="' + n + '" aria-pressed="' + (n === sel) + '"><span class="num" style="background:' + A.pins[n].fill + '">' + n + '</span><span><b>' + esc(PLACE[n].name) + '</b><span class="chip">' + LEVEL[n] + '</span><small>' + (drive(n) || 'Lamar CISD') + '</small></span></button></li>'
             : '<li><button type="button" data-n="' + n + '" aria-pressed="' + (n === sel) + '"><span class="num" style="background:' + A.pins[n].fill + '">' + n + '</span><span>' + esc(PLACE[n].name) + '</span><small>' + PLACE[n].cat + '</small></button></li>';
         }).join('');
         if (!sel || items.indexOf(sel) < 0) {
@@ -771,7 +933,8 @@
         sel = n; var P = PLACE[n];
         $$('.am-pin', el).forEach(function (g) { var on = +g.getAttribute('data-n') === n; g.classList.toggle('sel', on); if (on) g.parentNode.appendChild(g); });
         $$('button[data-n]', list).forEach(function (b) { b.setAttribute('aria-pressed', +b.getAttribute('data-n') === n); });
-        info.innerHTML = '<b>' + esc(P.name) + '</b><span>' + (schools ? LEVEL[n] + ' · Lamar CISD' : P.cat) + ' · number ' + n + ' on the area map</span><a class="link-arrow" href="' + MAPS + encodeURIComponent(P.name + ', Texas') + '" target="_blank" rel="noopener">Directions</a>';
+        info.innerHTML = '<b>' + esc(P.name) + '</b><span>' + (schools ? LEVEL[n] + ' · Lamar CISD · ' + drive(n) : P.cat + ' · number ' + n + ' on the area map') + '</span><a class="link-arrow" href="' + MAPS + encodeURIComponent(P.name + ', Texas') + '" target="_blank" rel="noopener">Directions</a>';
+        if (sm) sm.pick(n);
         info.classList.remove('swap'); void info.offsetWidth; info.classList.add('swap');
       }
       el.addEventListener('click', function (e) {
@@ -780,6 +943,49 @@
         var p = e.target.closest('[data-n]'); if (p) pick(+p.getAttribute('data-n'));
       });
       el.addEventListener('keydown', function (e) { var p = e.target.closest('.am-pin'); if (p && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pick(+p.getAttribute('data-n')); } });
+      // The school map: a real street map with the drive from the community entrance
+      var sm = null;
+      if (schools) whenNear(el, function () {
+        var stage = $('.am-stage', el), box = document.createElement('div'); box.className = 'am-gl'; stage.appendChild(box);
+        var pts = shown.map(function (n) { return PL.places[n].ll; }).concat(G.parcel), pad = { top: 40, bottom: 40, left: 60, right: 40 };
+        var gm = new maplibregl.Map({ container: box, style: STREETS, bounds: boundsOf(pts), fitBoundsOptions: { padding: pad }, cooperativeGestures: true, attributionControl: { compact: true }, maxPitch: 70 });
+        var marks = {};
+        gm.once('style.load', function () {
+          parcelLayers(gm);
+          gm.addSource('routes', { type: 'geojson', data: { type: 'FeatureCollection', features: shown.map(function (n) { return { type: 'Feature', id: n, properties: { n: n }, geometry: { type: 'LineString', coordinates: PL.places[n].route } }; }) } });
+          gm.addLayer({ id: 'r-case', type: 'line', source: 'routes', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#FFFFFF', 'line-width': 6, 'line-opacity': ['case', ['boolean', ['feature-state', 'off'], false], 0, .9] } });
+          gm.addLayer({ id: 'r-line', type: 'line', source: 'routes', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': ['case', ['boolean', ['feature-state', 'sel'], false], '#A4572F', '#C38B53'], 'line-width': ['case', ['boolean', ['feature-state', 'sel'], false], 4.5, 3], 'line-opacity': ['case', ['boolean', ['feature-state', 'off'], false], 0, 1] } });
+          new maplibregl.Marker({ element: crestMark(), anchor: 'center' }).setLngLat(G.center).addTo(gm);
+          shown.forEach(function (n) {
+            var d = document.createElement('div'); d.className = 'map-school'; d.innerHTML = '<button type="button" data-n="' + n + '" aria-label="' + esc(PLACE[n].name) + '">' + n + '</button>';
+            marks[n] = new maplibregl.Marker({ element: d, anchor: 'center' }).setLngLat(PL.places[n].ll).addTo(gm);
+          });
+          var ctl = document.createElement('div'); ctl.className = 'mapctl';
+          ctl.innerHTML = '<button type="button" data-mz="1" aria-label="Zoom in">+</button><button type="button" data-mz="-1" aria-label="Zoom out">−</button><button type="button" data-mfit aria-label="Show Belmont Estates and all schools">' + ICON.fit + '</button><button type="button" data-mn aria-label="Reset the map to north up">' + ICON.compass + '</button>';
+          var dim = document.createElement('div'); dim.className = 'mapdim'; dim.setAttribute('role', 'group'); dim.setAttribute('aria-label', '2D or 3D');
+          dim.innerHTML = '<button type="button" data-m3="0" aria-pressed="true">2D</button><button type="button" data-m3="1" aria-pressed="false">3D</button>';
+          var inf = document.createElement('button'); inf.type = 'button'; inf.className = 'mapinfo'; inf.setAttribute('aria-label', 'Show the legend'); inf.setAttribute('aria-pressed', 'false'); inf.innerHTML = ICON.info;
+          var leg = document.createElement('div'); leg.className = 'maplegend'; leg.hidden = true;
+          leg.innerHTML = '<p class="fmx-lh">Legend</p><ul><li><i class="l-home"></i>Belmont Estates</li><li><i class="l-sch"></i>Lamar CISD campus</li><li><i class="l-route"></i>Drive from the entrance</li><li><i class="l-bound"></i>Belmont Estates boundary</li></ul>';
+          [ctl, dim, inf, leg].forEach(function (x) { stage.appendChild(x); });
+          stage.addEventListener('click', function (e) {
+            var z = e.target.closest('[data-mz]'); if (z) { if (+z.getAttribute('data-mz') > 0) gm.zoomIn(); else gm.zoomOut(); return; }
+            if (e.target.closest('[data-mfit]')) { gm.fitBounds(boundsOf(pts), { padding: pad, pitch: gm.getPitch(), bearing: gm.getBearing() }); return; }
+            if (e.target.closest('[data-mn]')) { gm.easeTo({ bearing: 0, pitch: 0 }); $$('[data-m3]', dim).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-m3') === '0'); }); return; }
+            var m = e.target.closest('[data-m3]'); if (m) { var on3 = m.getAttribute('data-m3') === '1'; $$('[data-m3]', dim).forEach(function (b) { b.setAttribute('aria-pressed', b === m); }); gm.easeTo({ pitch: on3 ? 58 : 0, bearing: on3 ? -18 : 0, duration: reduce ? 0 : 900 }); return; }
+            if (e.target.closest('.mapinfo')) { leg.hidden = !leg.hidden; inf.setAttribute('aria-pressed', !leg.hidden); }
+          });
+          stage.classList.add('gl-on');
+          sm = {
+            level: function (v) { shown.forEach(function (n) { var on = v === 'All' || +v === n; gm.setFeatureState({ source: 'routes', id: n }, { off: !on }); marks[n].getElement().classList.toggle('dim', !on); }); },
+            pick: function (n) {
+              shown.forEach(function (x) { gm.setFeatureState({ source: 'routes', id: x }, { sel: x === n }); marks[x].getElement().classList.toggle('sel', x === n); });
+              gm.fitBounds(boundsOf(PL.places[n].route), { padding: 70, maxZoom: 14.6, duration: reduce ? 0 : 1000, pitch: gm.getPitch(), bearing: gm.getBearing() });
+            }
+          };
+        });
+        if (window.ResizeObserver) new ResizeObserver(function () { gm.resize(); }).observe(stage);
+      });
       draw();
       return { show: function (n) { if (shown.indexOf(n) < 0) return; cat = 'All'; lv = 'All'; draw(); pick(n); }, category: function (c) { cat = CAT[c] ? c : 'All'; draw(); } };
     }
@@ -809,22 +1015,33 @@
       return '<article class="news-card' + (n.soon ? ' soon' : '') + (i === 0 ? ' lead' : '') + '" data-cat="' + esc(n.cat) + '"><a href="' + n.href + '"' + (n.soon ? ' data-interest="All Belmont Estates updates"' : '') + '><img src="' + n.img + '" alt="" loading="lazy"><span class="news-meta"><span>' + esc(n.cat) + '</span><span>' + esc(n.date) + '</span></span><b>' + esc(n.title) + '</b><span class="news-text">' + esc(n.text) + '</span><span class="link-arrow">' + esc(n.cta) + '</span></a></article>';
     }
     $$('[data-news]').forEach(function (grid) {
-      var isPage = grid.getAttribute('data-news') === 'page', filt = 'All';
+      var isPage = grid.getAttribute('data-news') === 'page', filt = 'All', month = '';
       var bar = $('[data-news-filter' + (isPage ? '="page"' : '') + ']', grid.closest('section'));
       var cats = ['All'].concat(K.news.map(function (n) { return n.cat; }).filter(function (c, i, a) { return a.indexOf(c) === i; }));
       function draw() {
         // The home page shows a lead story and four more: two full rows
-        var items = K.news.filter(function (n) { return filt === 'All' || n.cat === filt; });
+        var items = K.news.filter(function (n) { return (filt === 'All' || n.cat === filt) && (!month || n.date === month); });
         if (!isPage) items = items.slice(0, 5);
         grid.innerHTML = items.map(function (n, i) { return newsCard(n, isPage ? -1 : i); }).join('');
         scan(grid);
         if (bar) $$('button', bar).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-nf') === filt); });
+        if (catSel) catSel.value = filt === 'All' ? '' : filt;
+      }
+      var catSel = isPage ? $('[data-news-cat]') : null, monSel = isPage ? $('[data-news-month]') : null;
+      if (catSel) {
+        catSel.innerHTML = '<option value="">All categories</option>' + cats.slice(1).map(function (c) { return '<option>' + esc(c) + '</option>'; }).join('');
+        monSel.innerHTML = '<option value="">Any month</option>' + K.news.map(function (n) { return n.date; }).filter(function (c, i, a) { return a.indexOf(c) === i; }).map(function (c) { return '<option>' + esc(c) + '</option>'; }).join('');
+        catSel.addEventListener('change', function () { filt = catSel.value || 'All'; draw(); });
+        monSel.addEventListener('change', function () { month = monSel.value; draw(); });
       }
       if (bar) {
         bar.innerHTML = cats.map(function (c) { return '<button type="button" class="chip-btn" data-nf="' + esc(c) + '" aria-pressed="false">' + esc(c) + '</button>'; }).join('');
         bar.addEventListener('click', function (e) { var b = e.target.closest('[data-nf]'); if (b) { filt = b.getAttribute('data-nf'); draw(); } });
       }
       draw();
+    });
+    $$('[data-res-news]').forEach(function (el) {
+      el.innerHTML = K.news.filter(function (n) { return !n.soon; }).slice(0, 3).map(function (n) { return '<article class="res-item"><small>' + esc(n.date) + '</small><h3>' + esc(n.title) + '</h3><p>' + esc(n.text) + '</p><a class="link-arrow" href="' + n.href + '">' + esc(n.cta) + '</a></article>'; }).join('');
     });
     $$('[data-story]').forEach(function (el) {
       var items = K.news.filter(function (n) { return !n.soon; }), k = 0;
@@ -837,12 +1054,13 @@
     // ---------- videos (on the way) ----------
     var VIDEOS = {
       schools: [['Lamar CISD at a glance', 'An introduction to the school district that serves Belmont Estates.', 'img/schools-classroom.webp'], ['The drive to school', 'From Belmont Estates to the campuses listed for the community.', 'img/moments-garden.webp'], ['Campus tours', 'A look at the Lamar CISD campuses near Belmont Estates.', 'img/life-grandpa.webp'], ['Learning outdoors', 'Learning and play with space to roam.', 'img/life-sprinkler.webp']],
-      news: [['A first look at Belmont Estates', 'A tour of the masterplan: the homesites, ponds and trails.', 'img/site-plan.webp'], ['Meet William David Homes', 'An introduction from one of our family of builders.', 'img/home-interior.webp'], ['Meet Toll Brothers', 'An introduction from one of our family of builders.', 'img/dream-home.webp'], ['Meet Partners in Building', 'An introduction from one of our family of builders.', 'img/intro-family.webp'], ['Meet Autograph Homes', 'An introduction from one of our family of builders.', 'img/life-grandpa.webp'], ['Around Fulshear', 'Country living, with the conveniences of fast-growing Fulshear down the stretch.', 'img/moments-garden.webp']]
+      lifestyle: [['A walk through Belmont Estates', 'A look at the trails, ponds and green space.', 'img/life-running.webp'], ['Ponds and green space', 'Where neighbors meet and Mother Nature’s handiwork shows.', 'img/life-lupines.webp'], ['Outdoors around Fulshear', 'Parks, museums and weekends close by.', 'img/moments-garden.webp']],
+      news: [['A first look at Belmont Estates', 'A tour of the masterplan: the homesites, ponds and trails.', 'img/site-plan.webp'], ['Meet William David Homes', 'An introduction from one of our family of builders.', 'img/home-interior.webp'], ['Meet Toll Brothers', 'An introduction from one of our family of builders.', 'img/dream-home.webp'], ['Meet Partners in Building', 'An introduction from one of our family of builders.', 'img/intro-family.webp'], ['Meet Autograph Homes', 'An introduction from one of our family of builders.', 'img/life-grandpa.webp'], ['Around Fulshear', 'Country living, with the conveniences of fast-growing Fulshear down the stretch.', 'img/moments-garden.webp'], ['Community updates', 'Progress at Belmont Estates as it takes shape.', 'img/moments-picnic.webp']]
     };
     $$('[data-videos]').forEach(function (el) {
       var v = VIDEOS[el.getAttribute('data-videos')], k = 0, pad = function (n) { return ('0' + n).slice(-2); };
       el.innerHTML = '<div class="vid-main"><div class="vid-poster"><img alt="" loading="lazy"><span class="chip">Coming soon</span><span class="vid-play" aria-hidden="true">' + ICON.play + '</span></div><p class="vid-t"><span></span><b></b></p><p class="vid-d"></p></div>' +
-        '<div class="vid-list"><p class="eyebrow">Videos</p>' + v.map(function (x, i) { return '<button type="button" data-v="' + i + '" aria-pressed="' + (i === 0) + '"><img src="' + x[2] + '" alt="" loading="lazy"><span><b>' + esc(x[0]) + '</b><small>Coming soon</small></span></button>'; }).join('') + '</div>';
+        '<div class="vid-list"><p class="eyebrow">' + v.length + ' videos</p>' + v.map(function (x, i) { return '<button type="button" data-v="' + i + '" aria-pressed="' + (i === 0) + '"><img src="' + x[2] + '" alt="" loading="lazy"><span><b>' + esc(x[0]) + '</b><small>Coming soon</small></span></button>'; }).join('') + '</div>';
       function show(i) { k = i; var x = v[i], im = $('.vid-poster img', el); im.src = x[2]; im.classList.remove('swap'); void im.offsetWidth; im.classList.add('swap'); $('.vid-t span', el).textContent = pad(i + 1) + ' / ' + pad(v.length); $('.vid-t b', el).textContent = x[0]; $('.vid-d', el).textContent = x[1] + ' Coming soon.'; $$('[data-v]', el).forEach(function (b, j) { b.setAttribute('aria-pressed', j === i); }); }
       el.addEventListener('click', function (e) { var b = e.target.closest('[data-v]'); if (b) show(+b.getAttribute('data-v')); });
       show(0);
@@ -868,20 +1086,44 @@
       draw();
     });
 
+    // ---------- a place to gather: numbered spots on the masterplan ----------
+    var GATHER = [['North pond', 430, 62], ['East pond', 640, 62], ['Trail for walking & jogging', 596, 150], ['Green space', 668, 255], ['Tree-lined streets', 470, 233]];
+    $$('[data-gather]').forEach(function (fig) {
+      var img = $('img', fig), frame = document.createElement('div'); frame.className = 'frame';
+      fig.insertBefore(frame, img); frame.appendChild(img);
+      frame.insertAdjacentHTML('beforeend', GATHER.map(function (g, i) { return '<button type="button" class="spot" data-spot="' + i + '" style="left:' + (g[1] / 7.05).toFixed(1) + '%;top:' + (g[2] / 2.8).toFixed(1) + '%" aria-label="' + esc(g[0]) + '">' + (i + 1) + '</button>'; }).join(''));
+      var key = $('[data-gather-key]');
+      key.innerHTML = GATHER.map(function (g, i) { return '<li><button type="button" data-spot="' + i + '"><span>' + (i + 1) + '</span>' + esc(g[0]) + '</button></li>'; }).join('');
+      var box = fig.parentElement;
+      function spot(i) { $$('[data-spot]', box).forEach(function (b) { b.classList.toggle('on', +b.getAttribute('data-spot') === i); }); }
+      box.addEventListener('mouseover', function (e) { var b = e.target.closest('[data-spot]'); if (b) spot(+b.getAttribute('data-spot')); });
+      box.addEventListener('click', function (e) { var b = e.target.closest('[data-spot]'); if (b) spot(+b.getAttribute('data-spot')); });
+      spot(0);
+    });
+    $$('[data-tax-calc]').forEach(function (f) {
+      var out = $('[data-tax-out]', f);
+      f.addEventListener('submit', function (e) { e.preventDefault(); });
+      f.addEventListener('input', function () {
+        var v = parseFloat(f.elements.v.value.replace(/[^0-9.]/g, '')), r = parseFloat(f.elements.r.value.replace(/[^0-9.]/g, ''));
+        out.textContent = v > 0 && r > 0 ? '$' + Math.round(v * r / 100).toLocaleString('en-US') + ' a year' : 'Enter a value and a rate';
+      });
+    });
+    $$('[data-short-drive]').forEach(function (p) { if (PL) p.textContent = 'Roberts Middle School is about ' + PL.places[2].min + ' minutes from the Bois D’Arc Lane entry, roughly ' + PL.places[2].mi + ' miles.'; });
+
     // ================= AI concierge =================
     var chat = $('#chat'), log = $('.chat-log', chat), input = $('#chat-input'), ask = $('.ask'), tip = $('.ask-tip'), started = false, hist = [], line = Promise.resolve(), topic = 'all';
     var AI = /github\.io$|^localhost$|^127\.|^$/.test(location.hostname) && !/[?&]ai=1/.test(location.search) ? '' : '/api/concierge';
     var MARK = '<img src="img/logo-icon.svg" alt="">';
-    var PAGE_NAMES = { home: 'Home', community: 'Community', homes: 'Find Your Home', lifestyle: 'Lifestyle', relocation: 'Relocation', schools: 'Schools', contact: 'Contact', news: 'News & Updates' };
+    var PAGE_NAMES = { home: 'Home', community: 'Community', homes: 'Find Your Home', lifestyle: 'Lifestyle', relocation: 'Relocation', schools: 'Schools', residents: 'Residents', hoa: 'HOA & Tax Rates', realtors: 'Realtor Specialist', contact: 'Contact', news: 'News & Updates' };
     var TOPICS = [['all', 'All'], ['homesites', 'Homesites'], ['builders', 'Builders'], ['lifestyle', 'Lifestyle'], ['location', 'Fulshear'], ['schools', 'Schools'], ['buying', 'Next steps']];
     var SUGG = {
-      all: ['Show me the homesites by builder', 'Who are the builders?', 'How big are the homesites?', 'What’s nearby?', 'Which schools serve Belmont Estates?', 'Give me the tour'],
-      homesites: ['How big are the homesites?', 'How many homes will there be?', 'Show me the homesites by builder', 'Open the masterplan'],
+      all: ['How big is 2 acres?', 'Give me the tour', 'Who are the builders?', 'What’s nearby?', 'Which schools serve Belmont Estates?', 'How much are homesites?'],
+      homesites: ['How big is 2 acres?', 'How many homes will there be?', 'Show me the homesites by builder', 'Open the masterplan'],
       builders: ['Who are the builders?', 'Can I build a single-story home?', 'Show Toll Brothers homesites', 'Who is the developer?'],
       lifestyle: ['What is there to do in the community?', 'What can I do with 2 acres?', 'Parks and museums nearby'],
       location: ['Where is Belmont Estates?', 'Grocery stores nearby', 'Hospitals nearby', 'Which roads are nearby?'],
       schools: ['Which schools serve Belmont Estates?', 'Which school district?', 'Show the school map'],
-      buying: ['How do I get updates?', 'How much are homesites?', 'How do I get directions?']
+      buying: ['How do I get updates?', 'How much are homesites?', 'What is the HOA fee?', 'How do I get directions?']
     };
     var CATWORDS = [['Schools', ['schools nearby', 'school map']], ['Medical', ['hospital', 'medical', 'clinic', 'doctor']], ['Grocery', ['grocery', 'groceries', 'supermarket', 'h-e-b', 'heb', 'kroger', 'walmart']], ['Shopping', ['shopping', 'shop', 'mall', 'costco', 'market', 'bella terra']], ['Entertainment', ['entertainment', 'movie', 'cinema', 'waterpark', 'water park', 'typhoon']], ['Daycares', ['daycare', 'day care', 'childcare', 'preschool']], ['Hardware', ['hardware', 'home depot', 'lowe']], ['Museums & Parks', ['museum', 'parks nearby', 'park nearby', 'george ranch', 'jones creek', 'history']]];
     var CATNAME = { Schools: 'schools', Medical: 'hospitals and clinics', Entertainment: 'entertainment spots', Grocery: 'grocery stores', Hardware: 'hardware stores', Daycares: 'daycares', 'Museums & Parks': 'museums and parks', Shopping: 'shopping destinations' };
@@ -904,9 +1146,28 @@
       b.addEventListener('submit', function (e) { e.preventDefault(); var f = e.target, n = f.first.value.trim(), m = f.email.value.trim(); if (!n || !/.+@.+\..+/.test(m)) { (n ? f.email : f.first).focus(); return; } b.innerHTML = '<p><b>Thank you, ' + esc(n) + '.</b> We can’t wait to help you build your dream home in this beautiful community!</p>'; });
     }
     function menuW(b) {
-      var T = [['Homesites by builder', 'Show me the homesites by builder'], ['Our builders', 'Who are the builders?'], ['What’s nearby', 'What’s nearby?'], ['Schools', 'Which schools serve Belmont Estates?'], ['Guided tour', 'Give me the tour'], ['Get updates', 'How do I get updates?']];
-      b.innerHTML = '<div class="msg-chips">' + T.map(function (t) { return '<button type="button" data-q="' + esc(t[1]) + '">' + t[0] + '</button>'; }).join('') + '</div>';
+      var T = [['Homesite size', '2 acres, in your units', 'How big is 2 acres?', 'size'], ['Find homes', 'Filter by builder and phase', 'Show me the homesites by builder', 'home'], ['Site map', 'Every homesite, pond and trail', 'Open the site map', 'map'], ['What’s nearby', K.places.length + ' places by category', 'What’s nearby?', 'pin'], ['Guided tour', 'A walk through every page', 'Give me the tour', 'nav'], ['Get updates', 'Hear first about homesites', 'How do I get updates?', 'heart']];
+      b.innerHTML = '<div class="w-tools">' + T.map(function (t) { return '<button type="button" data-q="' + esc(t[2]) + '"><i>' + ICON[t[3]] + '</i><b>' + t[0] + '</b><small>' + t[1] + '</small></button>'; }).join('') + '</div>';
       b.addEventListener('click', function (e) { var x = e.target.closest('[data-q]'); if (x) askQ(x.getAttribute('data-q')); });
+    }
+    // How big 2 acres is: a homesite in 3D, to scale with a football field or tennis courts, in the visitor's units. Drag to turn it.
+    function sizeW(b) {
+      var U = [['acres', 'Acres', '2 acres'], ['sqft', 'Square feet', '87,120 square feet'], ['m2', 'Square meters', 'About 8,094 square meters'], ['ha', 'Hectares', 'About 0.81 hectares'], ['field', 'Football fields', 'About 1.5 football fields, end zones included'], ['court', 'Tennis courts', 'About 12 tennis courts, with their surrounds']];
+      var courts = ''; for (var r = 0; r < 3; r++) for (var c = 0; c < 3; c++) courts += '<rect x="' + (10 + c * 62) + '" y="' + (12 + r * 122) + '" width="60" height="120"/>';
+      for (var e2 = 0; e2 < 3; e2++) courts += '<rect x="' + (10 + e2 * 62) + '" y="378" width="60" height="50" opacity=".3"/>';
+      b.innerHTML = '<div class="w-lot"><div class="w-lot-3d" aria-hidden="true"><svg viewBox="0 0 200 436"><rect class="lot" width="200" height="436"/><g class="f-field"><rect x="20" y="38" width="160" height="360"/><path d="M20 68h160M20 368h160M20 218h160"/></g><g class="f-court">' + courts + '</g></svg></div>' +
+        '<div class="w-units" role="group" aria-label="Units">' + U.map(function (u, i) { return '<button type="button" data-u="' + i + '" aria-pressed="' + (i === 0) + '">' + u[1] + '</button>'; }).join('') + '</div><p class="w-lot-out" aria-live="polite">2 acres</p><small>Every homesite is shown as a 200 by 436 ft rectangle, to scale. Real homesite shapes vary. Drag to turn it.</small></div>';
+      var view = $('.w-lot-3d', b), wrap = $('.w-lot', b), out = $('.w-lot-out', b), rot = -28, from = null;
+      function turn() { view.style.setProperty('--rz', rot + 'deg'); }
+      turn();
+      view.addEventListener('pointerdown', function (e) { from = e.clientX; try { view.setPointerCapture(e.pointerId); } catch (x) {} });
+      view.addEventListener('pointermove', function (e) { if (from === null) return; rot += (e.clientX - from) * .6; from = e.clientX; turn(); });
+      view.addEventListener('pointerup', function () { from = null; });
+      b.addEventListener('click', function (e) {
+        var x = e.target.closest('[data-u]'); if (!x) return; var u = U[+x.getAttribute('data-u')];
+        $$('[data-u]', b).forEach(function (y) { y.setAttribute('aria-pressed', y === x); }); out.textContent = u[2];
+        wrap.classList.toggle('show-field', u[0] === 'field'); wrap.classList.toggle('show-court', u[0] === 'court');
+      });
     }
     function reply(raw) {
       var q = ' ' + raw.toLowerCase().replace(/[’‘]/g, "'") + ' ', t = raw.trim().toLowerCase();
@@ -919,10 +1180,12 @@
       if (b && has(q, ['homesite', 'lot', 'show', 'where', 'map'])) return { text: BY[b].name + ' is assigned ' + plural(counts[b], 'Phase 1 homesite') + ' on the masterplan. Here they are on the site map.', src: 'Masterplan', actions: [ACT.homesites(b)] };
       if (has(q, ['favorite', 'favourite', 'saved', 'save a'])) return { text: 'Select the heart on any homesite in the site map to save it. Your favorites stay on this device, and the Favorites button shows only the homesites you saved.', actions: [ACT.homesites('')] };
       if (has(q, ['how many', ' 75 ', '227'])) return faqA(2);
-      if (has(q, ['how big', 'size', 'acre', 'large'])) return { text: K.faq[1][2] + ' Two acres is 87,120 square feet, about 8,094 m² or 0.81 hectares.', src: 'Belmont Estates materials', actions: [ACT.homesites('')] };
+      if (has(q, ['how big', 'size', 'acre', 'large'])) return { text: K.faq[1][2] + ' Here’s what 2 acres looks like. Pick your units, and drag to turn it.', src: 'Belmont Estates materials', widget: sizeW, actions: [ACT.homesites('')] };
       if (has(q, ['by builder', 'site map', 'masterplan', 'master plan', 'phase', 'which homesite', 'available', 'show me the homesites', 'see the homesites'])) return faqA(7, { actions: [ACT.homesites(''), ACT.masterplan()] });
       if (has(q, ['price', 'pricing', 'cost', 'how much', 'afford'])) return faqA(19, { widget: regW });
-      if (has(q, ['hoa', 'tax', 'association'])) return { text: 'HOA and property tax details for Belmont Estates will be published as they are finalized. Register your interest to be notified.', src: 'Belmont Estates website', widget: regW, actions: [ACT.page('community/ownership', 'HOA & taxes')] };
+      if (has(q, ['hoa', 'tax', 'association', ' mud'])) return { text: 'HOA and property tax details for Belmont Estates will be published as they are finalized. Register your interest to be notified.', src: 'Belmont Estates website', widget: regW, actions: [ACT.page('hoa', 'HOA & tax rates')] };
+      if (has(q, ['resident', 'homeowner', 'management company'])) return faqA(26, { actions: [ACT.page('residents', 'Open the Residents page')] });
+      if (has(q, ['realtor', 'agent', 'broker'])) return { text: 'A dedicated page for real estate professionals is on the way. Register your interest and we’ll share details when they’re available.', src: 'Belmont Estates website', actions: [ACT.page('realtors', 'Realtor Specialist')] };
       if (has(q, ['single-story', 'single story', 'one story', 'custom', 'design', 'floor plan'])) return faqA(5, { actions: [ACT.page('homes/builders', 'Meet the builders')] });
       if (b || has(q, ['builder', 'who builds', 'home builder'])) return faqA(b ? 6 : 4, { actions: [ACT.page('homes/builders', 'Meet the builders'), ACT.homesites(b)] });
       if (has(q, ['developer', 'highten', 'who is developing'])) return faqA(17, { actions: [ACT.page('community/developer', 'About the developer')] });
@@ -956,6 +1219,7 @@
       else if (tool === 'register') r.widget = regW;
       else if (tool === 'tour') r.actions = [{ label: 'Start the tour', fn: startTour }];
       else if (tool === 'menu') r.widget = menuW;
+      else if (tool === 'size') r.widget = sizeW;
       else if (tool === 'page' && views[o]) r.actions = [ACT.page(o, 'Open ' + PAGE_NAMES[o])];
       return r;
     }
@@ -1014,16 +1278,17 @@
       if (b.hasAttribute('data-tip')) askQ(b.getAttribute('data-tip')); else if (b.hasAttribute('data-tip-tour')) startTour();
     });
 
-    scan(document);
+    scan(document); addExpand();
 
     // ---------- guided tour ----------
     var TOUR = [
       ['#home', 'Welcome to Belmont Estates: an acreage community in Fulshear with beautiful custom homes and space to roam.'],
-      ['#community/explore', 'Every homesite on one map. Filter by builder, open the listings, save favorites, or tilt the map into 3D.'],
+      ['#community/explore', 'Every homesite on one map. Switch to satellite, filter by builder, open the listings, save favorites, or tilt the map into 3D.'],
       ['#homes/builders', 'Our family of builders: William David Homes, Toll Brothers, Partners in Building and Autograph Homes.'],
       ['#lifestyle/amenities', 'With your expansive 2-acre homesite, create your own wonderland, with trails, parks and green space close by.'],
       ['#relocation/area-map', 'Everything on the area attractions map: filter by category and find each place.'],
-      ['#schools/school-map', 'Belmont Estates is served by Lamar CISD. Here are the campuses listed for the community.'],
+      ['#schools/school-map', 'Belmont Estates is served by Lamar CISD. Here are the campuses listed for the community, with the drive from the entrance.'],
+      ['#residents', 'For homeowners: how the community works, who looks after it and where to go for help.'],
       ['#contact/get-in-touch', 'Register your interest. We can’t wait to help you build your dream home in this beautiful community!']
     ];
     var tourEl = $('.tour');
