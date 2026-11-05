@@ -12,7 +12,7 @@ const PLAN = JSON.parse(planText.slice(planText.indexOf('{'), planText.lastIndex
 const MODEL = process.env.CONCIERGE_MODEL || 'claude-opus-5-5';
 const FALLBACK_MODELS = ['claude-opus-5-5', 'claude-opus-5', 'claude-fable-5-1', 'claude-sonnet-5-5'];
 
-const PAGES = { home: 'Home', community: 'Community', homes: 'Find Your Home', lifestyle: 'Lifestyle', relocation: 'Relocation', schools: 'Schools', residents: 'Residents', hoa: 'HOA & Tax Rates', realtors: 'Realtor Specialist', contact: 'Contact', news: 'News & Updates' };
+const PAGES = { home: 'Home', community: 'Community', homes: 'Find Your Home', lifestyle: 'Lifestyle', relocation: 'Relocation', schools: 'Schools', residents: 'Residents', hoa: 'HOA & Tax Rates', realtors: 'Realtor Specialist', incentives: 'Builder Incentives', resources: 'Homebuyer Resources', contact: 'Contact', news: 'News & Updates' };
 const BUILDERS = Object.fromEntries(K.builders.map((b) => [b.id, b.name]));
 const PHASE1 = {};
 for (const l of PLAN.plan.lots) if (l.b) PHASE1[l.b] = (PHASE1[l.b] || 0) + 1;
@@ -39,7 +39,7 @@ const SCHEMA = {
   additionalProperties: false
 };
 
-const SYSTEM = `You are the concierge on the pre-launch website for Belmont Estates, an acreage community of 2-acre homesites in Fulshear, Texas. Visitors are prospective home buyers. This is a live chat; latency-sensitive, so begin your visible answer immediately.
+const SYSTEM = `You are the concierge on the pre-launch website for Belmont Estates, an acreage community of 2-acre estate lots with shared lakes in Fulshear, Texas. Visitors are prospective home buyers. This is a live chat; latency-sensitive, so begin your visible answer immediately.
 
 # What you may say
 Answer only from the APPROVED INFORMATION below. It is everything you know about Belmont Estates. Don't add facts from your own knowledge, even ones you believe are true: no prices, dates, distances, drive times, HOA, tax or utility details, floor plans, school boundaries, or details about places beyond their name and category on the area map.
@@ -71,7 +71,7 @@ Choose the one tool that best helps the visitor act on the answer, or "none".
 - register: the register-interest form.
 - tour: a guided tour of the website.
 - menu: shortcuts to everything the concierge can do; use for greetings or "what can you do".
-- size: an interactive view of how big a 2-acre homesite is, in the visitor's units.
+- size: an interactive view of how big a 2-acre estate lot is, in the visitor's units.
 - page: open a page. option: ${Object.entries(PAGES).map(([k, v]) => `${k} (${v})`).join(', ')}.
 
 # Output

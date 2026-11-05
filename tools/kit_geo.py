@@ -4,11 +4,12 @@ The masterplan is an illustration, not a survey, so it can't simply be stretched
 the plan (street junctions, cul-de-sacs, pond corners, homesite pads) to the same points on satellite imagery of the
 site, east of Bois D'Arc Lane, and fits a smooth warp through them. From that it writes:
 - js/plan-geo.js: every homesite outline, the parcel, the amenity markers and the entries in longitude and latitude;
-- img/site-plan-geo.webp: the masterplan artwork warped onto the map, with everything outside the parcel transparent.
+- img/site-plan-geo.webp: the masterplan artwork warped onto the map, with everything outside the parcel transparent;
+- img/site-lakes-geo.webp: just the lakes from that artwork, for the satellite view.
 
 The positions are a best fit to imagery, not a survey.
 
-Run from the project folder, after kit_site_data.py:  python -I tools/kit_geo.py
+Run from the project folder, after kit_plan_update.py:  python -I tools/kit_geo.py
 """
 import json
 import math
@@ -42,7 +43,7 @@ POINTS = [
 ]
 PARCEL = [(5, 25), (560, 4), (701, 26), (699, 463), (19, 493)]   # the plan's outer edge, in plan units
 SMOOTH = 3000.0                                                  # keeps the warp from chasing small reading errors
-ART_SCALE = 1.6                                                  # output pixels per imagery pixel
+ART_SCALE = 2.0                                                  # output pixels per imagery pixel
 
 
 def kernel(r2):
@@ -88,6 +89,7 @@ lots = []
 for lot in data['plan']['lots']:
     pts = [tuple(map(float, p.split(','))) for p in lot['d'].replace('M', '').replace('Z', '').split()]
     lots.append(r(lonlat(to_img(pts + pts[:1]))))
+mid = r(lonlat(to_img([lot['p'] for lot in data['plan']['lots']])))   # where each homesite's number sits: on its house pad
 parcel_px = to_img(PARCEL + PARCEL[:1])
 pins = {a['id']: r(lonlat(to_img(a['at']))) if a['at'] else [] for a in know['amenities']}
 
@@ -103,6 +105,12 @@ mask = np.zeros(art.shape[:2], np.uint8)
 cv2.fillPoly(mask, [np.round(np.array(PARCEL) * per_unit).astype(np.int32)], 255, lineType=cv2.LINE_AA)
 out = cv2.remap(np.dstack([art, mask]), fine[:, :, 0] * per_unit, fine[:, :, 1] * per_unit, cv2.INTER_LINEAR, borderValue=0)
 cv2.imwrite('img/site-plan-geo.webp', out, [cv2.IMWRITE_WEBP_QUALITY, 84])
+water = np.zeros(art.shape[:2], np.uint8)
+for d in data['plan']['lakes']:
+    pts = np.array([tuple(map(float, p.split(','))) for p in d.replace('M', '').replace('Z', '').split()])
+    cv2.fillPoly(water, [np.round(pts * per_unit).astype(np.int32)], 255, lineType=cv2.LINE_AA)
+lakes = cv2.remap(np.dstack([art, water]), fine[:, :, 0] * per_unit, fine[:, :, 1] * per_unit, cv2.INTER_LINEAR, borderValue=0)
+cv2.imwrite('img/site-lakes-geo.webp', lakes, [cv2.IMWRITE_WEBP_QUALITY, 84])
 corners = lonlat(np.array([[x0, y0], [x1, y0], [x1, y1], [x0, y1]]))
 
 geo = {
@@ -110,6 +118,7 @@ geo = {
     'parcel': r(lonlat(parcel_px)),
     'art': r(corners),
     'lots': lots,
+    'mid': mid,
     'pins': pins,
     'entries': r(lonlat(np.array([[100.0, 577.0], [102.0, 905.0]]))),
 }

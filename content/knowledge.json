@@ -2,16 +2,16 @@
  "note": "Everything here comes from the Belmont Estates brand kit. The site and the AI concierge both read this file.",
  "facts": [
   "Belmont Estates is an acreage community in Fulshear, Texas, that promises a different breed of living with beautiful custom homes and space to roam.",
-  "The 227-acre Belmont Estates will be home to just 75 residences on 2-acre properties, and the bijou setting will make it easy to know your neighbors.",
-  "Nestled in Fulshear, the community offers an expansive 2-acre homesite for just 75 families across 227 acres, designed for those seeking space, luxury and the freedom to roam.",
+  "The 227-acre Belmont Estates will be home to just 75 residences on 2-acre estate lots with shared lakes, and the bijou setting will make it easy to know your neighbors.",
+  "Nestled in Fulshear, the community offers expansive 2-acre estate lots with shared lakes for just 75 families across 227 acres, designed for those seeking space, luxury and the freedom to roam.",
   "The Belmont Estates materials said new homes were slated to begin mid-2025. Visitors should register for the latest timing.",
   "With 2 acres, buyers can design the home of their dreams, and the builders are ready to help. The large homesites can accommodate a spacious single-story home.",
   "The builders were selected for their distinctive design approach and unrivaled quality construction, and will deliver stately residences that create a gracious lifestyle in Belmont Estates. Whether buyers envision a spacious single-story or a stately estate, the builders are known for their quality and creativity.",
   "The builders are William David Homes, Toll Brothers, Partners in Building and Autograph Homes.",
-  "The masterplan (Master Plan Update, 2/25) shows Phase 1 homesites assigned to each builder; the remaining homesites are marked Future Development. It is a conceptual rendering, subject to change without notice.",
+  "The masterplan, updated to the latest site plan, shows Phase 1 homesites assigned to each builder; the remaining homesites are marked Future Development. It is a conceptual rendering, subject to change without notice.",
   "Belmont Estates is off Bois D’Arc Lane and near Bessie Creek. Down the stretch is FM 1093 and all the conveniences fast-growing Fulshear has to offer: the best of both worlds.",
-  "With a 2-acre homesite, residents can create their own wonderland, with space for a pool, play yard, garden and more.",
-  "In the community there are trails for walking and jogging, and parks and green space to meet neighbors and enjoy Mother Nature’s handiwork.",
+  "With a 2-acre estate lot, residents can create their own wonderland, with space for a pool, play yard, garden and more.",
+  "In the community there are shared lakes, an amenity pond, trails for walking and jogging, and parks and green space to meet neighbors and enjoy Mother Nature’s handiwork.",
   "Belmont Estates is served by Lamar CISD, a progressive, growing school district unafraid to challenge students to explore, learn and grow, pairing rigorous curriculums with an array of extracurricular activities at all levels.",
   "The schools listed for Belmont Estates are Huggins Elementary School, Roberts Middle School, Leaman Junior High School and Fulshear High School.",
   "The developer is Highten Capital. Led by a team of seasoned real estate professionals, Highten Capital launched in 2018 with the idea to build communities rooted in connection to family, neighbors and nature.",
@@ -20,7 +20,11 @@
   "The area attractions map is not to scale.",
   "Belmont Estates is in Fort Bend County, Texas.",
   "HOA assessments, one-time fees and the combined property tax rate have not been announced; they will be posted on the HOA & Tax Rates page.",
-  "Approximate drives from the Bois D’Arc Lane entry, from OpenStreetMap road data: Fulshear Farmers Market 4 minutes; Roberts Middle School 5; Dean Leaman Junior High 6; Huggins Elementary 7; Fulshear High School 8; H-E-B on FM 1463 11; LaCenterra at Cinco Ranch 18; Katy Mills and Typhoon Texas 22; Houston Methodist West and the Fort Bend Museum 29; George Ranch Historical Park 41."
+  "Approximate drives from the Bois D’Arc Lane entry, from OpenStreetMap road data: Fulshear Farmers Market 4 minutes; Roberts Middle School 5; Dean Leaman Junior High 6; Huggins Elementary 7; Fulshear High School 8; H-E-B on FM 1463 11; LaCenterra at Cinco Ranch 18; Katy Mills and Typhoon Texas 22; Houston Methodist West and the Fort Bend Museum 29; George Ranch Historical Park 41.",
+  "Belmont Estates offers 2-acre estate lots with shared lakes within the rear of the lots. The lakes are part of the 2 acres, and homeowners still have plenty of backyard to use: more than 1 to 1½ acres. Most lots back onto a lake.",
+  "On the site map, lot lines run onto the lakes and are shown dotted across the water. Trails follow the green corridor through the community, pass south of the amenity pond and run down the east side; there is no trail along the north boundary.",
+  "FM 1093 is down the stretch from Belmont Estates, with the I-10 corridor close by. Fulshear and Katy are close by to most attractions.",
+  "The developer’s website is hightencapital.com."
  ],
  "voice": "Home is where your authentic self lives, a place where you can find joy in things small and large. Unfettered by worries, your thoroughbred spirit soars as you realize the possibilities surrounding you. It’s life to the fullest, today, tomorrow and every day.",
  "builders": [
@@ -267,12 +271,12 @@
   [
    0,
    "How large are the homesites?",
-   "Every homesite at Belmont Estates is an expansive 2-acre property, with room to design the home of your dreams."
+   "Every estate lot at Belmont Estates is an expansive 2-acre property. On most lots a shared lake sits within the rear of the lot and is part of the 2 acres, and you’ll still have more than 1 to 1½ acres of backyard to use."
   ],
   [
    0,
    "How many homes will Belmont Estates have?",
-   "The 227-acre Belmont Estates will be home to just 75 residences on 2-acre properties, and the bijou setting will make it easy to know your neighbors."
+   "The 227-acre Belmont Estates will be home to just 75 residences on 2-acre estate lots with shared lakes, and the bijou setting will make it easy to know your neighbors."
   ],
   [
    0,
@@ -306,8 +310,8 @@
   ],
   [
    2,
-   "What can I do with a 2-acre homesite?",
-   "With your expansive 2-acre homesite, you can create your own wonderland, with space for a pool, play yard, garden and more."
+   "What can I do with a 2-acre estate lot?",
+   "With your expansive 2-acre estate lot, you can create your own wonderland, with space for a pool, play yard, garden and more."
   ],
   [
    3,
@@ -347,7 +351,7 @@
   [
    5,
    "Who is developing Belmont Estates?",
-   "Highten Capital. Led by a team of seasoned real estate professionals, Highten Capital launched in 2018 with the idea to build communities rooted in connection to family, neighbors and nature."
+   "Highten Capital. Led by a team of seasoned real estate professionals, Highten Capital launched in 2018 with the idea to build communities rooted in connection to family, neighbors and nature. Learn more at hightencapital.com."
   ],
   [
    6,
@@ -393,23 +397,59 @@
    7,
    "Who do I contact with a question?",
    "The HOA management company and its contact details will be posted on the Residents page as soon as they are confirmed. Until then, register your interest and the team will follow up."
+  ],
+  [
+   2,
+   "What are the shared lakes?",
+   "Belmont Estates has 2-acre estate lots with shared lakes within the rear of the lots. The lakes are part of the 2 acres, so the water comes right to your own lot line."
+  ],
+  [
+   2,
+   "How much backyard will I have?",
+   "Plenty. The lakes sit at the rear of the lots, so you’ll still have more than 1 to 1½ acres to use for a pool, play yard, garden and more."
+  ],
+  [
+   2,
+   "Do all of the lots back onto a lake?",
+   "Most lots are backed to a lake. The site map shows every lake, with the lot lines dotted across the water, so you can see which homesites they reach."
+  ],
+  [
+   2,
+   "Where do the trails go?",
+   "Trails for walking and jogging follow the green corridor through the community, pass south of the amenity pond and run down the east side, past the green space."
   ]
  ],
  "amenities": [
   {
    "id": "ponds",
-   "name": "Ponds",
+   "name": "Amenity ponds",
    "icon": "water",
-   "status": "On the masterplan",
-   "text": "Two ponds sit along the north edge of the Belmont Estates masterplan, with a trail around the larger one.",
+   "status": "On the site plan",
+   "text": "Shared lakes run through the community, within the rear of most lots, and a larger amenity pond sits to the north.",
    "at": [
     [
      430,
      62
     ],
     [
-     640,
-     62
+     143,
+     56
+    ],
+    [
+     389,
+     138
+    ],
+    [
+     63,
+     263
+    ],
+    [
+     284,
+     293
+    ],
+    [
+     417,
+     440
     ]
    ]
   },
@@ -418,7 +458,7 @@
    "name": "Trails for walking & jogging",
    "icon": "trail",
    "status": "In the community",
-   "text": "Venture out into the community on trails made for walking and jogging. On the masterplan, a trail loops the north pond and follows the east green space.",
+   "text": "Venture out into the community on trails made for walking and jogging. On the site plan, trails follow the green corridor, pass south of the amenity pond and run down the east side.",
    "at": [
     [
      596,
@@ -431,7 +471,7 @@
    "name": "Parks & green space",
    "icon": "park",
    "status": "In the community",
-   "text": "Parks and green space to meet your neighbors and enjoy Mother Nature’s handiwork.",
+   "text": "Parks and green space to meet your neighbors and enjoy Mother Nature’s handiwork, including the green space along the east side of the community.",
    "at": [
     [
      668,
@@ -466,6 +506,15 @@
   }
  ],
  "news": [
+  {
+   "cat": "Announcements",
+   "date": "November 2026",
+   "title": "Estate lots with shared lakes",
+   "img": "img/site-plan.webp",
+   "href": "#community/explore",
+   "cta": "Take a look",
+   "text": "The site map now shows the latest plan: 2-acre estate lots with shared lakes within the rear of the lots, and lot lines dotted across the water."
+  },
   {
    "cat": "Announcements",
    "date": "November 2026",

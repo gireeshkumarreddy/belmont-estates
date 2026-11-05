@@ -47,7 +47,7 @@
     ['clip', '.pg-photo, .gather-map .frame, .tile, .rel-tile, .photo-card, .collage figure, .pt-pair figure, .grace-row figure, .arr-pics figure, .dg-thumb, .gal, .vid-poster, .story, .fu-map, .poster-body, .loc-map .am-stage, .inc-map img, .news-card img, .am-card img, .step img, .lg-photo, .crest, .bcard-top'],
     ['sweep', '.deco'],
     ['fade', '.ghost, .dev-year'],
-    ['up', '.tbd-stats li, .res-help, .res-cards .know, .res-item, .gather-key li, .gather-map figcaption, .rates, .rates-notes p, .rates-notes h3, .disc li, .tax-calc, .two-col > div > p, .contact-addr, .news-sel, .eyebrow, .lede, .pt-copy > p, .btns, .pt-tabs, .note, .note-pill, .note-card, .chips, .follow, .pt-stats li, .stats li, .dark-stats li, .ticks li, .roads li, .logos li, .logo-strip > p, .statement-sub, .mb-card, .news-card, .am-card, .bcard, .know, .tba, .near, .place-card, .step, .cat, .acc details, .fmx, .areamap, .schoolmap, .first, .lead-form, .inc-card, .fu-card, .nl-copy > p, .nl-form, .nl-side figcaption, .foot-top > *, .foot-mark, .foot-bar, .cols-copy p, .qa-cols p, .tag, .dev-meta, .dev-quote, .dg-dev .btn, .dg-top p, .dg-statement .round-btn, .vid-t, .vid-d, .vid-list, .crafted-card, .grace-card, .collage-card, .arr-card, .cta-band, .poster-top, .poster-logo, .poster-foot, .lg p, .lg .link-arrow, .lg-list li, .am-chips button, .opener p, .arrival p, .dev-sec p, .glance-lead, .head .link-arrow, .faq-tools, .grace-top .lede, .grace-h img, .story-nav']
+    ['up', '.rl-card, .inc-b, .path li, .announce-in, .tbd-stats li, .res-help, .res-cards .know, .res-item, .gather-key li, .gather-map figcaption, .rates, .rates-notes p, .rates-notes h3, .disc li, .tax-calc, .two-col > div > p, .contact-addr, .news-sel, .eyebrow, .lede, .pt-copy > p, .btns, .pt-tabs, .note, .note-pill, .note-card, .chips, .follow, .pt-stats li, .stats li, .dark-stats li, .ticks li, .roads li, .logos li, .logo-strip > p, .statement-sub, .mb-card, .news-card, .am-card, .bcard, .know, .tba, .near, .place-card, .step, .cat, .acc details, .fmx, .areamap, .schoolmap, .first, .lead-form, .inc-card, .fu-card, .nl-copy > p, .nl-form, .nl-side figcaption, .foot-top > *, .foot-mark, .foot-bar, .cols-copy p, .qa-cols p, .tag, .dev-meta, .dev-quote, .dg-dev .btn, .dg-top p, .dg-statement .round-btn, .vid-t, .vid-d, .vid-list, .crafted-card, .grace-card, .collage-card, .arr-card, .cta-band, .poster-top, .poster-logo, .poster-foot, .lg p, .lg .link-arrow, .lg-list li, .am-chips button, .opener p, .arrival p, .dev-sec p, .glance-lead, .head .link-arrow, .faq-tools, .grace-top .lede, .grace-h img, .story-nav']
   ];
   var COUNT = '.pt-stats b, .stats b, .collage-card b, .dark-stats b';
   var NOT_IN = '.hero, .chat, .fmx-body, .fmx-bar, .fmx-sub, .menu, .dock, .viewer, .ask-tip, .tour, .story-track, .vid-list, .poster-body';
@@ -121,6 +121,7 @@
 
   // ================= pages =================
   var views = {}, current = '', onRoute = [];
+  var NAV_OF = { realtors: 'homes', incentives: 'homes', resources: 'homes', hoa: 'community', news: 'community' };
   var ALIAS = { fulshear: 'relocation', 'site-map': 'explore', homesites: 'available', dev: 'developer', campuses: 'school-map', 'builders-sec': 'builders' };
   $$('.view').forEach(function (v) { views[v.getAttribute('data-page')] = v; });
   function route(now) {
@@ -146,7 +147,7 @@
       Object.keys(views).forEach(function (k) { views[k].hidden = k !== page; });
       current = page;
       document.title = views[page].getAttribute('data-title') || document.title;
-      $$('[data-nav]').forEach(function (a) { if (a.getAttribute('data-nav') === page) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+      $$('[data-nav]').forEach(function (a) { if (a.getAttribute('data-nav') === (NAV_OF[page] || page)) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
       document.body.setAttribute('data-page', page);
       window.scrollTo({ top: 0, behavior: 'instant' });
       top.classList.remove('hide');
@@ -190,8 +191,7 @@
   // ================= viewer: masterplan, area attractions, disclaimer, photos =================
   var viewer = $('#viewer'), vbody = $('.viewer-body', viewer);
   var VIEWS = {
-    masterplan: ['Belmont Estates masterplan', '<img src="img/masterplan.webp" width="2400" height="1553" alt="Belmont Estates masterplan, showing homesites by builder, ponds, trails and tree-lined streets"><p class="note">Conceptual rendering. Subject to change without notice.</p>'],
-    area: ['Belmont Estates area attractions', '<img src="img/area-attractions.webp" width="2400" height="1600" alt="Belmont Estates area attractions map"><p class="note">Map not to scale.</p>'],
+    masterplan: ['Belmont Estates masterplan', '<img src="img/masterplan.webp" width="2400" height="1553" alt="Belmont Estates masterplan, showing homesites by builder, shared lakes, trails and tree-lined streets"><p class="note">Conceptual rendering. Subject to change without notice.</p>'],
     disclaimer: ['Disclaimer', '<div class="text"><h2>Disclaimer</h2><p>Pricing and availability subject to change without notice. The masterplan is a conceptual rendering, subject to change without notice. Maps are not to scale. Homesite numbers are for this website’s site map only.</p><p>This website is a prototype. Forms don’t send anything yet.</p></div>']
   };
   function openHTML(label, html) {
@@ -401,10 +401,13 @@
     }
     function whenNear(box, fn) { if (GLOK) new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { o.disconnect(); loadGL().then(fn, function () {}); } }, { rootMargin: '600px' }).observe(box); }
     function boundsOf(pts) { var b = new maplibregl.LngLatBounds(pts[0], pts[0]); pts.forEach(function (q) { b.extend(q); }); return b; }
-    function crestMark() { var d = document.createElement('div'); d.className = 'map-crest'; d.innerHTML = '<img src="img/logo-icon.svg" alt="Belmont Estates">'; return d; }
+    var HOME_LINK = G ? MAPS + G.entries[0][1] + ',' + G.entries[0][0] : HOME_MAP;
+    // The community's name and address, linked to its entry on Google Maps
+    function homeTag() { var d = document.createElement('div'); d.className = 'map-home'; d.innerHTML = '<span class="map-crest"><img src="img/logo-icon.svg" alt=""></span><a href="' + HOME_LINK + '" target="_blank" rel="noopener"><b>Belmont Estates</b><span>Bois D’Arc Lane, Fulshear, TX ↗</span></a>'; return d; }
     function parcelLayers(map) {
       map.addSource('parcel', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [G.parcel] } } });
-      map.addLayer({ id: 'parcel-fill', type: 'fill', source: 'parcel', paint: { 'fill-color': '#C7B36E', 'fill-opacity': .22 } });
+      map.addSource('plan-art', { type: 'image', url: 'img/site-plan-geo.webp', coordinates: G.art });
+      map.addLayer({ id: 'parcel-art', type: 'raster', source: 'plan-art', paint: { 'raster-fade-duration': 0 } });
       map.addLayer({ id: 'parcel-line', type: 'line', source: 'parcel', paint: { 'line-color': '#42516B', 'line-width': 2, 'line-dasharray': [2, 1.5] } });
     }
 
@@ -478,7 +481,8 @@
     $$('[data-legend]').forEach(function (el) {
       el.innerHTML = K.builders.map(function (b) { return '<li><button type="button" data-legend-b="' + b.id + '"><i style="background:' + COLORS[b.id] + '"></i><span>' + esc(b.name) + '<small>' + plural(counts[b.id], 'Phase 1 homesite') + '</small></span></button></li>'; }).join('') +
         '<li><button type="button" data-legend-b="future"><i class="future"></i><span>Future development<small>' + plural(counts.future, 'homesite') + '</small></span></button></li>' +
-        '<li><span class="lg-ic">' + ICON.water + '</span><span>Ponds<small>Along the north edge</small></span></li>' +
+        '<li><span class="lg-ic">' + ICON.water + '</span><span>Shared lakes<small>Within the rear of most lots</small></span></li>' +
+        '<li><span class="lg-ic">' + ICON.water + '</span><span>Amenity pond<small>North of the community</small></span></li>' +
         '<li><span class="lg-ic">' + ICON.trail + '</span><span>Trails<small>For walking and jogging</small></span></li>' +
         '<li><span class="lg-ic">' + ICON.gate + '</span><span>Entries<small>Two, on the west side</small></span></li>';
       el.addEventListener('click', function (e) {
@@ -526,7 +530,8 @@
             '<div class="fmx-canvas"><div class="fmx-plan"><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Belmont Estates site map with every homesite">' +
               '<rect class="fmx-ground" width="' + W + '" height="' + H + '"/><image class="fmx-art" href="img/site-plan.webp" width="' + W + '" height="' + H + '"/>' +
               '<g class="fmx-lots">' + LOTS.map(function (l, i) { return '<path class="fmx-lot ' + (l.b || 'future') + '" data-i="' + i + '" d="' + l.d + '" style="--c:' + (l.b ? COLORS[l.b] : '#FBF8F1') + ';--k:' + i + '"/>'; }).join('') + '</g>' +
-              '<g class="fmx-nums" text-anchor="middle">' + LOTS.map(function (l, i) { return '<text x="' + l.c[0] + '" y="' + (l.c[1] + 2.4) + '"' + (l.b === 'autograph' || l.b === 'pib' ? ' class="dark"' : '') + '>' + (i + 1) + '</text>'; }).join('') + '</g></svg>' +
+              '<g class="fmx-lakes" aria-hidden="true">' + DATA.plan.lakes.map(function (d) { return '<path d="' + d + '"/>'; }).join('') + '</g>' +
+              '<g class="fmx-nums" text-anchor="middle">' + LOTS.map(function (l, i) { return '<text x="' + l.p[0] + '" y="' + (l.p[1] + 2.4) + '">' + (i + 1) + '</text>'; }).join('') + '</g></svg>' +
               '<div class="fmx-pins">' + pins.map(function (p, k) { return '<button type="button" class="fmx-pin pin-' + p.a.id + '" data-pin="' + k + '" style="--k:' + k + '" aria-label="' + esc(p.a.name) + '">' + ICON[p.a.icon] + '</button>'; }).join('') + '</div>' +
             '</div></div>' +
             '<div class="fmx-glmap"></div>' +
@@ -539,7 +544,7 @@
             '<div class="fmx-legend"><p class="fmx-lh">Legend</p><ul>' +
               K.builders.map(function (b) { return '<li><button type="button" data-lb="' + b.id + '"><i style="background:' + COLORS[b.id] + '"></i>' + esc(b.name) + '<b>' + counts[b.id] + '</b></button></li>'; }).join('') +
               '<li><button type="button" data-lb="future"><i class="future"></i>Future development<b>' + counts.future + '</b></button></li></ul>' +
-              '<ul class="fmx-lkey"><li><i class="sel"></i>Selected homesite</li><li><i class="fav">' + ICON.heart + '</i>Saved homesite</li><li><i class="pond"></i>Pond</li><li><i class="trail"></i>Trail</li><li><i class="green"></i>Green space</li><li><i class="bound"></i>Community boundary</li>' +
+              '<ul class="fmx-lkey"><li><i class="sel"></i>Selected homesite</li><li><i class="fav">' + ICON.heart + '</i>Saved homesite</li><li><i class="lake"></i>Shared lake, with lot lines dotted across it</li><li><i class="pond"></i>Amenity pond</li><li><i class="pad"></i>House pad</li><li><i class="trail"></i>Trail</li><li><i class="green"></i>Green space</li><li><i class="bound"></i>Community boundary</li>' +
               K.amenities.filter(function (a) { return a.at.length; }).map(function (a) { return '<li><i class="mk pin-' + a.id + '">' + ICON[a.icon] + '</i>' + esc(a.name) + '</li>'; }).join('') + '</ul></div>' +
             '<button type="button" class="fmx-info" aria-label="Show the legend" title="Legend" aria-pressed="false">' + ICON.info + '</button>' +
             '<div class="fmx-dim" role="group" aria-label="2D or 3D"><button type="button" data-mode="2d" aria-pressed="true">2D</button><button type="button" data-mode="3d" aria-pressed="false">3D</button></div>' +
@@ -552,7 +557,7 @@
           '</aside>' +
           '<div class="fmx-plans" hidden></div>' +
         '</div>' +
-        '<p class="fmx-note">Homesite outlines are traced from the Belmont Estates masterplan (2/25), a conceptual rendering subject to change without notice, and fitted to satellite imagery, so positions are approximate. Homesite numbers are for this map only; homesite details are sample information until our builders release them.</p>';
+        '<p class="fmx-note">Homesite outlines and lakes follow the latest Belmont Estates plan, a conceptual rendering subject to change without notice, fitted to satellite imagery, so positions are approximate. Shared lakes are part of the 2-acre lots they reach. Homesite numbers are for this map only; homesite details are sample information until our builders release them.</p>';
 
       var svg = $('.fmx-plan > svg', el), canvas = $('.fmx-canvas', el), plan = $('.fmx-plan', el), hover = $('.fmx-hover', el), cards = $('.fmx-cards', el), detail = $('.fmx-detail', el), list = $('.fmx-list', el), body = $('.fmx-body', el);
       var pinEls = $$('.fmx-pin', el), countEl = $('.fmx-count', el), showBtn = $('.fmx-showlist', el), favBtn = $('.fmx-fav', el), plans = $('.fmx-plans', el);
@@ -578,11 +583,11 @@
           var r = ids();
           cards.innerHTML = r.length ? r.map(function (i, j) {
             var l = LOTS[i];
-            return '<article class="fmx-card' + (i === sel ? ' on' : '') + '" data-i="' + i + '" style="--k:' + Math.min(j, 12) + '"><button type="button" class="fmx-card-main" data-pick="' + i + '"><span class="fmx-thumb">' + lotThumb(i) + '</span><span class="fmx-card-t">Homesite ' + (i + 1) + '</span><span class="fmx-card-m">' + (l.b ? 'Phase 1 · ' + esc(builderName(l.b)) : 'Future development') + '</span><span class="fmx-card-m">2 acres · 87,120 sq ft</span>' + statusChip(l) + '</button>' + heart(i + 1) + '</article>';
+            return '<article class="fmx-card' + (i === sel ? ' on' : '') + '" data-i="' + i + '" style="--k:' + Math.min(j, 12) + '"><button type="button" class="fmx-card-main" data-pick="' + i + '"><span class="fmx-thumb">' + lotThumb(i) + '</span><span class="fmx-card-t">Homesite ' + (i + 1) + '</span><span class="fmx-card-m">' + (l.b ? 'Phase 1 · ' + esc(builderName(l.b)) : 'Future development') + '</span><span class="fmx-card-m">' + (l.l ? '2 acres · Shared lake' : '2 acres · 87,120 sq ft') + '</span>' + statusChip(l) + '</button>' + heart(i + 1) + '</article>';
           }).join('') : '<p class="fmx-empty">' + (f.saved ? 'No saved homesites yet. Select the heart on any homesite to save it here.' : 'No homesites match these filters. Reset them to see every homesite.') + '</p>';
         } else if (tab === 'builders') {
           cards.innerHTML = K.builders.map(function (b, j) {
-            return '<article class="fmx-bcard" style="--k:' + j + '"><div class="fmx-blogo"><img src="' + b.logo + '" alt="' + esc(b.name) + '" width="' + b.w + '" height="' + b.h + '" loading="lazy"></div><p><b>' + esc(b.name) + '</b> is assigned ' + plural(counts[b.id], 'Phase 1 homesite') + ' on the masterplan. Home designs for Belmont Estates’ 2-acre homesites will be listed here as they are released.</p>' +
+            return '<article class="fmx-bcard" style="--k:' + j + '"><div class="fmx-blogo"><img src="' + b.logo + '" alt="' + esc(b.name) + '" width="' + b.w + '" height="' + b.h + '" loading="lazy"></div><p><b>' + esc(b.name) + '</b> is assigned ' + plural(counts[b.id], 'Phase 1 homesite') + ' on the masterplan. Home designs for Belmont Estates’ 2-acre estate lots will be listed here as they are released.</p>' +
               '<div class="fmx-acts"><button type="button" class="btn btn-ink" data-only="' + b.id + '">See their homesites</button><a class="link-arrow" href="#homes/builders">About ' + esc(b.name) + '</a><a class="link-arrow" href="#contact/get-in-touch" data-interest="' + esc(b.name) + '">Get updates</a></div></article>';
           }).join('');
         } else {
@@ -618,7 +623,7 @@
       function setView(v) {
         $$('[data-view]', el).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-view') === v); });
         plans.hidden = v !== 'plans'; el.classList.toggle('plans-on', v === 'plans');
-        if (v === 'plans' && !plans.innerHTML) plans.innerHTML = '<div class="fmx-plans-in"><h3>Home plans coming soon</h3><p>William David Homes, Toll Brothers, Partners in Building and Autograph Homes will offer designs for Belmont Estates’ 2-acre homesites. Floor plans and elevations will be listed here, grouped by builder, as they are released.</p><div class="fmx-plan-cards">' +
+        if (v === 'plans' && !plans.innerHTML) plans.innerHTML = '<div class="fmx-plans-in"><h3>Home plans coming soon</h3><p>William David Homes, Toll Brothers, Partners in Building and Autograph Homes will offer designs for Belmont Estates’ 2-acre estate lots. Floor plans and elevations will be listed here, grouped by builder, as they are released.</p><div class="fmx-plan-cards">' +
           K.builders.map(function (b) { return '<article><span class="chip">Designs to come</span><div class="fmx-blogo"><img src="' + b.logo + '" alt="' + esc(b.name) + '" width="' + b.w + '" height="' + b.h + '" loading="lazy"></div><p>Plans, elevations, square footage and starting prices from ' + esc(b.name) + ' will appear here.</p><a class="link-arrow" href="#contact/get-in-touch" data-interest="' + esc(b.name) + '" data-comment="Please send me ' + esc(b.name) + ' plan updates for Belmont Estates.">Get plan updates</a></article>'; }).join('') + '</div></div>';
       }
       function closeDetail() { sel = -1; detail.hidden = true; list.hidden = false; drawMap(); $$('.fmx-card', el).forEach(function (c) { c.classList.remove('on'); }); }
@@ -633,10 +638,10 @@
           '<div class="fmx-dacts two"><a class="fmx-dbtn ink" href="' + lotDir(i) + '" target="_blank" rel="noopener">' + ICON.nav + '<span>Get directions</span></a><a class="fmx-dbtn" href="' + lotMap(i) + '" target="_blank" rel="noopener">' + ICON.pin + '<span>Open in Google Maps</span></a></div>' +
           '<p class="fmx-small">Opens Google Maps at this homesite, so you can see the drive and what is nearby. Streets inside Belmont Estates may not show yet.</p>' +
           '<figure class="fmx-scene">' + scene + '<figcaption>Homesite ' + n + ' on the masterplan.</figcaption></figure>' +
-          '<dl class="fmx-stats"><div><dt>Homesite size</dt><dd>2 acres</dd></div><div><dt>Area</dt><dd>87,120 sq ft</dd></div><div><dt>Price</dt><dd>To be announced</dd></div><div><dt>Phase</dt><dd>' + (b ? 'Phase 1' : 'Future development') + '</dd></div><div><dt>Builder</dt><dd>' + (b ? esc(b.name) : 'To be announced') + '</dd></div><div><dt>Homesite</dt><dd>' + n + ' of ' + LOTS.length + '</dd></div></dl>' +
+          '<dl class="fmx-stats"><div><dt>Homesite size</dt><dd>' + (l.l ? '2 acres, with shared lake' : '2 acres') + '</dd></div>' + (l.l ? '<div><dt>Shared lake</dt><dd>Within the rear of the lot</dd></div><div><dt>Backyard</dt><dd>More than 1 to 1½ acres</dd></div>' : '') + '<div><dt>Area</dt><dd>87,120 sq ft</dd></div><div><dt>Price</dt><dd>To be announced</dd></div><div><dt>Phase</dt><dd>' + (b ? 'Phase 1' : 'Future development') + '</dd></div><div><dt>Builder</dt><dd>' + (b ? esc(b.name) : 'To be announced') + '</dd></div><div><dt>Homesite</dt><dd>' + n + ' of ' + LOTS.length + '</dd></div></dl>' +
           (b ? '<div class="fmx-dbuilder"><div class="fmx-blogo"><img src="' + b.logo + '" alt="' + esc(b.name) + '" width="' + b.w + '" height="' + b.h + '"></div><div><button type="button" class="link-arrow" data-only="' + l.b + '">See their homesites</button><a class="link-arrow" href="#homes/builders">About ' + esc(b.name) + '</a></div></div>' : '<p class="fmx-small">Builders for the Future Development homesites haven’t been announced. Register your interest to hear first.</p>') +
           '<div class="fmx-dplans"><b>Home plans</b><p>Builder floor plans and elevations for this homesite will appear here as they are released.</p></div>' +
-          '<p class="fmx-small">The 2-acre size comes from the Belmont Estates materials. The outline is traced from the masterplan, a conceptual rendering subject to change without notice.</p>';
+          '<p class="fmx-small">The 2-acre size comes from the Belmont Estates materials, and shared lakes are part of the 2 acres. The outline follows the masterplan, a conceptual rendering subject to change without notice.</p>';
         detail.scrollTop = 0;
         if (fly && map) map.fitBounds(boundsOf(G.lots[i]), { padding: 90, maxZoom: 17.7, duration: reduce ? 0 : 1000, pitch: map.getPitch(), bearing: map.getBearing() });
         // Zoom so the homesite takes about a fifth of the map's width
@@ -758,6 +763,7 @@
         map.setLayoutProperty('b-cover', 'visibility', m === 'plan' ? 'visible' : 'none');
         map.setLayoutProperty('b-sat', 'visibility', sat ? 'visible' : 'none');
         map.setLayoutProperty('b-art', 'visibility', sat ? 'none' : 'visible');
+        map.setLayoutProperty('b-lake', 'visibility', sat ? 'visible' : 'none');
         map.setPaintProperty('b-fill', 'fill-opacity', glFill(sat));
         map.setPaintProperty('b-line', 'line-color', ['case', ['boolean', ['feature-state', 'sel'], false], sat ? '#FFFFFF' : '#343B3C', ['boolean', ['feature-state', 'fav'], false], '#A4572F', sat ? 'rgba(255,255,255,.75)' : 'rgba(255,255,255,0)']);
         map.setPaintProperty('b-num', 'text-color', sat ? '#FFFFFF' : '#343B3C');
@@ -779,7 +785,7 @@
           map.addSource('cover', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [[[-180, -85], [180, -85], [180, 85], [-180, 85], [-180, -85]]] } } });
           map.addSource('art', { type: 'image', url: 'img/site-plan-geo.webp', coordinates: G.art });
           map.addSource('lots', { type: 'geojson', data: { type: 'FeatureCollection', features: LOTS.map(function (l, i) { return { type: 'Feature', id: i + 1, properties: { b: l.b, c: l.b ? COLORS[l.b] : '#FBF8F1' }, geometry: { type: 'Polygon', coordinates: [G.lots[i]] } }; }) } });
-          map.addSource('nums', { type: 'geojson', data: { type: 'FeatureCollection', features: LOTS.map(function (l, i) { var q = lotLL(i).split(','); return { type: 'Feature', properties: { n: String(i + 1) }, geometry: { type: 'Point', coordinates: [+q[1], +q[0]] } }; }) } });
+          map.addSource('nums', { type: 'geojson', data: { type: 'FeatureCollection', features: LOTS.map(function (l, i) { return { type: 'Feature', properties: { n: String(i + 1) }, geometry: { type: 'Point', coordinates: G.mid[i] } }; }) } });
           map.addSource('edge', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: G.parcel } } });
           map.addLayer({ id: 'b-cover', type: 'fill', source: 'cover', layout: { visibility: 'none' }, paint: { 'fill-color': '#EFEADF' } });
           map.addLayer({ id: 'b-sat', type: 'raster', source: 'sat', layout: { visibility: 'none' } });
@@ -787,6 +793,8 @@
           map.addLayer({ id: 'b-edge', type: 'line', source: 'edge', paint: { 'line-color': '#42516B', 'line-width': 1.6, 'line-dasharray': [3, 2] } });
           map.addLayer({ id: 'b-fill', type: 'fill', source: 'lots', paint: { 'fill-color': ['case', ['boolean', ['feature-state', 'dim'], false], '#3F4748', ['boolean', ['feature-state', 'sel'], false], '#FFFFFF', ['get', 'c']], 'fill-opacity': 0 } });
           map.addLayer({ id: 'b-line', type: 'line', source: 'lots', paint: { 'line-color': 'rgba(255,255,255,0)', 'line-width': ['case', ['boolean', ['feature-state', 'sel'], false], 3, ['boolean', ['feature-state', 'fav'], false], 2, 1] } });
+          map.addSource('lake-art', { type: 'image', url: 'img/site-lakes-geo.webp', coordinates: G.art });
+          map.addLayer({ id: 'b-lake', type: 'raster', source: 'lake-art', layout: { visibility: 'none' }, paint: { 'raster-fade-duration': 0 } });
           map.addLayer({ id: 'b-sel', type: 'fill-extrusion', source: 'lots', filter: ['==', ['id'], 0], paint: { 'fill-extrusion-color': '#C7B36E', 'fill-extrusion-height': 9, 'fill-extrusion-opacity': .8 } });
           map.addLayer({ id: 'b-num', type: 'symbol', source: 'nums', minzoom: 15, layout: { 'text-field': ['get', 'n'], 'text-font': ['Noto Sans Bold'], 'text-size': ['interpolate', ['linear'], ['zoom'], 15, 9, 17, 13], 'text-allow-overlap': true }, paint: { 'text-color': '#343B3C', 'text-halo-color': 'rgba(255,255,255,.85)', 'text-halo-width': 1 } });
           pins.forEach(function (q, k) {
@@ -828,7 +836,7 @@
     function bLine(b) { return plural(counts[b.id], 'Phase 1 homesite') + ' on the masterplan'; }
     $$('[data-builder-cards]').forEach(function (el) {
       el.innerHTML = K.builders.map(function (b) {
-        return '<article class="mb-card"><div class="mb-top"><span class="mb-lg"><img src="' + b.logo + '" alt="' + esc(b.name) + '" width="' + b.w + '" height="' + b.h + '" loading="lazy"></span><span class="chip light"><i style="background:' + COLORS[b.id] + '"></i>' + bLine(b) + '</span></div><h3>Custom homes on 2-acre homesites</h3><p>With 2 acres, you can design the home of your dreams, and ' + esc(b.name) + ' is ready to help, from a spacious single-story to a stately estate.</p>' +
+        return '<article class="mb-card"><div class="mb-top"><span class="mb-lg"><img src="' + b.logo + '" alt="' + esc(b.name) + '" width="' + b.w + '" height="' + b.h + '" loading="lazy"></span><span class="chip light"><i style="background:' + COLORS[b.id] + '"></i>' + bLine(b) + '</span></div><h3>Custom homes on 2-acre estate lots with shared lakes</h3><p>With 2 acres, you can design the home of your dreams, and ' + esc(b.name) + ' is ready to help, from a spacious single-story to a stately estate.</p>' +
           '<div class="mb-acts"><a class="btn btn-gold" href="#homes/b-' + b.id + '">Explore Homes</a><a class="mb-line" href="#contact/get-in-touch" data-interest="' + esc(b.name) + '">Get ' + esc(b.name.replace(/ Homes$/, '')) + ' updates</a></div></article>';
       }).join('');
     });
@@ -846,10 +854,17 @@
     });
     document.addEventListener('click', function (e) { var b = e.target.closest('[data-show-builder]'); if (b) showHomesites({ builder: b.getAttribute('data-show-builder') }); });
 
+    // ---------- builder incentives ----------
+    $$('[data-incentives]').forEach(function (el) {
+      el.innerHTML = K.builders.map(function (b) {
+        return '<article class="inc-b"><div class="inc-logo"><img src="' + b.logo + '" alt="' + esc(b.name) + '" width="' + b.w + '" height="' + b.h + '" loading="lazy"></div><span class="chip">Not yet announced</span><h3>' + esc(b.name) + '</h3><p>' + esc(b.name) + ' has ' + plural(counts[b.id], 'Phase 1 homesite') + ' on the site map. Any incentive will be listed here.</p><button type="button" class="link-arrow" data-show-builder="' + b.id + '">See their homesites</button></article>';
+      }).join('');
+    });
+
     // ---------- amenities (Lifestyle) ----------
     var AMIMG = { ponds: 'img/site-plan.webp', trails: 'img/life-running.webp', green: 'img/life-lupines.webp' };
     $$('[data-amenity-cards]').forEach(function (el) {
-      var cardsHTML = [{ id: 'home', name: 'Your own wonderland', status: 'Every homesite', icon: 'home', text: 'With your expansive 2-acre homesite, you can create your own wonderland, with space for a pool, play yard, garden and more.', img: 'img/moments-picnic.webp' }].concat(K.amenities.map(function (a) { return { id: a.id, name: a.name, status: a.status, icon: a.icon, text: a.text, img: AMIMG[a.id] }; }));
+      var cardsHTML = [{ id: 'home', name: 'Your own wonderland', status: 'Every homesite', icon: 'home', text: 'With your expansive 2-acre estate lot and shared lake, you can create your own wonderland, with more than 1 to 1½ acres of backyard for a pool, play yard, garden and more.', img: 'img/moments-picnic.webp' }].concat(K.amenities.map(function (a) { return { id: a.id, name: a.name, status: a.status, icon: a.icon, text: a.text, img: AMIMG[a.id] }; }));
       el.innerHTML = cardsHTML.map(function (a) {
         return '<article class="am-card' + (a.img ? '' : ' noimg') + '">' + (a.img ? '<img src="' + a.img + '" alt="" loading="lazy">' : '') + '<div><span class="am-ic">' + ICON[a.icon] + '</span><span class="chip">' + esc(a.status) + '</span><h3>' + esc(a.name) + '</h3><p>' + esc(a.text) + '</p><a class="link-arrow" href="#community/explore">See it on the site map</a></div></article>';
       }).join('');
@@ -872,11 +887,11 @@
       var light = { Schools: 1, Medical: 1, Hardware: 1 };
       var svg = '<svg viewBox="' + vb.map(function (v) { return v.toFixed(0); }).join(' ') + '" role="img" aria-label="' + (schools ? 'Map of the schools near Belmont Estates' : 'Belmont Estates area attractions map') + '"><rect x="-500" y="-500" width="' + (A.w + 1000) + '" height="' + (A.h + 1000) + '" fill="#5E7783"/><image href="img/area-roads.svg" width="' + A.w + '" height="' + A.h + '"/>' +
         '<g transform="translate(' + A.home.x + ' ' + A.home.y + ')"><circle r="' + A.home.r + '" fill="#42516B" stroke="#FAF8F2" stroke-width="4"/><image href="img/logo-icon.svg" x="-24" y="-26" width="48" height="52"/></g>' +
-        '<text x="' + A.home.x + '" y="' + (A.home.y + A.home.r + 32) + '" text-anchor="middle" font-family="Spectral, Georgia, serif" font-size="26" fill="#FAF8F2" letter-spacing="3">BELMONT ESTATES</text>' +
+        '<text x="' + A.home.x + '" y="' + (A.home.y + A.home.r + 32) + '" text-anchor="middle" font-family="Spectral, Georgia, serif" font-size="26" fill="#FAF8F2" letter-spacing="3" stroke="#5E7783" stroke-width="8" paint-order="stroke">BELMONT ESTATES</text>' +
         shown.map(function (n, j) { var p = A.pins[n]; return '<g class="am-pin' + (light[PLACE[n].cat] ? ' light' : '') + '" data-n="' + n + '" style="--k:' + j + '" tabindex="0" role="button" aria-label="' + esc(PLACE[n].name) + ', ' + PLACE[n].cat + '"><circle class="am-pulse" cx="' + p.x + '" cy="' + p.y + '" r="' + p.r + '"/><circle cx="' + p.x + '" cy="' + p.y + '" r="' + p.r + '" fill="' + p.fill + '" stroke="#FAF8F2" stroke-width="3"/><text x="' + p.x + '" y="' + (p.y + 6) + '" text-anchor="middle">' + n + '</text></g>'; }).join('') + '</svg>';
       if (homeMode) {
         var labels = shown.map(function (n, j) { var p = A.pins[n]; return '<button type="button" class="am-label" data-hp="' + n + '" style="--k:' + j + ';left:' + ((p.x - vb[0]) / vb[2] * 100) + '%;top:' + ((p.y - vb[1]) / vb[3] * 100) + '%"><span class="num" style="background:' + p.fill + '">' + n + '</span>' + esc(PLACE[n].name) + '</button>'; }).join('');
-        el.innerHTML = '<div class="am-stage" style="aspect-ratio:' + vb[2] + '/' + vb[3] + '">' + svg + labels + '</div><div class="am-chips">' + shown.map(function (n) { return '<button type="button" data-hp="' + n + '"><span class="num" style="background:' + A.pins[n].fill + '">' + n + '</span>' + esc(PLACE[n].name) + '<small>' + (PL ? PL.places[n].min + ' min' : esc(PLACE[n].cat)) + '</small></button>'; }).join('') + '<button type="button" class="all" data-show-cat="All">Show every place</button></div>';
+        el.innerHTML = '<div class="am-stage" style="aspect-ratio:' + vb[2] + '/' + vb[3] + '">' + svg + labels + '</div><div class="am-chips"><a class="addr" href="' + HOME_LINK + '" target="_blank" rel="noopener"><b>Belmont Estates</b>Bois D’Arc Lane, Fulshear, TX ↗</a>' + shown.map(function (n) { return '<button type="button" data-hp="' + n + '"><span class="num" style="background:' + A.pins[n].fill + '">' + n + '</span>' + esc(PLACE[n].name) + '<small>' + (PL ? PL.places[n].min + ' min' : esc(PLACE[n].cat)) + '</small></button>'; }).join('') + '<button type="button" class="all" data-show-cat="All">Show every place</button></div>';
         var hm = null;
         el.addEventListener('click', function (e) {
           var b = e.target.closest('[data-hp]'); if (!b) return; var n = +b.getAttribute('data-hp');
@@ -890,7 +905,7 @@
           hm = new maplibregl.Map({ container: box, style: STREETS, bounds: boundsOf(all), fitBoundsOptions: { padding: { top: 50, bottom: 50, left: 80, right: 300 } }, cooperativeGestures: true, attributionControl: { compact: true } });
           hm.once('style.load', function () {
             parcelLayers(hm);
-            new maplibregl.Marker({ element: crestMark(), anchor: 'center' }).setLngLat(G.center).addTo(hm);
+            new maplibregl.Marker({ element: homeTag(), anchor: 'left', offset: [-23, 0] }).setLngLat(G.center).addTo(hm);
             shown.forEach(function (n, j) {
               var d = document.createElement('div'); d.className = 'map-tag';
               d.innerHTML = '<button type="button" data-hp="' + n + '" style="--k:' + j + '"><span class="num" style="background:' + A.pins[n].fill + '">' + n + '</span>' + esc(PLACE[n].name) + '<small>' + PL.places[n].min + ' min</small></button>';
@@ -949,7 +964,7 @@
       var sm = null;
       if (schools) whenNear(el, function () {
         var stage = $('.am-stage', el), box = document.createElement('div'); box.className = 'am-gl'; stage.appendChild(box);
-        var pts = shown.map(function (n) { return PL.places[n].ll; }).concat(G.parcel), pad = { top: 40, bottom: 40, left: 60, right: 40 };
+        var pts = shown.map(function (n) { return PL.places[n].ll; }).concat(G.parcel), pad = { top: 40, bottom: 92, left: 60, right: 40 };
         var gm = new maplibregl.Map({ container: box, style: STREETS, bounds: boundsOf(pts), fitBoundsOptions: { padding: pad }, cooperativeGestures: true, attributionControl: { compact: true }, maxPitch: 70 });
         var marks = {};
         gm.once('style.load', function () {
@@ -957,22 +972,24 @@
           gm.addSource('routes', { type: 'geojson', data: { type: 'FeatureCollection', features: shown.map(function (n) { return { type: 'Feature', id: n, properties: { n: n }, geometry: { type: 'LineString', coordinates: PL.places[n].route } }; }) } });
           gm.addLayer({ id: 'r-case', type: 'line', source: 'routes', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#FFFFFF', 'line-width': 6, 'line-opacity': ['case', ['boolean', ['feature-state', 'off'], false], 0, .9] } });
           gm.addLayer({ id: 'r-line', type: 'line', source: 'routes', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': ['case', ['boolean', ['feature-state', 'sel'], false], '#A4572F', '#C38B53'], 'line-width': ['case', ['boolean', ['feature-state', 'sel'], false], 4.5, 3], 'line-opacity': ['case', ['boolean', ['feature-state', 'off'], false], 0, 1] } });
-          new maplibregl.Marker({ element: crestMark(), anchor: 'center' }).setLngLat(G.center).addTo(gm);
+          // The site map sits on the school map; the community's name goes just below it so the plan stays clear
+          new maplibregl.Marker({ element: homeTag(), anchor: 'top', offset: [0, 8] }).setLngLat([G.center[0], Math.min.apply(0, G.parcel.map(function (q) { return q[1]; }))]).addTo(gm);
           shown.forEach(function (n) {
             var d = document.createElement('div'); d.className = 'map-school'; d.innerHTML = '<button type="button" data-n="' + n + '" aria-label="' + esc(PLACE[n].name) + '">' + n + '</button>';
             marks[n] = new maplibregl.Marker({ element: d, anchor: 'center' }).setLngLat(PL.places[n].ll).addTo(gm);
           });
           var ctl = document.createElement('div'); ctl.className = 'mapctl';
-          ctl.innerHTML = '<button type="button" data-mz="1" aria-label="Zoom in">+</button><button type="button" data-mz="-1" aria-label="Zoom out">−</button><button type="button" data-mfit aria-label="Show Belmont Estates and all schools">' + ICON.fit + '</button><button type="button" data-mn aria-label="Reset the map to north up">' + ICON.compass + '</button>';
+          ctl.innerHTML = '<button type="button" data-mz="1" aria-label="Zoom in">+</button><button type="button" data-mz="-1" aria-label="Zoom out">−</button><button type="button" data-mfit aria-label="Show Belmont Estates and all schools">' + ICON.fit + '</button><button type="button" data-mhome aria-label="Zoom to the Belmont Estates site map" title="Zoom to the site map">' + ICON.home + '</button><button type="button" data-mn aria-label="Reset the map to north up">' + ICON.compass + '</button>';
           var dim = document.createElement('div'); dim.className = 'mapdim'; dim.setAttribute('role', 'group'); dim.setAttribute('aria-label', '2D or 3D');
           dim.innerHTML = '<button type="button" data-m3="0" aria-pressed="true">2D</button><button type="button" data-m3="1" aria-pressed="false">3D</button>';
           var inf = document.createElement('button'); inf.type = 'button'; inf.className = 'mapinfo'; inf.setAttribute('aria-label', 'Show the legend'); inf.setAttribute('aria-pressed', 'false'); inf.innerHTML = ICON.info;
           var leg = document.createElement('div'); leg.className = 'maplegend'; leg.hidden = true;
-          leg.innerHTML = '<p class="fmx-lh">Legend</p><ul><li><i class="l-home"></i>Belmont Estates</li><li><i class="l-sch"></i>Lamar CISD campus</li><li><i class="l-route"></i>Drive from the entrance</li><li><i class="l-bound"></i>Belmont Estates boundary</li></ul>';
+          leg.innerHTML = '<p class="fmx-lh">Legend</p><ul><li><i class="l-home"></i>Belmont Estates</li><li><i class="l-plan"></i>Belmont Estates site map</li><li><i class="l-sch"></i>Lamar CISD campus</li><li><i class="l-route"></i>Drive from the entrance</li><li><i class="l-bound"></i>Belmont Estates boundary</li></ul>';
           [ctl, dim, inf, leg].forEach(function (x) { stage.appendChild(x); });
           stage.addEventListener('click', function (e) {
             var z = e.target.closest('[data-mz]'); if (z) { if (+z.getAttribute('data-mz') > 0) gm.zoomIn(); else gm.zoomOut(); return; }
             if (e.target.closest('[data-mfit]')) { gm.fitBounds(boundsOf(pts), { padding: pad, pitch: gm.getPitch(), bearing: gm.getBearing() }); return; }
+            if (e.target.closest('[data-mhome]')) { gm.fitBounds(boundsOf(G.parcel), { padding: { top: 40, bottom: 96, left: 70, right: 50 }, pitch: gm.getPitch(), bearing: gm.getBearing() }); return; }
             if (e.target.closest('[data-mn]')) { gm.easeTo({ bearing: 0, pitch: 0 }); $$('[data-m3]', dim).forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-m3') === '0'); }); return; }
             var m = e.target.closest('[data-m3]'); if (m) { var on3 = m.getAttribute('data-m3') === '1'; $$('[data-m3]', dim).forEach(function (b) { b.setAttribute('aria-pressed', b === m); }); gm.easeTo({ pitch: on3 ? 58 : 0, bearing: on3 ? -18 : 0, duration: reduce ? 0 : 900 }); return; }
             if (e.target.closest('.mapinfo')) { leg.hidden = !leg.hidden; inf.setAttribute('aria-pressed', !leg.hidden); }
@@ -1009,7 +1026,7 @@
       el.innerHTML = K.places.filter(function (p) { return cs.indexOf(p[2]) >= 0; }).map(function (p) { return '<button type="button" class="near" data-place="' + p[0] + '"><span class="chip">Nearby</span><b>' + esc(p[1]) + '</b><span>' + esc(p[2]) + ' · number ' + p[0] + ' on the area map</span><span class="link-arrow">Show on the area map</span></button>'; }).join('');
     });
     $$('[data-roads]').forEach(function (el) {
-      el.innerHTML = K.roads.map(function (r) { return /^(I-10|\d+)$/.test(r) ? '<li>' + (r === '1093' ? 'FM 1093' : r === '359' ? 'FM 359' : r === '1463' ? 'FM 1463' : r === '99' ? 'SH 99' : r === '6' ? 'SH 6' : r) + '</li>' : '<li class="named">' + esc(r) + '</li>'; }).join('');
+      el.innerHTML = K.roads.filter(function (r) { return r !== 'I-10'; }).map(function (r) { return /^(I-10|\d+)$/.test(r) ? '<li>' + (r === '1093' ? 'FM 1093' : r === '359' ? 'FM 359' : r === '1463' ? 'FM 1463' : r === '99' ? 'SH 99' : r === '6' ? 'SH 6' : r) + '</li>' : '<li class="named">' + esc(r) + '</li>'; }).join('');
     });
 
     // ---------- journal ----------
@@ -1056,8 +1073,8 @@
     // ---------- videos (on the way) ----------
     var VIDEOS = {
       schools: [['Lamar CISD at a glance', 'An introduction to the school district that serves Belmont Estates.', 'img/schools-classroom.webp'], ['The drive to school', 'From Belmont Estates to the campuses listed for the community.', 'img/moments-garden.webp'], ['Campus tours', 'A look at the Lamar CISD campuses near Belmont Estates.', 'img/life-grandpa.webp'], ['Learning outdoors', 'Learning and play with space to roam.', 'img/life-sprinkler.webp']],
-      lifestyle: [['A walk through Belmont Estates', 'A look at the trails, ponds and green space.', 'img/life-running.webp'], ['Ponds and green space', 'Where neighbors meet and Mother Nature’s handiwork shows.', 'img/life-lupines.webp'], ['Outdoors around Fulshear', 'Parks, museums and weekends close by.', 'img/moments-garden.webp']],
-      news: [['A first look at Belmont Estates', 'A tour of the masterplan: the homesites, ponds and trails.', 'img/site-plan.webp'], ['Meet William David Homes', 'An introduction from one of our family of builders.', 'img/home-interior.webp'], ['Meet Toll Brothers', 'An introduction from one of our family of builders.', 'img/dream-home.webp'], ['Meet Partners in Building', 'An introduction from one of our family of builders.', 'img/intro-family.webp'], ['Meet Autograph Homes', 'An introduction from one of our family of builders.', 'img/life-grandpa.webp'], ['Around Fulshear', 'Country living, with the conveniences of fast-growing Fulshear down the stretch.', 'img/moments-garden.webp'], ['Community updates', 'Progress at Belmont Estates as it takes shape.', 'img/moments-picnic.webp']]
+      lifestyle: [['A walk through Belmont Estates', 'A look at the shared lakes, trails and green space.', 'img/life-running.webp'], ['Lakes and green space', 'Where neighbors meet and Mother Nature’s handiwork shows.', 'img/life-lupines.webp'], ['Outdoors around Fulshear', 'Parks, museums and weekends close by.', 'img/moments-garden.webp']],
+      news: [['A first look at Belmont Estates', 'A tour of the masterplan: the estate lots, shared lakes and trails.', 'img/site-plan.webp'], ['Meet William David Homes', 'An introduction from one of our family of builders.', 'img/home-interior.webp'], ['Meet Toll Brothers', 'An introduction from one of our family of builders.', 'img/dream-home.webp'], ['Meet Partners in Building', 'An introduction from one of our family of builders.', 'img/intro-family.webp'], ['Meet Autograph Homes', 'An introduction from one of our family of builders.', 'img/life-grandpa.webp'], ['Around Fulshear', 'Country living, with the conveniences of fast-growing Fulshear down the stretch.', 'img/moments-garden.webp'], ['Community updates', 'Progress at Belmont Estates as it takes shape.', 'img/moments-picnic.webp']]
     };
     $$('[data-videos]').forEach(function (el) {
       var v = VIDEOS[el.getAttribute('data-videos')], k = 0, pad = function (n) { return ('0' + n).slice(-2); };
@@ -1089,7 +1106,7 @@
     });
 
     // ---------- a place to gather: numbered spots on the masterplan ----------
-    var GATHER = [['North pond', 430, 62], ['East pond', 640, 62], ['Trail for walking & jogging', 596, 150], ['Green space', 668, 255], ['Tree-lined streets', 470, 233]];
+    var GATHER = [['Amenity pond', 430, 62], ['Shared lake', 318, 118], ['Trail for walking & jogging', 596, 150], ['Green space', 640, 62], ['Tree-lined streets', 470, 233]];
     $$('[data-gather]').forEach(function (fig) {
       var img = $('img', fig), frame = document.createElement('div'); frame.className = 'frame';
       fig.insertBefore(frame, img); frame.appendChild(img);
@@ -1122,7 +1139,7 @@
       all: ['How big is 2 acres?', 'Give me the tour', 'Who are the builders?', 'What’s nearby?', 'Which schools serve Belmont Estates?', 'How much are homesites?'],
       homesites: ['How big is 2 acres?', 'How many homes will there be?', 'Show me the homesites by builder', 'Open the masterplan'],
       builders: ['Who are the builders?', 'Can I build a single-story home?', 'Show Toll Brothers homesites', 'Who is the developer?'],
-      lifestyle: ['What is there to do in the community?', 'What can I do with 2 acres?', 'Parks and museums nearby'],
+      lifestyle: ['What are the shared lakes?', 'What is there to do in the community?', 'What can I do with 2 acres?', 'Parks and museums nearby'],
       location: ['Where is Belmont Estates?', 'Grocery stores nearby', 'Hospitals nearby', 'Which roads are nearby?'],
       schools: ['Which schools serve Belmont Estates?', 'Which school district?', 'Show the school map'],
       buying: ['How do I get updates?', 'How much are homesites?', 'What is the HOA fee?', 'How do I get directions?']
@@ -1197,7 +1214,8 @@
       if (pl) return { text: PLACE[pl].name + ' is on the Belmont Estates area map, under ' + PLACE[pl].cat + ' (number ' + pl + '). The map is not to scale.', src: 'Area attractions map', actions: [ACT.place(pl)] };
       for (var c = 0; c < CATWORDS.length; c++) if (has(q, CATWORDS[c][1])) { var cc = CATWORDS[c][0]; return { text: 'Here are the ' + CATNAME[cc] + ' on the Belmont Estates area map. Select one to find it.', src: 'Area attractions map', widget: placesW(cc), actions: [ACT.category(cc)] }; }
       if (has(q, ['road', 'highway', 'freeway', '1093', 'i-10', 'tollway', 'commute', 'drive'])) return { text: 'Down the stretch from Belmont Estates is FM 1093. The area map also shows I-10, 99, 6, 359, 1463, the Westpark Tollway and Texas Heritage Parkway.', src: 'Area attractions map', actions: [ACT.page('relocation/getting-around', 'See the roads'), ACT.directions()] };
-      if (has(q, ['pond', 'lake', 'water'])) return { text: AM.ponds.text, src: 'Masterplan', actions: [ACT.homesites('')] };
+      if (has(q, ['backyard', 'usable', 'left over'])) return faqA(28, { actions: [ACT.homesites('')] });
+      if (has(q, ['pond', 'lake', 'water'])) return faqA(27, { actions: [ACT.homesites('')] });
       if (has(q, ['trail', 'walking', 'jog', 'green space', 'park', 'amenit', 'community', 'to do'])) return faqA(8, { actions: [ACT.page('lifestyle/amenities', 'See the amenities')] });
       if (has(q, ['pool', 'garden', 'play yard', 'wonderland', 'backyard'])) return faqA(9, { actions: [ACT.page('lifestyle', 'Explore the lifestyle')] });
       if (has(q, ['news', 'update', 'journal', 'video', 'photo'])) return { text: 'The journal has what’s new at Belmont Estates, and videos and photos are on the News & Updates page. Register your interest to hear first.', src: 'Belmont Estates website', actions: [ACT.page('news', 'Open News & Updates')] };
@@ -1262,7 +1280,7 @@
     function drawSugg() { $('.chat-sugg', chat).innerHTML = SUGG[topic].map(function (s) { return '<button type="button">' + esc(s) + '</button>'; }).join(''); }
     function setChat(open, quiet) {
       chat.hidden = !open; ask.classList.toggle('away', open); ask.setAttribute('aria-expanded', open); tip.hidden = true; document.body.classList.toggle('chat-open', open);
-      if (open) { drawSugg(); if (!started) { started = true; if (!quiet) bot({ text: 'Welcome to Belmont Estates. I’m your concierge for the 2-acre homesites, our builders, life in the community and the Fulshear area. Ask me anything, or pick a shortcut:', widget: menuW }); } if (!quiet) setTimeout(function () { input.focus({ preventScroll: true }); }, 200); }
+      if (open) { drawSugg(); if (!started) { started = true; if (!quiet) bot({ text: 'Welcome to Belmont Estates. I’m your concierge for the 2-acre estate lots, our builders, life in the community and the Fulshear area. Ask me anything, or pick a shortcut:', widget: menuW }); } if (!quiet) setTimeout(function () { input.focus({ preventScroll: true }); }, 200); }
       else ask.focus({ preventScroll: true });
     }
     $('.chat-topics', chat).innerHTML = TOPICS.map(function (t) { return '<button type="button" data-t="' + t[0] + '" aria-pressed="' + (t[0] === 'all') + '">' + t[1] + '</button>'; }).join('');
@@ -1287,7 +1305,7 @@
       ['#home', 'Welcome to Belmont Estates: an acreage community in Fulshear with beautiful custom homes and space to roam.'],
       ['#community/explore', 'Every homesite on one map. Switch to satellite, filter by builder, open the listings, save favorites, or tilt the map into 3D.'],
       ['#homes/builders', 'Our family of builders: William David Homes, Toll Brothers, Partners in Building and Autograph Homes.'],
-      ['#lifestyle/amenities', 'With your expansive 2-acre homesite, create your own wonderland, with trails, parks and green space close by.'],
+      ['#lifestyle/amenities', 'With your expansive 2-acre estate lot and shared lake, create your own wonderland, with trails, parks and green space close by.'],
       ['#relocation/area-map', 'Everything on the area attractions map: filter by category and find each place.'],
       ['#schools/school-map', 'Belmont Estates is served by Lamar CISD. Here are the campuses listed for the community, with the drive from the entrance.'],
       ['#residents', 'For homeowners: how the community works, who looks after it and where to go for help.'],

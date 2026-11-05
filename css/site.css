@@ -1232,7 +1232,7 @@ figure:hover .xl, .xl:focus-visible { opacity: 1; scale: 1; }
 /* ---------- photo bands, lifestyle, residents, HOA ---------- */
 .pg-photo { position: relative; height: clamp(200px, 32vw, 440px); overflow: hidden; background: var(--juniper); }
 .pg-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; }
-.pg-photo.top img { object-position: 50% 8%; }
+.pg-photo.pg-lead img { object-position: 50% 8%; }
 .gather { display: grid; gap: 40px; align-items: center; }
 @media (min-width: 980px) { .gather { grid-template-columns: .85fr 1.15fr; gap: 64px; } }
 .gather .lede { margin-top: 20px; }
@@ -1308,3 +1308,103 @@ figure:hover .xl, .xl:focus-visible { opacity: 1; scale: 1; }
 .w-units button[aria-pressed="true"] { background: var(--juniper); border-color: var(--juniper); color: var(--canvas); }
 .w-lot-out { margin-top: 10px; font: 400 19px/1.25 var(--display); }
 .w-lot small { display: block; margin-top: 4px; font-size: 11.5px; line-height: 1.4; color: var(--grey); }
+
+/* ---------- estate lots and shared lakes ---------- */
+.hero-stats .hs-lead { max-width: none; }
+.hero-stats .hs-lead b { display: flex; align-items: flex-end; min-height: clamp(40px, 4.4vw, 60px); font-size: clamp(22px, 2.2vw, 31px); white-space: nowrap; }
+@media (min-width: 701px) { .hero-stats { gap: 22px; } }
+@media (max-width: 700px) { .hero-stats .hs-lead b { min-height: 34px; font-size: 22px; } }
+.fmx-lakes { display: none; pointer-events: none; }
+.fmx-lakes path { fill: #7DB2C6; }
+.fmx.flat .fmx-lakes { display: block; }
+.fmx-lkey .lake { height: 10px !important; background: #7DB2C6; border-radius: 6px; box-shadow: inset 0 0 0 1px #4B7894; }
+.fmx-lkey .pad { width: 11px !important; height: 11px !important; margin: 0 3px; background: #FFFFFF; box-shadow: 0 0 0 1px #8D9697; }
+@media (min-width: 900px) { .dark-stats.three { grid-template-columns: repeat(3, 1fr); } }
+
+/* ---------- maps: the community's name and address ---------- */
+.map-home { display: flex; align-items: center; gap: 8px; }
+.map-home a { display: block; padding: 7px 12px 8px; background: var(--ink); color: var(--canvas); text-decoration: none; box-shadow: 0 10px 20px -12px rgba(0, 0, 0, .7); transition: background .3s; }
+.map-home a:hover { background: var(--indigo); }
+.map-home b { display: block; font: 600 11.5px/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.map-home span:not(.map-crest) { display: block; margin-top: 3px; color: var(--gold); font: 500 11.5px/1.2 var(--body); white-space: nowrap; }
+.am-chips .addr { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: var(--indigo); color: var(--canvas); border-radius: 999px; font: 500 13px/1.2 var(--body); text-decoration: none; }
+.am-chips .addr b { font-weight: 600; color: var(--gold); }
+.maplegend .l-plan { background: linear-gradient(135deg, #C7B36E 0 45%, #7DB2C6 45% 100%); }
+.dg-area img { background: #5E7783; object-fit: cover; }
+a.dg-thumb { display: block; text-decoration: none; color: inherit; }
+.dev-link { display: inline-block; margin-left: 18px; color: var(--stone); font-size: 13.5px; }
+.dev-sec .btns { margin-top: 22px; }
+
+/* ---------- residents: the Falcon Manor template ---------- */
+.res-photo img { object-position: 50% 16%; }
+#res-hoa .tbd-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin-top: 8px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+@media (min-width: 900px) { #res-hoa .tbd-stats { grid-template-columns: repeat(4, 1fr); } }
+#res-hoa .tbd-stats li { padding: 26px 18px; background: none; border: 0; box-shadow: none; text-align: center; }
+#res-hoa .tbd-stats li + li { border-left: 1px solid var(--line); }
+#res-hoa .btns { margin-top: 26px; }
+
+/* ---------- realtors ---------- */
+.rl-grid { display: grid; gap: 14px; margin-top: 44px; }
+@media (min-width: 620px) { .rl-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .rl-grid { grid-template-columns: repeat(4, 1fr); } .rl-open { grid-column: span 2; flex-direction: row !important; } .rl-open .rl-photo { flex: 0 0 42%; aspect-ratio: auto; } .rl-open .rl-body { align-self: center; } }
+.rl-card { display: flex; flex-direction: column; background: #FFFFFF; border: 1px solid var(--line); color: inherit; text-decoration: none; transition: transform .45s var(--ease), box-shadow .4s, border-color .3s; }
+.rl-card:hover { transform: translateY(-6px); box-shadow: 0 36px 50px -34px rgba(40, 46, 47, .55); }
+.rl-photo { position: relative; aspect-ratio: 1 / .86; display: grid; place-items: end center; overflow: hidden; background: #E6E0D2; }
+.rl-photo svg { width: 62%; fill: #C9C1AF; }
+.rl-photo .chip { position: absolute; left: 10px; top: 10px; background: #FFFFFF; font-size: 9.5px; }
+.rl-body { padding: 16px 18px 18px; }
+.rl-body h3 { font: 400 22px/1.2 var(--display); color: var(--juniper); }
+.rl-body p { margin-top: 4px; font-size: 13.5px; color: var(--grey); }
+.rl-acts { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 14px; }
+.rl-acts .link-arrow { font-size: 11px; }
+.rl-acts small { font-size: 12px; color: var(--grey); }
+.rl-open { border-style: dashed; border-color: var(--saffron); }
+.rl-open .rl-photo { place-items: center; background: var(--sand); }
+.rl-plus { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; background: var(--juniper); color: var(--canvas); font: 300 34px/1 var(--display); transition: background .3s, transform .4s var(--ease); }
+.rl-open:hover .rl-plus { background: var(--saffron); transform: rotate(90deg); }
+.rl-body .rl-k { margin: 0; color: var(--saffron); font: 600 10.5px/1.3 var(--body); letter-spacing: .16em; text-transform: uppercase; }
+.rl-body .rl-for { margin: 4px 0 10px; }
+.page-top .note { margin-top: 14px; }
+
+/* ---------- builder incentives ---------- */
+.announce { padding: 22px 0; background: var(--indigo); color: var(--canvas); }
+.announce-in { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+.announce .chip { background: var(--gold); color: var(--ink); }
+.announce-in > div { flex: 1 1 340px; }
+.announce h2 { font: 400 clamp(20px, 2.2vw, 27px)/1.2 var(--display); }
+.announce p { margin-top: 5px; color: var(--stone); font-size: 14.5px; }
+.inc-bs { display: grid; gap: 14px; }
+@media (min-width: 700px) { .inc-bs { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .inc-bs { grid-template-columns: repeat(4, 1fr); } }
+.inc-b { display: flex; flex-direction: column; align-items: flex-start; padding: 22px 20px; background: #FFFFFF; border-top: 3px solid var(--saffron); transition: transform .45s var(--ease), box-shadow .4s; }
+.inc-b:hover { transform: translateY(-6px); box-shadow: 0 36px 50px -34px rgba(40, 46, 47, .55); }
+.inc-logo { display: grid; align-items: center; justify-items: start; width: 100%; height: 58px; margin-bottom: 14px; }
+.inc-logo img { width: auto; height: 50px; max-width: 170px; object-fit: contain; object-position: left center; }
+.inc-b .chip { font-size: 9.5px; }
+.inc-b h3 { margin-top: 12px; font: 400 21px/1.25 var(--display); }
+.inc-b p { margin-top: 8px; font-size: 14px; }
+.inc-b .link-arrow { margin-top: auto; padding-top: 14px; font-size: 11px; }
+#incentive-form .ticks { margin-top: 20px; }
+
+/* ---------- homebuyer resources ---------- */
+.path { display: grid; gap: 12px; margin-top: 44px; }
+@media (min-width: 700px) { .path { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .path { grid-template-columns: repeat(5, 1fr); } }
+.path li { display: flex; flex-direction: column; padding: 20px 18px 22px; background: #FFFFFF; border: 1px solid var(--line); border-top: 3px solid var(--gold); }
+.path b { font: 300 34px/1 var(--display); color: var(--saffron); }
+.path h3 { margin-top: 10px; font: 400 20px/1.25 var(--display); color: var(--juniper); }
+.path p { margin-top: 8px; font-size: 14px; }
+.path .link-arrow { margin-top: auto; padding-top: 14px; font-size: 11px; }
+
+/* Phones: long button labels wrap instead of pushing their card off the screen, and realtor cards sit two across */
+.res-help { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .res-help { grid-template-columns: 1.15fr .85fr; } }
+@media (max-width: 620px) {
+  .res-help .btn { max-width: 100%; height: auto; min-height: 46px; padding-block: 12px; white-space: normal; line-height: 1.35; text-align: center; }
+  .rl-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .rl-open { grid-column: 1 / -1; flex-direction: row; }
+  .rl-open .rl-photo { flex: 0 0 34%; aspect-ratio: auto; }
+  .rl-body { padding: 12px 12px 14px; }
+  .rl-photo .chip { left: 6px; top: 6px; padding: 4px 6px; font-size: 8.5px; letter-spacing: .08em; }
+  .rl-acts small { font-size: 11px; }
+}

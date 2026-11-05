@@ -22,13 +22,15 @@ The site is a single page, `index.html`, with routes for each section (`#page` o
 - **Find Your Home (`#homes`):**
   - the homesite search with a Be First in Line form;
   - the four builders;
-  - builder incentives and homesite availability, and questions.
-- **Lifestyle (`#lifestyle`):** on-site amenities, a site map call-out, A Place to Gather, videos (coming soon), Creating Your Moments, nearby recreation, and questions.
+  - links to builder incentives and homesite availability, and questions.
+- **Lifestyle (`#lifestyle`):** on-site amenities, a site map call-out, A Place to Gather, videos (coming soon), Creating Your Moments, nearby recreation, and lakes and trails questions.
 - **Relocation (`#relocation`):** Moving to Fulshear, the area map, getting around, the Fulshear area, and questions. Old `#fulshear` links still work.
 - **Schools (`#schools`):** Lamar CISD, the school map, Good to Know, videos (coming soon), photos, and questions.
-- **Residents (`#residents`):** a guide for homeowners: help and contacts, HOA and tax summary, resident resources, community news and questions. Details not yet confirmed are marked.
+- **Residents (`#residents`):** Falcon Manor's template in Belmont's words: help and contacts, HOA and tax summary, resident resources, community news and questions. Details not yet confirmed are marked.
 - **HOA & Tax Rates (`#hoa`):** fee and tax tables, the MUD note, a property tax calculator and disclosures. Amounts are "To be announced" until they are finalized.
-- **Realtor Specialist (`#realtors`):** a coming-soon page.
+- **Realtor Specialists (`#realtors`):** sample realtor profiles (existing realtors first), two "your name here" places, and a form for realtors interested in Belmont Estates, Falcon Manor or both.
+- **Builder Incentives (`#incentives`):** an announcement at the top, each builder's status, then a register form. Nothing has been announced yet, and the page says so.
+- **Homebuyer Resources (`#resources`):** five steps to a home, buyer guides and questions.
 - **Contact (`#contact`):** the register form, where to find us, and every question, with search.
 - **News & Updates (`#news`):** the latest stories, the journal, videos (coming soon) and photos.
 
@@ -39,16 +41,16 @@ On every page:
 
 ## Interactive pieces
 
-- **Site map:** a real map (MapLibre) with all 74 homesites in their true positions, and Streets, Plan and Satellite layers. Phase 1 homesites are coloured by builder.
+- **Site map:** a real map (MapLibre) with all 74 homesites in their true positions, and Streets, Plan and Satellite layers. Phase 1 homesites are coloured by builder. It shows the latest plan: 2-acre estate lots with shared lakes within the rear of the lots, lot lines dotted across the water and a house pad on every homesite.
   - Numbers run block by block.
   - It works like Falcon's: Map View and Explore Plans, filters for builder and phase, Reset, and Favorites (saved on the visitor's device).
-  - It has sorting, zoom, a north reset, 2D and 3D, and markers for the ponds, trails, green space and entries. The legend opens from the "i" button and scrolls if it needs to.
+  - It has sorting, zoom, a north reset, 2D and 3D, and markers for the lakes, amenity pond, trails, green space and entries. The legend opens from the "i" button and scrolls if it needs to.
   - Where WebGL isn't available, the plain masterplan takes over with the same controls.
   - Listings have Homesites, Builders and Amenities tabs in Grid or List view.
   - Each homesite has a detail panel with Register Interest, Save, Share and directions to that homesite.
   - `#community/explore/12` opens homesite 12.
 - **Area map:** the roads from the kit's Area Attractions map, with its 28 numbered places in the kit's category colours. You can filter by category and select a place.
-- **Home and school maps:** real street maps. The home page labels nearby places with their drive times. The school map shows the route from the entrance to each campus, filters by level, and has 2D, 3D and a legend.
+- **Home and school maps:** real street maps with the site plan on them, and the community's name and a link to its address. The home page labels nearby places with their drive times. The school map shows the route from the entrance to each campus, filters by level, zooms to the site map, and has 2D, 3D and a legend.
 - **AI concierge:** on Vercel, `api/concierge.js` answers with Claude (Claude Opus 5.5 by default), using only `content/knowledge.json` and the masterplan data. Answers can open the site map, a place on the map, the school map, the register form or a page. Without `ANTHROPIC_API_KEY`, and on GitHub Pages, the page's built-in answers reply instead, from the same content.
 - **Forms:** a prototype. They show the kit's thank-you message but don't send anything.
 
@@ -75,7 +77,8 @@ Everything animates as it scrolls into view. Visitors who ask their device for r
 ## Content and data
 
 - `content/knowledge.json`: the kit's facts, builders, places, categories, roads and question-and-answer pairs. It also holds the masterplan's amenities, the journal entries and the gallery photos. Both the site and the concierge read it.
-- `js/plan-data.js`: generated from the kit's masterplan and area map by `tools/kit_site_data.py`.
+- `js/plan-data.js`: generated from the kit's masterplan and area map by `tools/kit_site_data.py`, then `tools/kit_plan_update.py` adds the latest plan.
+- `tools/plan-latest.json`: the lakes, green space and house pads of the latest site plan, traced from a photo of it after matching it to the kit's streets. All 74 homesites line up, and 51 touch a lake. If the plan's own file arrives, retrace from it.
 - `js/plan-geo.js` and `img/site-plan-geo.webp`: the masterplan fitted to satellite imagery by `tools/kit_geo.py`. The site is east of Bois D'Arc Lane; homesite pads, streets and ponds on the imagery were matched to the plan. It's a best fit, not a survey.
 - `js/place-geo.js`: real locations and drive times from the Bois D'Arc Lane entry, from `tools/kit_places.py` (OpenStreetMap and the public OSRM demo server). Times are estimates.
 - `js/vendor/`: MapLibre GL JS, loaded only when a map comes near the screen.
@@ -87,6 +90,7 @@ To rebuild them from the unzipped kit:
 python -I tools/kit_assets.py "<kit folder>"
 python -I tools/kit_vectors.py "<kit folder>/Landing Page/Belmont Estates - Unbridled Living.pdf"
 python -I tools/kit_site_data.py "<kit folder>"
+python -I tools/kit_plan_update.py "<kit folder>" "<PublicSans[wght].ttf>"
 python -I tools/kit_geo.py
 python -I tools/kit_places.py
 ```
@@ -112,9 +116,9 @@ Then open http://localhost:5180. The concierge uses its built-in answers locally
 - **Search engines:** the page is marked `noindex`; remove that at launch.
 - **Kit content to confirm:**
   - "New homes slated to begin mid-2025" (the date has passed).
-  - The developer: the kit says Highten Capital, while the Falcon Manor site lists Belmont Estates under Avani Communities.
   - "Wespark Tollway", which is spelled that way in the kit's map artwork.
   - The masterplan shows 74 homesites, but the copy says 75.
 - **Social links:** Facebook, Instagram and YouTube are placeholders until the accounts are known.
-- **HOA, taxes, contacts and videos:** these show "To be announced" or "Coming soon" until real details exist.
+- **HOA, taxes, contacts, videos, realtors and incentives:** these show "To be announced", "Coming soon" or sample profiles until real details exist.
+- **Latest site plan:** the lakes are traced from a photo, so swap in the plan's own file when it is available.
 - **Map services:** street tiles come from OpenFreeMap and satellite imagery from Esri's public World Imagery service. Check Esri's terms, or move to a licensed imagery provider, before launch.

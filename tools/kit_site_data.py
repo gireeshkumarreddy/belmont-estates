@@ -105,7 +105,9 @@ for w in nums:
 print('places', len(places), sorted(places))
 home = max((d for d in drawings if d.get('fill') and 90 < d['rect'].width < 140 and d['rect'].x0 < 800 and d['rect'].y0 > 1000), key=lambda d: d['rect'].width)
 hr = home['rect']
-HOME = {'x': round((hr.x0 + hr.x1) / 2 - AX0, 1), 'y': round((hr.y0 + hr.y1) / 2 - AY0, 1), 'r': round(hr.width / 2, 1)}
+# The kit draws the mark beside the road. Belmont Estates is on Bois D'Arc Lane, so the mark sits on it
+BOIS_DARC_X = 311
+HOME = {'x': BOIS_DARC_X, 'y': round((hr.y0 + hr.y1) / 2 - AY0, 1), 'r': round(hr.width / 2, 1)}
 
 # Roads and their labels as SVG (no pins, brushstrokes or background)
 skip = {'#C38B53', '#C38B52', '#C48B53'}
@@ -165,6 +167,9 @@ for b in am.get_text('dict')['blocks']:
         ox, oy = s['origin']
         rot = 0 if abs(dy) < .01 else round(np.degrees(np.arctan2(dy, dx)), 1)
         fill = '#%06X' % s['color']
+        if txt.startswith('Bois D'):   # the mark now sits on this road, so its name moves beside the mark
+            labels.append(f'<text x="{HOME["x"] - HOME["r"] - 16}" y="{HOME["y"] + 6}" text-anchor="end" font-size="{s["size"]:.1f}" fill="#FFFFFF">{txt.replace("’", "&#8217;")}</text>')
+            continue
         labels.append(f'<text x="{ox - AX0:.1f}" y="{oy - AY0:.1f}" font-size="{s["size"]:.1f}" fill="{fill}"' + (f' transform="rotate({rot} {ox - AX0:.1f} {oy - AY0:.1f})"' if rot else '') + f'>{txt.replace("’", "&#8217;")}</text>')
 svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {AX1 - AX0} {AY1 - AY0}">' + ''.join(out) +
        '<g font-family="Public Sans, Arial, sans-serif" font-weight="600">' + ''.join(labels) + '</g></svg>')
